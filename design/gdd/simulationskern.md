@@ -74,8 +74,15 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
 
 4. Jeder Schritt läuft in dieser festen Reihenfolge ab:
    1. **Eingriffe anwenden:** Alle Eingriffe, die für diesen Schritt eingereiht
-      sind, werden in der Reihenfolge ihres Eingangs angewendet. Danach meldet der
-      Kern, falls fällig, das Ereignis „Neue Ära“ (Formel 2).
+      sind, werden in der Reihenfolge ihres Eingangs angewendet. Jede Eingriffsart hat
+      genau einen Handler: Beginn und Ende „in Gottes Hand“ wendet der Kern selbst an
+      (Status, t_hold_start) und gibt Ort, Ergebnis und Verletzung als Auftrag an
+      Menschen & Bevölkerung weiter; Kräfte wendet Gotteskraft & Götterkräfte an. Ein
+      Handler führt den Eingriff sofort aus, würfelt aus dem Strom seines Systems und
+      darf Aufträge an andere Systeme erteilen (etwa „Erwachsene erschaffen“ an
+      Menschen), die selbst keine weiteren auslösen. Eine unbekannte Art ist ein
+      Eingriff ins Leere. Danach meldet der Kern, falls fällig, das Ereignis
+      „Neue Ära“ (Formel 2), in Schritt 0 stattdessen „Welt erschaffen“ (Regel 17).
    2. **Fällige Systeme rechnen,** in fester Reihenfolge: Welt & Insel → Menschen &
       Bevölkerung → Kultur & Erinnerung → Stämme & Diplomatie → Begehren & Lust →
       Harem & Rituale → Gotteskraft & Götterkräfte → Chronik. Kultur vor Stämmen
@@ -136,7 +143,10 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
 9. Die Simulation liest nie die Physik und nie die 3D-Szene. Ergebnisse der Physik
    (ein Wurf landet, jemand wird verletzt) meldet die Ansicht als **festes
    Eingriffsereignis**: Art, Ziel-ID, Ort (Zelle der Insel), Ergebnis,
-   Verletzungsklasse. Es wird für den nächsten Schritt eingereiht und wie jeder
+   Verletzungsklasse. Ist der Ort keine gültige Landzelle (Wasser, außerhalb der
+   Insel), gilt die nächste Landzelle (kleinster Chebyshev-Abstand, bei Gleichstand
+   die kleinste Zellen-ID), bis Welt & Insel und Gotteshand & Ragdoll etwas anderes
+   festlegen. Es wird für den nächsten Schritt eingereiht und wie jeder
    andere Eingriff aufgezeichnet. Eine aufgezeichnete Sitzung läuft deshalb auch
    ohne Physik exakt gleich nach.
 10. Solange ein Mensch in der Gotteshand gehalten wird oder als Ragdoll fliegt, gilt
@@ -158,10 +168,14 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
 12. Es gibt die Geschwindigkeiten **Pause, 1×, 4× und 16×**, dazu für Werkzeuge
     und Auswertungen **„ohne Grafik“** (so schnell, wie der Rechner kann).
 13. In der Pause läuft kein Schritt. Kamera, Chronik und das Ansehen von Menschen,
-    Stämmen und Orten bleiben möglich. Kräfte und Gotteshand sind gesperrt, weil
-    jeder Eingriff einen Schritt braucht, der ihn anwendet. Einzige Ausnahme ist
-    der Zustand **Speichert**, der genau die Endereignisse „abgesetzt“ annimmt und
-    dafür einen Schritt rechnet (States and Transitions, Edge Cases).
+    Stämmen und Orten bleiben möglich. **Neue Eingriffe des Spielers** (Kräfte,
+    Packen, Werfen) sind gesperrt, weil jeder Eingriff einen Schritt braucht, der ihn
+    anwendet; wer schon gehalten wird, bleibt in der Hand, und die Physik steht still.
+    Endereignisse, die die Ansicht beim Abgleich meldet (eine verlorene Figur, Edge
+    Cases), werden auch in der Pause eingereiht und im ersten Schritt danach
+    angewendet. Im Zustand **Speichert** nimmt der Kern genau die Endereignisse
+    „abgesetzt“ an und rechnet dafür einen Schritt (States and Transitions, Edge
+    Cases).
 14. Schafft ein Bild nicht alle fälligen Schritte, rechnet der Kern höchstens eine
     feste Zahl Schritte pro Bild (siehe Formulas). Die Welt läuft dann langsamer als
     eingestellt, statt die Bildzeit aufzuschaukeln. Die Ansicht zeigt das an.
@@ -172,19 +186,31 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
     **Ereignis** gemeldet: Typ, Schrittnummer, beteiligte IDs, Ursache (die ID des
     auslösenden Ereignisses oder Eingriffs, falls es eine gibt), Gewicht für die
     Chronik. Über diese Ursache-Kette kann die Chronik erklären, warum etwas
-    passiert ist (Pillar 2).
+    passiert ist (Pillar 2). Ereignisse und Eingriffe tragen je eine **ID** aus einem
+    eigenen fortlaufenden int64-Zähler, die nie wiederverwendet wird. Wird ein
+    Ereignis nicht mehr aufbewahrt, bleibt seine ID als Ursache stehen; die Chronik
+    zeigt dann „Ursache verblasst“ statt einer Lücke.
 16. Ereignisse sind reine Daten. Gespeichert wird nur zwischen zwei Schritten, dann
     sind alle Ereignisse des letzten Schritts zugestellt. Zum Spielstand gehören die
-    **Eingriffswarteschlange**, die **Posteingänge** der Systeme und alles, was
+    **Eingriffswarteschlange**, die beiden ID-Zähler (Regel 15), die **Posteingänge** der Systeme und alles, was
     Systeme sonst als Reaktion für ihren nächsten Lauf vorgemerkt haben (das ist
     Teil ihres Zustands). Wie lange zugestellte
     Ereignisse aufbewahrt werden, entscheiden die Chronik und Kultur & Erinnerung.
+
+**Erzeugen einer Welt**
+
+17. Aus dem Welt-Startwert entsteht der Zustand vor dem ersten Schritt: Die Systeme
+    legen ihren Anfangszustand in der festen Reihenfolge aus Regel 4 an (Welt & Insel
+    → Menschen & Bevölkerung → …), jedes nur mit seinem eigenen Zufallsstrom, und
+    sehen dabei den Anfangszustand der Systeme vor ihnen. Beim Erzeugen entstehen
+    keine Ereignisse; Schritt 0 meldet das Ereignis „Welt erschaffen“ für die Chronik.
+    Danach steht die Welt im Zustand Pausiert.
 
 ### States and Transitions
 
 | Zustand | Bedeutung | Schritte pro echter Sekunde | Eingriffe |
 |---|---|---|---|
-| **Pausiert** | Welt steht still | 0 | gesperrt (Ansehen erlaubt) |
+| **Pausiert** | Welt steht still | 0 | neue Eingriffe des Spielers gesperrt (Ansehen erlaubt); Endereignisse aus dem Abgleich werden eingereiht |
 | **Läuft 1×** | Normale Geschwindigkeit | Grundrate (Formulas) | erlaubt |
 | **Läuft 4×** | Schnell | 4 × Grundrate | erlaubt |
 | **Läuft 16×** | Sehr schnell | 16 × Grundrate | erlaubt |
@@ -203,6 +229,7 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
 | Lädt | Pausiert | Spielstand vollständig eingelesen, die Ansicht ist neu aufgebaut |
 | (Start der Welt) | Pausiert | Neue Welt aus einem Startwert erzeugt |
 | (Werkzeug) | Ohne Grafik | Debug- und Balancing-Werkzeuge starten einen Lauf |
+| Ohne Grafik | (Ende des Laufs) | Ziellänge erreicht oder das Werkzeug bricht ab; Zustand und Ereignisse gehen an das Werkzeug |
 
 ### Interactions with Other Systems
 
@@ -218,7 +245,7 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
 | Gotteshand & Ragdoll | feste Eingriffsereignisse (Beginn und Ende „in Gottes Hand“, Ergebnis, Verletzungsklasse) | Status „in Gottes Hand“ | Kern (Format des Eingriffsereignisses) |
 | Weltansicht & Kamera | – | Lesezugriff auf den Zustand nach jedem Schritt, aktuelle Geschwindigkeit, Hinweis „läuft langsamer als eingestellt“ | Kern |
 | Chronik | – | alle Ereignisse mit Ursache und Gewicht | Kern (Ereignisformat), Chronik (Auswahl und Gewichtung) |
-| Speichern & Laden | kompletter Zustand beim Laden | Schrittzähler, Zustände aller Zufallsströme, Zustände aller Systeme (inklusive vorgemerkter Reaktionen), Eingriffswarteschlange, kanonischer Zustands-Hash für Tests | Kern legt fest, *was* gespeichert wird, Speichern & Laden legt das Format fest |
+| Speichern & Laden | kompletter Zustand beim Laden | Schrittzähler, Zustände aller Zufallsströme, Zustände aller Systeme (inklusive vorgemerkter Reaktionen), Eingriffswarteschlange, ID-Zähler für Ereignisse und Eingriffe, Posteingänge, kanonischer Zustands-Hash für Tests | Kern legt fest, *was* gespeichert wird, Speichern & Laden legt das Format fest |
 | Debug- & Balancing-Werkzeuge | Startwert, Eingriffsliste, Laufdauer | Lauf ohne Grafik, Zustand und Ereignisse nach jedem Schritt | Kern |
 | HUD & Chronik-Ansicht | Geschwindigkeitswahl, Pause | Geschichtsjahr, Ära, aktuelle Geschwindigkeit, Hinweis „läuft langsamer“ | Kern |
 
@@ -238,15 +265,15 @@ The Grundrate formula is defined as:
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
-| S_year | int | 5–10, Default 5 | data file | Schritte pro Geschichtsjahr. Mindestens 5, weil die fünf Jahressysteme die Versätze 0–4 belegen (Formel 5) |
+| S_year | int | 5–10, Default 5 | data file | Schritte pro Geschichtsjahr. Mindestens 5, weil die sechs Jahressysteme die fünf Versätze 0–4 belegen (Formel 5) |
 | Y_s | int | 2 | constant | Geschichtsjahre pro echter Sekunde bei 1× (120 Jahre pro Minute, Konzept) |
 | R | int | 10–20, Default 10 | calculated | Grundrate: Schritte pro echter Sekunde bei 1× |
-| m | int | {0, 1, 4, 16} | constant | Geschwindigkeitsfaktor (Pause = 0) |
+| m | int | {0, 1, 4, 16} | constant | Geschwindigkeitsfaktor (Pause = 0); „ohne Grafik“ nutzt keinen Faktor, sondern rechnet bis zur Ziellänge so schnell wie möglich |
 | R_v | int | {0, 10, 40, 160} | calculated | Schritte pro echter Sekunde bei der gewählten Geschwindigkeit |
 
 **Output Range:** 0 in der Pause. „Ohne Grafik“ hat keine Obergrenze und läuft bis
-zur Ziellänge. S_year muss eine ganze Zahl ≥ 1 sein, sonst schwankt die Jahreslogik
-zwischen zwei Schrittzahlen.
+zur Ziellänge. S_year muss eine ganze Zahl von 5 bis 10 sein: ganzzahlig, sonst schwankt die
+Jahreslogik zwischen zwei Schrittzahlen, und mindestens 5 wegen der Versätze (Formel 5).
 **Example:** S_year = 5 → R = 10 Schritte/s bei 1×, 40 bei 4×, 160 bei 16×.
 
 ### 2. Geschichtszeit
@@ -291,7 +318,8 @@ The Lebensjahr formula is defined as:
 | T_life | float | Sekunden | calculated | Lebensdauer in echten Sekunden bei 1× |
 
 **Output Range:** Bei S_Lj 30–120 und 40 Lebensjahren sind das 120–480 s
-(2–8 Minuten), passend zu „mehrere Minuten“. Ein Lebensjahr sind beim Default
+(2–8 Minuten) bei R = 10, passend zu „mehrere Minuten“. Mit S_year = 10 (R = 20)
+halbiert sich das auf 60–240 s; für „mehrere Minuten“ braucht es dann S_Lj ≥ 60. Ein Lebensjahr sind beim Default
 12 Geschichtsjahre.
 **Example:** 40 × 60 / 10 = 240 s = 4 Minuten. Der Mensch erlebt dabei 480
 Geschichtsjahre, also etwa 19 Ären (gewollt, Core Rule 2). Ein Fest von 30 s bei 1×
@@ -314,7 +342,7 @@ The Schrittbudget formula is defined as:
 | cap | int | 4–32, Default 8 | data file | höchstens gerechnete Schritte pro Bild |
 | n | int | 0..cap | calculated | in diesem Bild gerechnete Schritte |
 | fps | float | > 0 | calculated | tatsächliche Bildrate |
-| v_eff | float | 0..m | calculated | tatsächliche Geschwindigkeit in Vielfachen von 1× |
+| v_eff | float | 0..m | calculated | tatsächliche Geschwindigkeit in Vielfachen von 1×; die Formel ist die Obergrenze, für die Anzeige gemessen als gerechnete Schritte der letzten echten Sekunde geteilt durch R (gleitendes Fenster) |
 
 **Output Range:** n liegt zwischen 0 und cap. Ein Überschuss über cap wird verworfen
 (A bleibt < 1, in der Pause ist n immer 0): Die Welt läuft langsamer, baut aber keinen Rückstand auf, und das
@@ -393,13 +421,32 @@ Zustimmungsmodell kennt keinen Zufall, und die Physik der Ansicht ist nicht Teil
 Simulation.
 
 **Output Range:** volle 64 Bit. Die Konstante ist ungerade, deshalb bekommen
-verschiedene Systeme derselben Welt nie denselben Startwert. Aus seed_sys füllen vier
-weitere SplitMix64-Ausgaben den Zustand eines xoshiro256**-Generators (nie alle vier
-null). `string.GetHashCode` und `System.Random` werden nicht verwendet, weil sie in
+verschiedene Systeme derselben Welt nie denselben Startwert. Aus seed_sys entsteht der
+Zustand eines xoshiro256**-Generators: `s_k = SplitMix64(seed_sys + k · 0x9E3779B97F4A7C15)`
+für k = 0 bis 3 (nie alle vier null). Ein Wurf ist `next()` von xoshiro256**: Ergebnis
+`rotl(s1 · 5, 7) · 9`, danach `t = s1 << 17`, `s2 ^= s0`, `s3 ^= s1`, `s1 ^= s2`,
+`s0 ^= s3`, `s2 ^= t`, `s3 = rotl(s3, 45)`. Darauf baut die einzige Schnittstelle, die alle
+Systeme nutzen: `NextInt(lo, hi)` liefert eine ganze Zahl mit lo ≤ x < hi (hi
+ausgeschlossen; hi ≤ lo ist ein Fehler) ohne Verzerrung nach Lemire (128-Bit-Multiplikation
+mit Ablehnung), `NextDouble()` liefert `(next() >> 11) · 2^−53` in [0, 1). Zum Spielstand
+gehören die vier Zustandswörter jedes Stroms. `string.GetHashCode` und `System.Random` werden nicht verwendet, weil sie in
 .NET nicht stabil oder nicht festgelegt sind.
 **Example:** world_seed = 42 und system_id = 3 ergeben den Strom für System 3. Mit
 system_id = 4 entsteht ein unabhängiger Strom. Wie oft System 3 würfelt, verschiebt
 System 4 nicht.
+
+**Referenzwerte** für seed_sys, mit einer Python-Referenzimplementierung dieser Formel
+berechnet (2026-10-25); AC-09 prüft die C#-Umsetzung dagegen:
+
+| world_seed | system_id 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|---|
+| 0 | `0xB382A305F4414F5E` | `0x631A9154FBABF717` | `0xA80ABA8C86640906` | `0xC9B5AE106698F0BB` | `0x256FA269A2420EA1` | `0xC755BBAC848BCEBE` | `0x43DEC8BE6926A4DE` | `0x600FB8D528D256A9` |
+| 42 | `0xF4ABD143FEB24055` | `0x7C816738C12903B2` | `0x113E5DEC6F8FD8A8` | `0xAD4A599062FD1739` | `0x11485B98A7EA20B7` | `0x32028F50341EBD74` | `0xBC16A3D4CC48678E` | `0x1C839D924AAE6DFF` |
+| 2^64 − 1 | `0xBDA5668A01D7049C` | `0x82B43276ABB80226` | `0xED4D5ED4A6EA59B4` | `0x8306445ED348A658` | `0x276EBC0E52F41C24` | `0xDEC5741011329D07` | `0xB94EC6A04D7B4627` | `0x10AB666F6224661C` |
+
+Erste drei Würfe für world_seed 42 und system_id 2: `0xB81FB5661808B7CF`,
+`0x2334B65900943E7B`, `0x104254D656546BEC`. Aus dem ersten Wurf ergibt `NextInt(0, 6)`
+den Wert 4 und `NextDouble()` den Wert 0,7192338346722262.
 
 ### Kalibrierung gegen Prototyp 1
 
@@ -451,8 +498,8 @@ System 4 nicht.
   gewollt, die Hand ist bei jeder Geschwindigkeit erlaubt.
 - **If gespeichert wird, während ein Mensch „in Gottes Hand“ ist** (Entscheidung
   des Entwicklers vom 2026-10-25: ein Ausräumschritt, dann Snapshot): Der Kern geht
-  in den Zustand Speichert. Die Ansicht setzt jeden gehaltenen oder fliegenden
-  Menschen an der Stelle der Hand ab und meldet das Endereignis („abgesetzt“). Der
+  in den Zustand Speichert. Die Ansicht setzt jeden gehaltenen Menschen an der
+  Stelle der Hand und jeden fliegenden an der Zelle ab, über der er gerade ist, und meldet das Endereignis („abgesetzt“). Der
   Kern nimmt genau diese Endereignisse an und rechnet **genau einen Schritt**, der
   sie anwendet: ein normaler Schritt mit allen fälligen Systemen, die Endereignisse
   stehen mit dieser Schrittnummer in der Aufzeichnung, danach steigt der Zähler um
@@ -477,7 +524,9 @@ System 4 nicht.
   speichert die Build-Kennung, und bei Abweichung warnen die Werkzeuge, dass die
   Wiedergabe abweichen kann.
 - **If in einem Schritt sehr viele Ereignisse entstehen** (zum Beispiel ein Krieg
-  mit vielen Toten): Alle werden zugestellt, es gibt keine Obergrenze im Kern. Was
+  mit vielen Toten): Alle werden zugestellt, es gibt keine Obergrenze im Kern. Der
+  Ereignispuffer wächst nur, wenn ein Schritt mehr Ereignisse erzeugt als jeder frühere,
+  und gibt Speicher nicht zurück; im Dauerbetrieb entsteht so keine Zuteilung (AC-29). Was
   davon in der Chronik erscheint, entscheidet die Chronik über Gewicht und Filter.
 - **If der Schrittzähler sehr groß wird**: Er ist int64. Bei 160 Schritten pro
   Sekunde reicht das für über eine Milliarde Jahre Dauerbetrieb, ein Überlauf ist
@@ -494,7 +543,7 @@ pro Bild die fälligen Schritte auslöst, sitzt in der Unity-Bildschleife.
 | System | Was es vom Kern braucht | GDD |
 |---|---|---|
 | Welt & Insel | Jahrestakt, Zufallsstrom, Ereignisse | noch keins |
-| Menschen & Bevölkerung | Personentakt, Umrechnung Lebensjahr ↔ Schritte, Zufallsstrom, Status „in Gottes Hand“ | noch keins |
+| Menschen & Bevölkerung | Personentakt, Umrechnung Lebensjahr ↔ Schritte, Zufallsstrom, Status „in Gottes Hand“, Aufträge | ✓ `design/gdd/menschen-und-bevoelkerung.md` |
 | Kultur & Erinnerung | Jahrestakt, Ereignisse mit Ursache-Kette, angewendete Eingriffe | noch keins |
 | Stämme & Diplomatie | Jahrestakt, Zufallsstrom, Ereignisse | noch keins |
 | Begehren & Lust | Personentakt, Zufallsstrom, Ereignisse | noch keins |
@@ -509,11 +558,27 @@ pro Bild die fälligen Schritte auslöst, sitzt in der Unity-Bildschleife.
 
 **Weich:** Das Zustimmungsmodell braucht den Kern nicht. Es ist eine reine Funktion
 ohne Zufall und ohne Takt. Es darf aber nur innerhalb eines Schritts aufgerufen
-werden (von Begehren & Lust sowie Harem & Rituale).
+werden (von Begehren & Lust sowie Harem & Rituale), und die Sperrenprüfung laufender
+Handlungen läuft in jedem Schritt (Formel 5). ✓ `design/gdd/zustimmungsmodell.md`
 
-**Gegenseitigkeit:** Keines der abhängigen Systeme hat schon ein GDD. Jedes muss den
-Simulationskern in seinem Abschnitt Dependencies nennen und die Verträge oben
-übernehmen.
+**Gegenseitigkeit:** Menschen & Bevölkerung und das Zustimmungsmodell haben GDDs und
+nennen den Kern in ihren Dependencies. Alle übrigen abhängigen Systeme haben noch keins;
+jedes muss den Simulationskern in seinem Abschnitt Dependencies nennen und die Verträge
+oben übernehmen.
+
+## Tuning Knobs
+
+| Regler | Default | Sicherer Bereich | Wirkung |
+|---|---|---|---|
+| S_year | 5 | 5–10 | Schritte pro Geschichtsjahr; R = 2 · S_year steigt mit, damit auch die Rechenlast pro echter Sekunde |
+| Y_s | 2 | fest | Geschichtsjahre pro Sekunde; eine Änderung bricht die Kalibrierung gegen Prototyp 1 |
+| E_len | 25 | fest (Konzept) | Länge einer Ära in Geschichtsjahren |
+| S_Lj | 60 | 30–120, Vielfaches von S_year | Länge eines Lebensjahrs; mehr heißt längeres Leben in echter Zeit |
+| P_person | 2 | 1–2 | Takt der Personenentscheidungen; 1 verdoppelt die Last |
+| cap | 8 | 4–32, mindestens ceil(16 · R / fps_min) | höchste Schrittzahl pro Bild; zu klein und 16× ist nicht erreichbar, zu groß und es gibt Spitzen in der Bildzeit |
+| dt_max | 0,1 s | 0,05–0,25 s | Deckel für lange Bilder; größer heißt mehr Schritte nach einem Hänger |
+| O_year | 0 / 1 / 2 / 2 / 3 / 4 | 0 bis S_year − 1 | Versätze der Jahressysteme; die Reihenfolge Welt → Kultur → Menschen → Stämme bleibt wie in Prototyp 1 |
+| Hinweis „läuft langsamer“ | unter 90 % seit 1 s, aus ab 95 % | 80–95 % / 90–99 % | wann der Hinweis erscheint und verschwindet |
 
 ## Visual/Audio Requirements
 
@@ -555,7 +620,9 @@ Der Kern liefert die Daten, das HUD zeigt sie an:
 | `production/gate-checks/2026-10-25-concept-to-systems-design.md` | Hinweise des Technical Directors: Grenze des Determinismus, Zeitbasis, Speichern und Debug als eigene Systeme |
 | `design/gdd/systems-index.md` | Abhängigkeiten, Systemreihenfolge |
 
-Die abhängigen Systeme (siehe Dependencies) haben noch keine GDDs.
+Von den abhängigen Systemen haben bisher Menschen & Bevölkerung
+(`design/gdd/menschen-und-bevoelkerung.md`) und das Zustimmungsmodell
+(`design/gdd/zustimmungsmodell.md`) ein GDD.
 
 ## Acceptance Criteria
 
@@ -565,9 +632,9 @@ E_len = 25, P_person = 2, S_Lj = 60, cap = 8, dt_max = 0,1 s. Tests liegen unter
 übergeben, keine Regel der Simulation liest die echte Zeit.
 
 ### A. Schritt, Zeit, Takt
-- **AC-01 (Rule 1, 9) [Logic/EditMode]** **GIVEN** die Kern-Assembly hat eine asmdef mit `noEngineReferences`, **WHEN** ein Symbolscan über ihren Quelltext läuft, **THEN** gibt es 0 Treffer auf `UnityEngine`, `Time.`, `DateTime.Now`, `System.Random` und Physik-APIs.
-- **AC-02 (Rule 2, Formel 2) [Logic/EditMode]** **GIVEN** S_year = 5, **WHEN** t = 0, 4, 5, 124, 125, 1000 und 2^40 ist, **THEN** ist Y = 0, 0, 1, 24, 25, 200 und 2^40 / 5 (abgerundet) und Era = 0, 0, 0, 0, 1, 8 und korrekt ohne Überlauf; Alter wird als age_Lj, die Chronik in Y geführt, als getrennte Typen.
-- **AC-03 (Rule 2, Formel 2) [Logic/EditMode]** **GIVEN** ein Lauf ab t = 0, **WHEN** t = 125 erreicht ist, **THEN** entsteht genau 1 Ereignis „Neue Ära“, nach den Eingriffen und vor allen Ereignissen der Jahressysteme dieses Schritts; bei t = 0, 124 und 126 entsteht keines.
+- **AC-01 (Rule 1, 9) [Logic/EditMode]** **GIVEN** die Kern-Assembly hat eine asmdef mit `noEngineReferences`, **WHEN** ein Symbolscan über ihren Quelltext läuft, **THEN** gibt es 0 Treffer auf `UnityEngine`, `Time.`, `DateTime`, `Stopwatch`, `Environment.TickCount`, `Guid.NewGuid`, `System.Random`, `string.GetHashCode`, `Thread`, `Task`, `Parallel` und die Physik-APIs (`Physics`, `Rigidbody`, `Collider`).
+- **AC-02 (Rule 2, Formel 2) [Logic/EditMode]** **GIVEN** S_year = 5, **WHEN** t = 0, 4, 5, 124, 125, 1000 und 2^40 ist, **THEN** ist Y = 0, 0, 1, 24, 25, 200 und 2^40 / 5 (abgerundet) und Era = 0, 0, 0, 0, 1, 8, für 2^40 genau Y = 219.902.325.555 und Era = 8.796.093.022, ohne Überlauf; Alter wird als age_Lj, die Chronik in Y geführt, als getrennte Typen.
+- **AC-03 (Rule 2, Formel 2) [Logic/EditMode]** **GIVEN** ein Lauf ab t = 0, **WHEN** t = 125 erreicht ist, **THEN** entsteht genau 1 Ereignis „Neue Ära“, nach den Eingriffen und vor allen Ereignissen der Jahressysteme dieses Schritts; bei t = 0, 124 und 126 entsteht keines; bei t = 0 entsteht stattdessen genau 1 Ereignis „Welt erschaffen“.
 - **AC-04 (Rule 3, Formel 5) [Logic/EditMode]** **GIVEN** die Default-Versätze (Welt 0, Kultur 1, Menschen 2, Stämme 2, Gotteskraft 3, Chronik 4), **WHEN** t = 0 bis 999 läuft, **THEN** läuft jedes Jahressystem genau 200-mal, pro Schritt höchstens 1 Jahressystem außer beim Versatz 2 (Menschen vor Stämmen); bei t = 11 laufen Kultur und die Menschen mit ungerader ID, bei t = 12 Stämme und die Menschen mit gerader ID; das Muster wiederholt sich alle 10 Schritte.
 - **AC-05 (Formel 1, 5) [Logic/EditMode]** **GIVEN** eine Konfiguration mit O_sys ≥ P_sys, P_person > S_year oder S_year < 5, **WHEN** sie geprüft wird, **THEN** meldet der Kern einen Konfigurationsfehler und startet nicht, statt ein System still nie laufen zu lassen.
 - **AC-06 (Rule 4) [Logic/EditMode]** **GIVEN** Stub-Systeme protokollieren ihre Aufrufe, **WHEN** ein Schritt mit einem Eingriff läuft, **THEN** ist die Reihenfolge: Eingriffe (nach Eingang) → Welt → Menschen → Kultur → Stämme → Begehren → Harem → Gotteskraft → Chronik → Zustellung der Ereignisse → Zähler t + 1.
@@ -576,7 +643,7 @@ E_len = 25, P_person = 2, S_Lj = 60, cap = 8, dt_max = 0,1 s. Tests liegen unter
 - **AC-30 (Rule 4.2 und 4.3, Formel 5) [Logic/EditMode]** **GIVEN** zwei Stub-Systeme X und Y, X steht in der Reihenfolge vor Y, beide laufen in Schritt t, **WHEN** X in t den Wert v von 0 auf 1 setzt und Y in t v liest, **THEN** liest Y 1; liest X dagegen einen Wert w, den Y in t schreibt, liest X den Wert aus Schritt t − 1. **GIVEN** ein Stub-Jahressystem mit P = 5 und O = 2 und ein Ereignis E, das am Ende von Schritt 11 zugestellt wird, **WHEN** die Schritte 12 bis 16 laufen, **THEN** verarbeitet es E genau einmal, in Schritt 12; wird nach Schritt 11 gespeichert und geladen, ist der Hash gleich und E wird weiterhin in Schritt 12 verarbeitet. **GIVEN** ein Auftrag von System X an System Y (Y steht in der Reihenfolge vor X), **WHEN** X ihn in Schritt t erteilt, **THEN** führt Y ihn sofort aus, X liest danach den neuen Zustand noch in t, und Y hat dabei aus seinem eigenen Strom gewürfelt (der Strom von X ist unverändert).
 
 ### B. Zufall
-- **AC-09 (Formel 6) [Logic/EditMode]** **GIVEN** world_seed ∈ {0, 42, 2^64 − 1} und die system_id 1 bis 8, **WHEN** seed_sys berechnet wird, **THEN** stimmt es mit festen Referenzwerten überein (Referenz für SplitMix64(0): 0xE220A8397B1DCDAF, gegen eine Referenzimplementierung zu prüfen), alle seed_sys sind paarweise verschieden, der xoshiro-Zustand ist nie ganz null, und es gibt keine Ausnahme bei Überlauf.
+- **AC-09 (Formel 6) [Logic/EditMode]** **GIVEN** world_seed ∈ {0, 42, 2^64 − 1} und die system_id 1 bis 8, **WHEN** seed_sys berechnet wird, **THEN** stimmt es mit der Tabelle der Referenzwerte in Formel 6 überein (dazu SplitMix64(0) = 0xE220A8397B1DCDAF), die ersten drei Würfe für world_seed 42 und system_id 2 stimmen, `NextInt(0, 6)` und `NextDouble()` des ersten Wurfs ergeben 4 und 0,7192338346722262, alle seed_sys sind paarweise verschieden, der xoshiro-Zustand ist nie ganz null, und es gibt keine Ausnahme bei Überlauf.
 - **AC-10 (Rule 6) [Logic/EditMode]** **GIVEN** zwei Läufe, in denen System 3 einmal 0-mal und einmal 1000-mal würfelt, **WHEN** die ersten 100 Werte von System 4 verglichen werden, **THEN** sind sie identisch; nach Speichern in Schritt k und Laden setzt jeder Strom genau so fort wie im durchgehenden Lauf.
 
 ### C. Determinismus
@@ -589,7 +656,7 @@ E_len = 25, P_person = 2, S_Lj = 60, cap = 8, dt_max = 0,1 s. Tests liegen unter
 
 ### E. Zeitsteuerung
 - **AC-15 (Formel 1, Rule 12) [Logic/EditMode]** **GIVEN** m ∈ {0, 1, 4, 16} und S_year = 5, **WHEN** R_v berechnet wird, **THEN** ist R_v = 0, 10, 40 und 160; für S_year 5 bis 10 gilt R = 2 · S_year.
-- **AC-16 (Rule 13, States) [Logic/EditMode]** **GIVEN** die Welt ist pausiert, **WHEN** 600 Bilder mit dt = 1/60 laufen, **THEN** läuft kein Schritt, Lesezugriffe funktionieren, und ein Eingriff in „Pausiert“ oder „Lädt“ wird abgelehnt (0 Einträge in der Warteschlange); Speichern (Zustand Speichert) kehrt zur vorigen Stufe zurück und lässt den Schrittzähler unverändert, wenn niemand gehalten wird, Laden endet in „Pausiert“, und ein Geschwindigkeitswechsel wirkt ab dem nächsten Bild.
+- **AC-16 (Rule 13, States) [Logic/EditMode]** **GIVEN** die Welt ist pausiert, **WHEN** 600 Bilder mit dt = 1/60 laufen, **THEN** läuft kein Schritt, Lesezugriffe funktionieren, und ein Eingriff des Spielers in „Pausiert“ oder „Lädt“ wird abgelehnt (0 Einträge in der Warteschlange); Speichern (Zustand Speichert) kehrt zur vorigen Stufe zurück und lässt den Schrittzähler unverändert, wenn niemand gehalten wird, Laden endet in „Pausiert“, und ein Geschwindigkeitswechsel wirkt ab dem nächsten Bild.
 - **AC-17 (Formel 4, Rule 14) [Logic/EditMode]** **GIVEN** 16× bei 60 fps, **WHEN** 60 Bilder laufen, **THEN** ist n pro Bild 2 oder 3 und die Summe 160 ± 1; bei 1× sind es 10 ± 1 Schritte, und immer gilt n ≤ cap.
 - **AC-18 (Formel 4, Rule 14, Edge Case) [Logic/EditMode + Manual]** **GIVEN** 16× bei 15 fps, **WHEN** 100 Bilder laufen, **THEN** ist n = 8 pro Bild, A < 1 nach jedem Bild, v_eff = 12, das Signal „läuft langsamer“ ist gesetzt, und der Zustand nach k Schritten gleicht dem bei voller Geschwindigkeit; [Manual] das HUD zeigt „läuft langsamer (12×)“ nach spätestens 1 s und blendet es aus, sobald v_eff 15,2 erreicht.
 - **AC-19 (Edge Case dt_max) [Logic/EditMode]** **GIVEN** ein Bild mit dt = 2 s, **WHEN** es verarbeitet wird, **THEN** wird nur 0,1 s angerechnet (n ≤ cap), und im folgenden Bild wird nichts nachgeholt.
@@ -605,7 +672,11 @@ E_len = 25, P_person = 2, S_Lj = 60, cap = 8, dt_max = 0,1 s. Tests liegen unter
 - **AC-25 (Edge Case Speichern in der Hand) [Integration/PlayMode]** **GIVEN** ein Mensch wird gehalten und der nächste Schritt ist k, **WHEN** gespeichert wird, **THEN** geht der Kern in den Zustand Speichert und rechnet genau den Schritt k (Zähler danach k + 1), in dem das Endereignis „abgesetzt“ angewendet wird und mit Schritt k in der Aufzeichnung steht; der Spielstand enthält 0 Menschen „in Gottes Hand“ und kein offenes Endereignis; **GIVEN** niemand wird gehalten, **THEN** bleibt der Zähler beim Speichern unverändert; ein danach noch einmal gemeldetes „abgesetzt“ für denselben Menschen erzeugt „Eingriff ins Leere“ und ändert den Zustand nicht.
 - **AC-26 (Edge Case verlorene Figur) [Integration/PlayMode]** **GIVEN** die Figur eines gehaltenen Menschen wird zerstört, **WHEN** der nächste Abgleich läuft, **THEN** kommt das Endereignis „abgesetzt“ an der letzten bekannten Zelle, und einen Schritt später ist der Mensch nicht mehr angehalten.
 - **AC-27 (Edge Case anderer Build) [Logic/EditMode]** **GIVEN** eine Aufzeichnung mit abweichender Build-Kennung, **WHEN** sie abgespielt wird, **THEN** erscheint eine Warnung ohne Abbruch; ein Spielstand aus einem anderen Build lädt, und der Hash des geladenen Zustands gleicht dem gespeicherten.
-- **AC-28 (Edge Cases Pause im Flug, Wurf bei 16×) [Manual]** **GIVEN** ein Mensch fliegt, **WHEN** pausiert wird, **THEN** stehen Physik und Schrittzähler still; **GIVEN** 16× und ein Flug von 2 s, **THEN** steigt der Schrittzähler um 320 (64 Geschichtsjahre), und das Alter des Menschen bleibt gleich.
+- **AC-28 (Edge Cases Pause im Flug, Wurf bei 16×) [Manual]** **GIVEN** ein Mensch fliegt, **WHEN** pausiert wird, **THEN** stehen Physik und Schrittzähler still; **GIVEN** 16× und ein Flug von 2 s, **THEN** steigt der Schrittzähler um 160 je gemessener Flugsekunde ± 4 (bei 2 s also 320, 64 Geschichtsjahre), und das Alter des Menschen bleibt gleich.
+- **AC-33 (Rule 17) [Logic/EditMode]** **GIVEN** ein Startwert, **WHEN** eine Welt zweimal erzeugt wird, **THEN** legen die Systeme ihren Anfangszustand in der Reihenfolge von Regel 4 an (Stub-Protokoll), beim Erzeugen entsteht kein Ereignis, der Hash vor Schritt 0 ist in beiden Fällen gleich, und der Zustand ist Pausiert.
+- **AC-34 (Rule 4.3, 15, 16) [Logic/EditMode]** **GIVEN** drei Systeme melden in Schritt t die Ereignisse E1, E2 und E3 in dieser Reihenfolge, **WHEN** zugestellt wird, **THEN** erhält jeder Empfänger sie in dieser Reihenfolge, ihre IDs steigen streng, und nach Speichern und Laden setzen beide ID-Zähler ohne Lücke und ohne Doppel fort.
+- **AC-35 (Rule 13, Edge Case verlorene Figur) [Logic/EditMode]** **GIVEN** die Welt ist pausiert und ein gehaltener Mensch verliert seine Figur, **WHEN** der Abgleich das Endereignis meldet, **THEN** steht es in der Warteschlange und wird im ersten Schritt nach der Pause angewendet, während ein Eingriff des Spielers in der Pause weiter abgelehnt wird.
+- **AC-36 (Rule 4.1, 9) [Logic/EditMode]** **GIVEN** je ein Eingriff jeder bekannten Art und einer unbekannten Art, **WHEN** sie in Schritt t angewendet werden, **THEN** ruft der Kern für jede bekannte Art genau einen Handler (Kräfte: Gotteskraft; Beginn und Ende: der Kern selbst, die Folgen als Auftrag an Menschen), die unbekannte Art ergibt „Eingriff ins Leere“, und ein Endereignis mit einem Ort auf einer Wasserzelle setzt den Menschen auf die nächste Landzelle (kleinster Chebyshev-Abstand, Gleichstand kleinste Zellen-ID).
 
 ### G. Leistung (Vorschlag, wartet auf Profiling)
 - **AC-29 [Integration/PlayMode, Performance — ADVISORY bis zur ersten Messung]** **GIVEN** 50 Menschen bei 16× (160 Schritte pro Sekunde), **WHEN** 60 s auf dem Entwicklungsrechner bei 60 fps gemessen wird, **THEN** braucht der Kern pro Bild im Mittel höchstens 2,0 ms (12 % von 16,7 ms) und im schlechtesten Bild mit cap = 8 Schritten höchstens 4,0 ms (0,5 ms pro Schritt), mit 0 Byte Speicherzuteilung pro Schritt im Dauerbetrieb. Die Hardware des Entwicklungsrechners ist bei der ersten Messung zu notieren.
@@ -616,6 +687,8 @@ E_len = 25, P_person = 2, S_Lj = 60, cap = 8, dt_max = 0,1 s. Tests liegen unter
 |---|---|---|
 | Wie lange lebt ein Mensch (L_Lj) und wie wirkt sich Altern auf das Aussterben aus? S_Lj = 60 ist ein Vorschlag | GDD Menschen & Bevölkerung, dann Messung mit den Debug-Werkzeugen | mit dem GDD Menschen & Bevölkerung |
 | Hardware des Entwicklungsrechners und echtes Leistungsbudget für AC-29 | Entwickler, beim ersten Profiling | erste Messung im MVP-0 |
-| Technischer Weg für den Kern (einfache C#-Klassen oder ECS/DOTS) | ADR in der Architekturphase | `/create-architecture` |
+| Technischer Weg für den Kern (einfache C#-Klassen oder ECS/DOTS). Auflagen für jeden Weg: keine parallelen Gleitkomma-Summen, Burst nur mit deterministischem Gleitkomma-Modus, keine Iteration über Dictionary oder HashSet in Regeln, Hash über Bitmuster mit normalisiertem −0 und NaN | ADR in der Architekturphase | `/create-architecture` |
+| Sollen Kräfte und Gotteshand in der Pause gesperrt bleiben, oder sollen Eingriffe in der Pause eingereiht und beim Fortsetzen angewendet werden? Das GDD sperrt sie (Regel 13); die Warteschlange könnte beides | Entwickler | vor dem UX-Spec der Zeitsteuerung |
+| Ein Fest von 30 s kostet 5 Lebensjahre, also 12,5 % eines Lebens. Gewollt, oder altern Menschen während eines Fests langsamer? | GDD Begehren & Lust, dann Playtest | mit dem GDD Begehren & Lust |
 | Wird Gotteskraft für einen „Eingriff ins Leere“ zurückerstattet? | GDD Gotteskraft & Götterkräfte | mit dem GDD Gotteskraft & Götterkräfte |
 | Geschichte in Jahren und Leben in Lebensjahren: Versteht der Spieler die zwei Zeitebenen, oder braucht die Chronik eine Erklärung? | Playtest im MVP-0 | erster MVP-0-Playtest |

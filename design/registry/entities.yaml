@@ -414,6 +414,28 @@ constants:
     unit: Schritte
     added: 2026-10-25
     revised: ""
+  - name: menschen_system_id
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 2
+    unit: system_id
+    notes: "Kennung des Zufallsstroms von Menschen & Bevölkerung; wird nie umnummeriert"
+    added: 2026-10-25
+    revised: ""
+  - name: menschen_year_offset
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 2
+    unit: Schritte (O_year)
+    notes: "Versatz der Jahresregeln von Menschen & Bevölkerung, geteilt mit Stämme & Diplomatie; Menschen rechnet zuerst"
+    added: 2026-10-25
+    revised: ""
 
 # Example:
 #

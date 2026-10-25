@@ -387,7 +387,8 @@ Shapes und Haut ist es neu zu messen, bevor es angehoben wird (mit dem offenen
 Grundkörper im MVP-0, sobald er mit Ragdoll steht).
 
 Android: 30 fps, 2–4 aktive Ragdolls. Entscheidungen pro Agent mit 5–10 Hz, Logik
-für Stämme und Zivilisationen mit etwa 1 Hz.
+für Stämme und Zivilisationen einmal pro Geschichtsjahr, also 2 Hz bei 1× (festgelegt
+im GDD Simulationskern, Formel 5 und Kalibrierung gegen Prototyp 1).
 
 ---
 
