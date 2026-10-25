@@ -1,7 +1,7 @@
 # Game Concept: Allmacht
 
 *Created: 2026-10-25*
-*Status: Draft, überarbeitet nach Design-Review und Prototyp 1 (2026-10-25)*
+*Status: Draft, überarbeitet nach Design-Review, Prototyp 1 und Prototyp 2 (2026-10-25)*
 
 ---
 
@@ -379,8 +379,11 @@ Geplante kritische Architekturentscheidungen (ADRs), unabhängig von der Engine:
 3D ist nur eine Ansicht. (2) Das Zustimmungsmodell ist eine reine Funktion, die
 im Zweifel ablehnt, und wird mit Property-Tests geprüft.
 
-Startbudgets (im Prototyp zu prüfen): PC 60 fps, höchstens 8–16 aktive Ragdolls,
-etwa 20–30 Figuren in voller Detailstufe. Android 30 fps, 2–4 aktive Ragdolls.
+Startbudgets: PC 60 fps, höchstens 8–16 aktive Ragdolls,
+etwa 20–30 Figuren in voller Detailstufe. *Prototyp 2:* 49 aktive Ragdolls aus
+Grundkörpern liefen im Editor mit Ø 3,8 ms und 5,0 ms im 99. Perzentil. Das Budget
+für Ragdolls ist also mit einfachen Körpern kein Engpass. Mit Skinned Meshes, Blend
+Shapes und Haut ist es neu zu messen, bevor es angehoben wird. Android 30 fps, 2–4 aktive Ragdolls.
 Entscheidungen pro Agent mit 5–10 Hz, Logik für Stämme und Zivilisationen mit
 etwa 1 Hz.
 
@@ -409,6 +412,11 @@ etwa 1 Hz.
   Frevel sehen (im Playtest starb ein gesegneter Stamm plötzlich aus, ohne dass
   der Grund sichtbar war). Als Geschichtenquelle erwünscht, aber die Chronik muss
   die Ursache sichtbar erklären (Pillar 2).
+- **Die Gotteshand allein trägt nur 5–10 Minuten** (Prototyp 2: „Nur Leute werfen
+  macht nach ein paar Minuten keinen Spaß mehr“). Anforderung: Jeder Wurf muss
+  Folgen in der Simulation haben (Erinnerung der Kultur, Reaktion der Stämme,
+  Kulturwandel, Krieg). Die Hand ist der 30-Sekunden-Loop, die Folgen tragen die
+  längeren Loops (Pillar 2).
 
 ### Technical Risks
 - **TD-FEASIBILITY: HIGH RISK** für den ursprünglichen Umfang. Reaktion: PC zuerst
@@ -455,8 +463,6 @@ etwa 1 Hz.
 - Welches Android-Gerät ist das Zielgerät? Das wird erst festgelegt, wenn die
   Android-Stufe beginnt.
 - Engine: **Unity 6.3 LTS** (C#), entschieden in `/setup-engine` am 2026-10-25.
-- Prototyp 2 (Gotteshand und Ragdoll, Spaß nach 30 Sekunden, Bildzeit mit 50
-  Menschen) ist **offen**. Sein Abbruchkriterium gilt weiter.
 - Was ist die vierte Kraft neben Blitz, Fest-Segen und Erwachsene erschaffen?
   Das klärt das GDD zum Kräfte-System.
 
@@ -467,8 +473,9 @@ etwa 1 Hz.
 **Core hypothesis**: Eine Insel mit zwei Stämmen, die von selbst leben und auf die
 ich mit der Gotteshand und Kräften einwirke, erzeugt Geschichten, die ich sehen
 will. Die Gotteshand mit Ragdoll macht schon nach 30 Sekunden Spaß.
-*Stand: Der erste Teil ist durch Prototyp 1 gestützt (siehe unten), der zweite
-Teil (Gotteshand mit Ragdoll) ist ungetestet und bleibt Prototyp 2.*
+*Stand: Der erste Teil ist durch Prototyp 1 gestützt, der zweite durch Prototyp 2
+(beide siehe unten). Offen ist, ob beide Teile zusammen tragen: Das zeigt erst das
+MVP-0.*
 
 **Ergebnis Prototyp 1** (HTML, 2026-10-25, Bericht in
 `prototypes/weltengott-concept/REPORT.md`, Urteil PROCEED):
@@ -489,12 +496,25 @@ Teil (Gotteshand mit Ragdoll) ist ungetestet und bleibt Prototyp 2.*
   Kräfte, eintönige Chronik, zu viel Warten). Das führte zu 4 Kräften im MVP und
   zum Ziel der Eingriffsdichte oben.
 
+**Ergebnis Prototyp 2** (Unity, 2026-10-25, Bericht in
+`prototypes/gotteshand-concept/REPORT.md`, Urteil PROCEED):
+- Messbare Kriterien: erster Wurf innerhalb von 30 Sekunden, mindestens 5 Minuten
+  freiwillig weitergespielt, mindestens 3 von 5 Würfen höchstens 3 m vom Zielring,
+  Bildzeit im Editor mit 50 Menschen und 16 Ragdolls im Mittel höchstens 16,6 ms
+  und im 99. Perzentil höchstens 33 ms.
+- Ergebnis: alle vier erfüllt. Erster Wurf nach etwa 20 Sekunden, Spaß für 5–10
+  Minuten, alle Würfe im Zielring (Werte nach Angabe des Spielers), Stresstest
+  Ø 3,8 ms und 5,0 ms im 99. Perzentil bei bis zu 49 Ragdolls.
+- Playtest (1 Spieler): „sehr intuitiv“, der beste Moment ist ein extrem weiter
+  Wurf. Aber allein trägt das Werfen nur 5–10 Minuten. Daraus folgt die Anforderung,
+  dass jeder Wurf Folgen in der Simulation hat (siehe Design Risks).
+
 **Prototyp-Reihenfolge mit Abbruchkriterien** (vom Technical Director):
 1. Die Simulation ohne Grafik, mit Schnellvorlauf. *Abbruch*, wenn in 10
-   simulierten Ären keine spannende Geschichte entsteht.
+   simulierten Ären keine spannende Geschichte entsteht. *Erledigt: PROCEED.*
 2. Gotteshand und Ragdoll mit 50 Menschen am PC. *Abbruch*, wenn der
    30-Sekunden-Loop keinen Spaß macht oder das Budget für die Bildzeit nicht
-   hält.
+   hält. *Erledigt: PROCEED.*
 3. (Erst für die Android-Stufe) Haut-Test auf dem Zielgerät. *Abbruch* bei unter
    30 fps mit 10 Figuren.
 
@@ -547,12 +567,13 @@ gebaut, bleibt nach Krieg sowie Harem und Rituale schon ein gutes Gottspiel
 
 ## Next Steps
 
-Prototype-first (die Kernmechanik ist teilweise bewiesen):
+Prototype-first (beide Teile der Kernmechanik sind einzeln bewiesen):
 
 - [x] Engine wählen und konfigurieren (`/setup-engine`): Unity 6.3 LTS
 - [x] Prototyp 1 (Simulation ohne Grafik): PROCEED, siehe `prototypes/weltengott-concept/REPORT.md`
 - [x] Konzept prüfen (`/design-review design/gdd/game-concept.md`): drei Reviews, jeweils NEEDS REVISION und danach überarbeitet (zuletzt: Krieg in MVP-0 abstrakt, Kräftezahl im Vertical Slice)
-- [ ] **Prototyp 2** (Gotteshand und Ragdoll in Unity, 50 Menschen): offen, vor oder parallel zu den ersten System-GDDs
+- [x] Prototyp 2 (Gotteshand und Ragdoll in Unity): PROCEED, siehe `prototypes/gotteshand-concept/REPORT.md`
+- [ ] Konzept erneut prüfen (`/design-review design/gdd/game-concept.md`), seit dem dritten Review überarbeitet
 - [ ] Art Bible (`/art-bible`)
 - [ ] Phasen-Check (`/gate-check`)
 - [ ] Konzept in Systeme zerlegen (`/map-systems`)
