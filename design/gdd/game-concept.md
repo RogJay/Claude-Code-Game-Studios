@@ -22,7 +22,7 @@
 | **Platform** | PC (zuerst); Android (Draufsicht, per APK) als eigene optionale Stufe |
 | **Target Audience** | Privates Projekt: Zielspieler ist die Person, die es entwickelt (siehe Target Player Profile) |
 | **Player Count** | Single-player |
-| **Session Length** | 30–120 Minuten (etwa 3–6 Ären pro Sitzung) |
+| **Session Length** | 30–120 Minuten (bei 1× etwa 120 simulierte Jahre pro Minute, siehe Session-Level-Loop) |
 | **Monetization** | Keine (privat, nicht zum Verkauf) |
 | **Estimated Scope** | Large (30–48 Monate Vollzeit, solo). Bei unter 10 h/Woche ein Vielfaches davon |
 | **Comparable Titles** | WorldBox, Black & White, Wild Life |
@@ -116,7 +116,7 @@ Später: Zoomstufen bis in die 3D-Nahansicht und Besessen-Sein von Erwählten (P
 
 ### Player Type Appeal (Bartle Taxonomy)
 
-- [x] **Achievers**: Gotteskraft wächst, neue Kräfte werden freigeschaltet, Zivilisationen steigen in Ären auf
+- [x] **Achievers**: Gotteskraft wächst, neue Kräfte werden freigeschaltet, Zivilisationen entwickeln sich über die Zeit
 - [x] **Explorers**: Primär. Systeme verstehen und herausfinden, welche Eingriffe welche Kulturen erzeugen
 - [ ] **Socializers**: Nicht bedient (privat, single-player)
 - [x] **Killers/Competitors**: Teilweise, als Herrschaft über die Welt, Krieg und Zerstörung, nicht als PvP
@@ -159,15 +159,22 @@ Kräfte und Zufluss der Gotteskraft werden darauf abgestimmt. Die Gotteskraft
 bremst die Eingriffe, nicht reine Wartezeit.
 
 ### Session-Level (30-120 minutes)
-Eine Ära dauert etwa 10–20 Minuten bei normaler Geschwindigkeit, in einer
-Sitzung erlebt man also etwa 3–6 Ären. In einer Ära werden aus Stämmen
-Zivilisationen, sie schließen Bündnisse, führen Kriege und gehen unter. Gute Stopppunkte sind die Übergänge zwischen Ären (mit
-einem Eintrag in der Chronik). Der Haken für die nächste Sitzung sind offene
-Konflikte und Erwählte, deren Schicksal offen ist.
+*Zeitskala* (Entscheidung nach Prototyp 1): Bei normaler Geschwindigkeit (1×)
+vergehen etwa **120 simulierte Jahre pro Minute**. Eine **Ära** ist ein Kapitel
+der Chronik von **25 Jahren**, bei 1× also etwa 12 Sekunden, und keine
+Sitzungseinheit. Bei durchgehendem 1× umfasst eine Sitzung (30–120 Minuten) etwa
+140–580 Ären; in der Praxis weniger durch Pausen und Eingriffe, mit 4× und 16×
+mehr. Über viele Ären werden aus Stämmen Zivilisationen, sie schließen Bündnisse,
+führen Kriege und gehen unter. Gute Stopppunkte sind große Wendepunkte (Gründung,
+Krieg, Untergang, Wechsel der Gesellschaftsform) mit einem Eintrag in der
+Chronik. Der Haken für die nächste Sitzung sind offene Konflikte und Erwählte,
+deren Schicksal offen ist.
 
 ### Long-Term Progression
 Die Gotteskraft wächst durch Hingabe und Rituale und schaltet neue Kräfte frei.
-Zivilisationen steigen von Ära zu Ära auf. Es gibt kein festes Ende: Eine Welt
+Zivilisationen entwickeln sich über viele Ären; größere **Zeitalter** mit eigenen
+Inhalten (zum Beispiel von der Steinzeit zum Mittelalter) sind eine Ausbaustufe.
+Es gibt kein festes Ende: Eine Welt
 ist fertig, wenn du sie speicherst und eine neue beginnst.
 
 ### Retention Hooks
@@ -189,8 +196,10 @@ Menschen und Zivilisationen handeln selbst, auch wenn der Spieler nur zuschaut.
 *Design test*: Handgemachte Bausteine, systemische Auslöser. Inhalte (Kulturvorlagen,
 Festtypen, Rituale) dürfen von Hand gebaut sein, aber **ob und wann** sie passieren,
 entscheidet die Simulation, nie eine Zeitleiste.
-*Prüfmaßstab*: Lässt man die Welt 10 Minuten allein, passiert mindestens ein
-Ereignis, das man sehen will.
+*Prüfmaßstab*: Lässt man die Welt allein, passiert bei 1× in jeder Minute
+mindestens ein großes Ereignis (Krieg, Frieden, Eroberung, Abspaltung, Untergang
+oder Wechsel der Gesellschaftsform). Prototyp 1: 94 % der Ären (je etwa 12
+Sekunden) hatten mindestens eines.
 
 ### Pillar 2: Jeder Eingriff hinterlässt eine Spur
 Macht muss man sehen und spüren: sofort, körperlich und gesellschaftlich, und
@@ -356,7 +365,7 @@ Spielertyp: vor allem Creator und Explorer, mit Achiever-Anteil.
 
 | Consideration | Assessment |
 | ---- | ---- |
-| **Recommended Engine** | Offen. `/setup-engine` entscheidet mit diesem Konzept. Kriterien vom Technical Director: Reife des Haut- und Charakter-Renderings, ein datenorientierter Pfad für viele Agenten, Stabilität der Ragdolls, Leistung beim Skinning vieler Meshes mit Blend Shapes, der Android-Renderer und die Lernkurve für ein erstes Spiel. Die Engine, die halbrealistische Haut am besten kann, passt am schlechtesten zu Android und zu einem Einsteiger, und umgekehrt |
+| **Recommended Engine** | **Unity 6.3 LTS (C#)**, entschieden in `/setup-engine` am 2026-10-25: größtes 3D-Umfeld für ein erstes Spiel, Android später am einfachsten; Haut und Charaktere brauchen mehr Eigenarbeit als in Unreal, und URP gegen HDRP fällt per ADR nach Prototyp 2. Kriterien vom Technical Director: Reife des Haut- und Charakter-Renderings, ein datenorientierter Pfad für viele Agenten, Stabilität der Ragdolls, Leistung beim Skinning vieler Meshes mit Blend Shapes, der Android-Renderer und die Lernkurve für ein erstes Spiel. Die Engine, die halbrealistische Haut am besten kann, passt am schlechtesten zu Android und zu einem Einsteiger, und umgekehrt |
 | **Key Technical Challenges** | Die Simulation ist die Autorität und abstrakt, 3D ist nur eine Ansicht (Figuren werden nur nahe der Kamera als 3D-Körper erzeugt). Dazu Ragdolls für viele Figuren, die Zivilisations-KI, das Zustimmungsmodell, Haut und Wunden in Detailstufen, Speichern und Laden einer emergenten Welt |
 | **Art Style** | 3D halbrealistisch („Fleisch und Folgen“), mit Detailstufen |
 | **Art Pipeline Complexity** | High (eigene 3D-Arbeit). Gesenkt durch einen offenen Grundkörper (z. B. MakeHuman/MPFB, CC0) und vorhandene Animationen; die Lizenz wird jeweils geprüft |
@@ -392,6 +401,10 @@ etwa 1 Hz.
 - **Krieg überdeckt den Kulturwandel** (Prototyp 1: 1620 Kriegserklärungen gegen
   393 Kulturwechsel in 100 Welten, und die Chronik wirkte eintönig). Anforderung:
   Ereignisarten brauchen Vielfalt, und Kulturwandel darf nicht im Krieg untergehen.
+- **Die Chronik kann bei hoher Ereignisdichte überfordern**: Bei 120 Jahren pro
+  Minute kommt im Prototyp etwa alle 3 Sekunden ein großes Ereignis. Die Chronik
+  braucht Filter (im Prototyp „nur wichtige“) und Gewichtung; die Lesbarkeit ist in
+  Prototyp 2 zu prüfen.
 - **Ein Segen kann den Stamm zur Zielscheibe machen**, weil Nachbarn ihn als
   Frevel sehen (im Playtest starb ein gesegneter Stamm plötzlich aus, ohne dass
   der Grund sichtbar war). Als Geschichtenquelle erwünscht, aber die Chronik muss
@@ -459,6 +472,10 @@ Teil (Gotteshand mit Ragdoll) ist ungetestet und bleibt Prototyp 2.*
 
 **Ergebnis Prototyp 1** (HTML, 2026-10-25, Bericht in
 `prototypes/weltengott-concept/REPORT.md`, Urteil PROCEED):
+- Zeitskala: Die Messwerte gelten für 120 simulierte Jahre pro Minute bei 1× (eine
+  Ära von 25 Jahren dauert etwa 12 Sekunden), die auch die Skala des Spiels ist
+  (siehe Session-Level-Loop). Bei einer langsameren Skala wären Ereignisse und
+  Folgen entsprechend seltener zu sehen und müssten neu geprüft werden.
 - Messbare Kriterien: Ohne Eingriff erzeugt jede Ära mindestens 1 großes Ereignis
   und die Welt stirbt nicht aus. Mit Eingriffen lassen sich mindestens 2
   Kulturveränderungen in der Chronik auf den Spieler zurückführen.
@@ -512,10 +529,10 @@ Faktor 4 bis 5 zu rechnen. Jede Stufe steht für sich als spielbares Spiel.
 
 | Tier | Content | Features | Timeline |
 | ---- | ---- | ---- | ---- |
-| **MVP-0 („Gott-Spielzeug“)** | Eine Insel, 2 Stämme, 30–50 Menschen | Simulation, einfacher Kulturwandel, Zustimmungsmodell, Gotteshand und Ragdoll, 4 Kräfte, 1 Zoomstufe, Speichern, Zeitsteuerung, Chronik | 3–4 Monate |
+| **MVP-0 („Gott-Spielzeug“)** | Eine Insel, 2 Stämme, 30–50 Menschen | Simulation, einfacher Kulturwandel, Zustimmungsmodell, Gotteshand und Ragdoll, 4 Kräfte, 1 Zoomstufe, Speichern, Zeitsteuerung, Chronik | 3–4 Monate (Schätzung galt für 1 Kraft, neu schätzen) |
 | **MVP-1** | Wie MVP-0 | Weitere Kräfte, zweite Zoomstufe, Morphs und Look B, volles System für Kulturwandel und Erinnerung | +2–3 Monate |
 | **Vertical Slice (v1)** | 1–3 Stämme, 30–80 Menschen | In dieser Reihenfolge: Krieg, Harem und Rituale, Haut in Detailstufen, Besessen-Sein. 3 Kräfte, 2–3 Zoomstufen | +6–10 Monate |
-| **Alpha (Ausbau)** | Weitere Gesellschaftsformen, Ären mit Inhalten | Mehr Kräfte, Paar-Animationen (mit eigener Entscheidung, ob man sie baut), mehr Animationen | +6–12 Monate |
+| **Alpha (Ausbau)** | Weitere Gesellschaftsformen, Zeitalter mit Inhalten | Mehr Kräfte, Paar-Animationen (mit eigener Entscheidung, ob man sie baut), mehr Animationen | +6–12 Monate |
 | **Android (optional)** | Gleiche Simulation | Draufsicht, Touch-Gotteshand, einfacher Look; Einstieg erst nach dem Haut-Test auf dem Gerät | eigene Stufe |
 | **Full Vision** | Viele Zivilisationen, Fantasy- und Tiervölker | Nahtloser Zoom, detaillierte Szenen, tiefe Verletzungssimulation | 30–48 Monate insgesamt |
 
