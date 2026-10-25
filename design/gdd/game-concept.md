@@ -1,7 +1,7 @@
 # Game Concept: Allmacht
 
 *Created: 2026-10-25*
-*Status: Draft*
+*Status: Draft, überarbeitet nach Design-Review und Prototyp 1 (2026-10-25)*
 
 ---
 
@@ -22,7 +22,7 @@
 | **Platform** | PC (zuerst); Android (Draufsicht, per APK) als eigene optionale Stufe |
 | **Target Audience** | Privates Projekt: Zielspieler ist die Person, die es entwickelt (siehe Target Player Profile) |
 | **Player Count** | Single-player |
-| **Session Length** | 30–120 Minuten (eine Ära pro Sitzung) |
+| **Session Length** | 30–120 Minuten (etwa 3–6 Ären pro Sitzung) |
 | **Monetization** | Keine (privat, nicht zum Verkauf) |
 | **Estimated Scope** | Large (30–48 Monate Vollzeit, solo). Bei unter 10 h/Woche ein Vielfaches davon |
 | **Comparable Titles** | WorldBox, Black & White, Wild Life |
@@ -90,8 +90,12 @@ sind, nicht Gewinnen. Narrative mit geschriebener Kampagne wurde verworfen (Anti
 3. **Gotteshand plus Ragdoll- und Verletzungsphysik**: hochheben, werfen,
    platzieren. Ragdoll nur für direkt betroffene Figuren. Verletzungen werden
    als Daten in die Simulation zurückgeschrieben.
-4. **Götterkräfte, gespeist aus Hingabe und Ritualen**: darunter das Erschaffen
-   neuer Erwachsener (die einzige Quelle für Bevölkerungswachstum).
+4. **Götterkräfte, gespeist aus Hingabe und Ritualen**: im MVP mindestens vier,
+   darunter Blitz, Fest-Segen und das Erschaffen neuer Erwachsener. Die
+   Bevölkerung wächst über eine **passive Gnade** aus den Ritualen langsam von
+   selbst, damit eine Welt nicht aussterben muss, wenn der Spieler nichts tut
+   (Pillar 4: keine Pflichtaufgabe). Die Kraft „Erwachsene erschaffen“
+   beschleunigt das gezielt. Kinder gibt es nie.
 5. **Lust-Systeme hinter dem Zustimmungsmodell**: sexuelle Normen pro Kultur,
    Lust-Sekte, Harem, Rituale. Jede sexuelle Handlung muss durch ein einziges
    Zustimmungsmodell, das im Zweifel ablehnt (siehe Anti-Pillars).
@@ -149,9 +153,15 @@ Weg wählt die Simulation. Die Kultur reagiert, verändert sich und merkt sich
 deinen Eingriff. „Noch ein Eingriff“ entsteht durch Ereignisse, die die Welt
 meldet: Kriegserklärungen, Sektengründungen, Eifersucht im Harem.
 
+*Ziel für die Eingriffsdichte* (Playtest Prototyp 1: „zu viel Warten, zu wenig
+Eingreifen“): Der Spieler kann etwa **alle 30 Sekunden** eingreifen. Kosten der
+Kräfte und Zufluss der Gotteskraft werden darauf abgestimmt. Die Gotteskraft
+bremst die Eingriffe, nicht reine Wartezeit.
+
 ### Session-Level (30-120 minutes)
-Eine Ära: Aus Stämmen werden Zivilisationen, sie schließen Bündnisse, führen
-Kriege und gehen unter. Gute Stopppunkte sind die Übergänge zwischen Ären (mit
+Eine Ära dauert etwa 10–20 Minuten bei normaler Geschwindigkeit, in einer
+Sitzung erlebt man also etwa 3–6 Ären. In einer Ära werden aus Stämmen
+Zivilisationen, sie schließen Bündnisse, führen Kriege und gehen unter. Gute Stopppunkte sind die Übergänge zwischen Ären (mit
 einem Eintrag in der Chronik). Der Haken für die nächste Sitzung sind offene
 Konflikte und Erwählte, deren Schicksal offen ist.
 
@@ -352,7 +362,7 @@ Spielertyp: vor allem Creator und Explorer, mit Achiever-Anteil.
 | **Art Pipeline Complexity** | High (eigene 3D-Arbeit). Gesenkt durch einen offenen Grundkörper (z. B. MakeHuman/MPFB, CC0) und vorhandene Animationen; die Lizenz wird jeweils geprüft |
 | **Audio Needs** | Moderate (Umgebung, Reaktionen der Menschen, Feedback zu den Kräften) |
 | **Networking** | None |
-| **Content Volume** | MVP: eine Insel, 2 Stämme, 30–50 Menschen, 1–2 Kräfte, 2 Kulturrichtungen. Volle Vision: viele Zivilisationen, 5+ Gesellschaftsformen, Ären, Dutzende Kräfte |
+| **Content Volume** | MVP: eine Insel, 2 Stämme, 30–50 Menschen, 4 Kräfte, 2 Kulturrichtungen. Volle Vision: viele Zivilisationen, 5+ Gesellschaftsformen, Ären, Dutzende Kräfte |
 | **Procedural Systems** | Zivilisations-Simulation, Kulturwandel, Körpervariation über Morphs; Inseln vorerst von Hand oder einfach generiert |
 
 Geplante kritische Architekturentscheidungen (ADRs), unabhängig von der Engine:
@@ -379,6 +389,13 @@ etwa 1 Hz.
   (Pillar 1 gegen Pillar 2).
 - Ohne feste Liste von Wirkungen wird Lust zur Dekoration. Gegenmittel: Pillar 3
   mit der Liste der Wirkungen.
+- **Krieg überdeckt den Kulturwandel** (Prototyp 1: 1620 Kriegserklärungen gegen
+  393 Kulturwechsel in 100 Welten, und die Chronik wirkte eintönig). Anforderung:
+  Ereignisarten brauchen Vielfalt, und Kulturwandel darf nicht im Krieg untergehen.
+- **Ein Segen kann den Stamm zur Zielscheibe machen**, weil Nachbarn ihn als
+  Frevel sehen (im Playtest starb ein gesegneter Stamm plötzlich aus, ohne dass
+  der Grund sichtbar war). Als Geschichtenquelle erwünscht, aber die Chronik muss
+  die Ursache sichtbar erklären (Pillar 2).
 
 ### Technical Risks
 - **TD-FEASIBILITY: HIGH RISK** für den ursprünglichen Umfang. Reaktion: PC zuerst
@@ -412,6 +429,8 @@ etwa 1 Hz.
   Spielbares gibt.
 - In v1 dürfen Besessen-Sein und Paar-Animationen nicht gleichzeitig gebaut
   werden.
+- Die Producer-Schätzung für MVP-0 (3–4 Monate) galt für **eine** Kraft. Mit 4 Kräften
+  (Entscheidung nach Prototyp 1) ist sie neu zu schätzen (`/estimate`).
 
 ### Open Questions
 - Ist ein fertiger Grundkörper für den Look in MVP-0 gut genug? Die Entscheidung
@@ -422,7 +441,11 @@ etwa 1 Hz.
   Das klärt die Art Bible, eventuell mit einem farbigen Banner-Akzent.
 - Welches Android-Gerät ist das Zielgerät? Das wird erst festgelegt, wenn die
   Android-Stufe beginnt.
-- Welche Engine? Das entscheidet `/setup-engine`.
+- Engine: **Unity 6.3 LTS** (C#), entschieden in `/setup-engine` am 2026-10-25.
+- Prototyp 2 (Gotteshand und Ragdoll, Spaß nach 30 Sekunden, Bildzeit mit 50
+  Menschen) ist **offen**. Sein Abbruchkriterium gilt weiter.
+- Was ist die vierte Kraft neben Blitz, Fest-Segen und Erwachsene erschaffen?
+  Das klärt das GDD zum Kräfte-System.
 
 ---
 
@@ -431,6 +454,23 @@ etwa 1 Hz.
 **Core hypothesis**: Eine Insel mit zwei Stämmen, die von selbst leben und auf die
 ich mit der Gotteshand und Kräften einwirke, erzeugt Geschichten, die ich sehen
 will. Die Gotteshand mit Ragdoll macht schon nach 30 Sekunden Spaß.
+*Stand: Der erste Teil ist durch Prototyp 1 gestützt (siehe unten), der zweite
+Teil (Gotteshand mit Ragdoll) ist ungetestet und bleibt Prototyp 2.*
+
+**Ergebnis Prototyp 1** (HTML, 2026-10-25, Bericht in
+`prototypes/weltengott-concept/REPORT.md`, Urteil PROCEED):
+- Messbare Kriterien: Ohne Eingriff erzeugt jede Ära mindestens 1 großes Ereignis
+  und die Welt stirbt nicht aus. Mit Eingriffen lassen sich mindestens 2
+  Kulturveränderungen in der Chronik auf den Spieler zurückführen.
+- Messwerte (100 Welten × 10 Ären): 0 % sterben aus, 4,4 große Ereignisse pro Ära,
+  56 % der Welten erfüllen das erste Kriterium vollständig (die übrigen haben
+  mindestens eine ruhige Ära, meist die erste). Mit einem programmierten
+  Testspieler (etwa 4 Eingriffe) lassen sich in 89 von 100 Welten mindestens 2
+  große Ereignisse auf den Spieler zurückführen.
+- Playtest (1 Spieler): Hypothese bestätigt, Bindung an den gesegneten Stamm,
+  Wunsch nach einer neuen Welt. Aber: „zu flach“ (nichts Sichtbares, zu wenige
+  Kräfte, eintönige Chronik, zu viel Warten). Das führte zu 4 Kräften im MVP und
+  zum Ziel der Eingriffsdichte oben.
 
 **Prototyp-Reihenfolge mit Abbruchkriterien** (vom Technical Director):
 1. Die Simulation ohne Grafik, mit Schnellvorlauf. *Abbruch*, wenn in 10
@@ -448,11 +488,12 @@ will. Die Gotteshand mit Ragdoll macht schon nach 30 Sekunden Spaß.
 3. Das Zustimmungsmodell als reine Funktion mit Tests, von Anfang an
 4. Ein offener Grundkörper ohne Morphs, mit vorhandenen Animationen
 5. Gotteshand mit Ragdoll für gehaltene oder geworfene Figuren
-6. Eine Kraft: Erwachsene erschaffen (gespeist aus Ritualen)
+6. Vier Kräfte: Blitz, Fest-Segen, Erwachsene erschaffen (gespeist aus Ritualen)
+   und eine vierte (offen), dazu die passive Gnade für die Bevölkerung
 7. Eine Zoomstufe
 8. Speichern und Laden, Zeitsteuerung (Pause, Schnellvorlauf) und eine Chronik
 
-**MVP-1** (danach): eine zweite Kraft, eine zweite Zoomstufe, Morphs und Look B,
+**MVP-1** (danach): weitere Kräfte, eine zweite Zoomstufe, Morphs und Look B,
 das volle System für Kulturwandel und Erinnerung.
 
 **Explicitly NOT in MVP** (defer to later):
@@ -471,8 +512,8 @@ Faktor 4 bis 5 zu rechnen. Jede Stufe steht für sich als spielbares Spiel.
 
 | Tier | Content | Features | Timeline |
 | ---- | ---- | ---- | ---- |
-| **MVP-0 („Gott-Spielzeug“)** | Eine Insel, 2 Stämme, 30–50 Menschen | Simulation, einfacher Kulturwandel, Zustimmungsmodell, Gotteshand und Ragdoll, 1 Kraft, 1 Zoomstufe, Speichern, Zeitsteuerung, Chronik | 3–4 Monate |
-| **MVP-1** | Wie MVP-0 | Zweite Kraft, zweite Zoomstufe, Morphs und Look B, volles System für Kulturwandel und Erinnerung | +2–3 Monate |
+| **MVP-0 („Gott-Spielzeug“)** | Eine Insel, 2 Stämme, 30–50 Menschen | Simulation, einfacher Kulturwandel, Zustimmungsmodell, Gotteshand und Ragdoll, 4 Kräfte, 1 Zoomstufe, Speichern, Zeitsteuerung, Chronik | 3–4 Monate |
+| **MVP-1** | Wie MVP-0 | Weitere Kräfte, zweite Zoomstufe, Morphs und Look B, volles System für Kulturwandel und Erinnerung | +2–3 Monate |
 | **Vertical Slice (v1)** | 1–3 Stämme, 30–80 Menschen | In dieser Reihenfolge: Krieg, Harem und Rituale, Haut in Detailstufen, Besessen-Sein. 3 Kräfte, 2–3 Zoomstufen | +6–10 Monate |
 | **Alpha (Ausbau)** | Weitere Gesellschaftsformen, Ären mit Inhalten | Mehr Kräfte, Paar-Animationen (mit eigener Entscheidung, ob man sie baut), mehr Animationen | +6–12 Monate |
 | **Android (optional)** | Gleiche Simulation | Draufsicht, Touch-Gotteshand, einfacher Look; Einstieg erst nach dem Haut-Test auf dem Gerät | eigene Stufe |
@@ -486,12 +527,14 @@ gebaut, bleibt nach Krieg sowie Harem und Rituale schon ein gutes Gottspiel
 
 ## Next Steps
 
-Prototype-first (die Kernmechanik ist unbewiesen):
+Prototype-first (die Kernmechanik ist teilweise bewiesen):
 
-- [ ] Engine wählen und konfigurieren (`/setup-engine`)
-- [ ] **Kernidee prototypen** (`/prototype god-hand-simulation`): Prototyp 1 (Simulation ohne Grafik) und Prototyp 2 (Gotteshand und Ragdoll) mit Abbruchkriterien
-- [ ] PROCEED: Art Bible (`/art-bible`)
-- [ ] Konzept prüfen (`/design-review design/gdd/game-concept.md`)
+- [x] Engine wählen und konfigurieren (`/setup-engine`): Unity 6.3 LTS
+- [x] Prototyp 1 (Simulation ohne Grafik): PROCEED, siehe `prototypes/weltengott-concept/REPORT.md`
+- [x] Konzept prüfen (`/design-review design/gdd/game-concept.md`): NEEDS REVISION, danach überarbeitet
+- [ ] **Prototyp 2** (Gotteshand und Ragdoll in Unity, 50 Menschen): offen, vor oder parallel zu den ersten System-GDDs
+- [ ] Art Bible (`/art-bible`)
+- [ ] Phasen-Check (`/gate-check`)
 - [ ] Konzept in Systeme zerlegen (`/map-systems`)
 - [ ] Jedes System entwerfen (`/design-system [system-name]`), das Zustimmungs- und Lust-System früh
 - [ ] Architektur (`/create-architecture`), dann die kritischen ADRs: Simulation ist die Autorität, Zustimmungsmodell als reine Funktion
