@@ -17,7 +17,7 @@ rechnet die Vollzeit-Werte einfach hoch. Echte Werte kommen aus den ersten Sprin
 | Phase | Inhalt | Dauer (Vollzeit) | Ende ca. Vollzeit | Ende ca. bei 10–20 h/Woche |
 |---|---|---|---|---|
 | **0. Konzept** ✓ | Prototyp 1 ✓ und 2 ✓, letztes `/design-review`, `/gate-check` | Tage | – | – |
-| **1. Systemplanung und Pre-Production** (jetzt) | `/map-systems`, GDDs pro System, `/art-bible` (Zustimmungs- und Lust-System früh), `/create-architecture` und die kritischen ADRs, MVP-0 neu schätzen | einige Wochen (ungeschätzt) | – | – |
+| **1. Systemplanung und Pre-Production** (jetzt) | `/map-systems`, GDDs pro System (Zustimmungs- und Lust-System früh), `/art-bible`, `/create-architecture` und die kritischen ADRs, MVP-0 neu schätzen | einige Wochen (ungeschätzt) | – | – |
 | **2. MVP-0 „Gott-Spielzeug“** | Simulation mit abstraktem Krieg, Kulturwandel auf einer Achse (Lust-Sekte ↔ Gottesstaat) mit Erinnerung, Zustimmungsmodell als reine Funktion mit Tests, Grundkörper ohne Morphs, Gotteshand und Ragdoll, 4 Kräfte und passive Gnade, eine Zoomstufe, Speichern, Zeitsteuerung, Chronik | 3–4 Monate (neu schätzen) | Monat 4 | Monat 8–16 |
 | **3. MVP-1** | Weitere Kräfte, zweite Zoomstufe, Morphs und Look B, volles System für Kulturwandel und Erinnerung | +2–3 Monate | Monat 6–7 | Monat 12–28 |
 | **4. Vertical Slice (v1)** | In dieser Reihenfolge: sichtbarer Krieg → Harem und Rituale → Haut in Detailstufen → Besessen-Sein. 1–3 Stämme, 30–80 Menschen, 2–3 Zoomstufen | +6–10 Monate | Monat 12–17 | Monat 24–68 |
