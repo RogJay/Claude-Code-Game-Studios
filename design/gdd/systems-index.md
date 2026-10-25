@@ -79,7 +79,7 @@ GDD.
 |---|-------------|----------|----------|--------|------------|------------|
 | 1 | Simulationskern | Core | MVP | Designed | design/gdd/simulationskern.md | — |
 | 2 | Welt & Insel (inferred) | Core | MVP | Not Started | — | Simulationskern |
-| 3 | Menschen & Bevölkerung | Core | MVP | Not Started | — | Simulationskern, Welt & Insel |
+| 3 | Menschen & Bevölkerung | Core | MVP | Designed | design/gdd/menschen-und-bevoelkerung.md | Simulationskern, Welt & Insel, Kultur & Erinnerung (nur Stammeshingabe, lesend) |
 | 4 | Zustimmungsmodell | Gameplay | MVP | Not Started | — | Menschen & Bevölkerung, Kultur & Erinnerung (Normen als Eingabe) |
 | 5 | Stämme & Diplomatie | Gameplay | MVP | Not Started | — | Menschen & Bevölkerung, Welt & Insel |
 | 6 | Kultur & Erinnerung | Gameplay | MVP | Not Started | — | Stämme & Diplomatie, Menschen & Bevölkerung |
@@ -225,6 +225,10 @@ Effort estimates: S = 1 session, M = 2-3 sessions, L = 4+ sessions.
 - **Kultur & Erinnerung ↔ Begehren & Lust**: Lust verändert die Kultur (Lust-Sekte),
   die Kultur legt die Normen für Lust fest. Lösung: Die Kultur besitzt die Normen und
   nimmt Ereignisse entgegen. Lust liest die Normen und meldet Ereignisse.
+- **Kultur & Erinnerung ↔ Menschen & Bevölkerung**: Die Kultur braucht die Menschen,
+  die Gnade der Menschen braucht die Stammeshingabe D_t der Kultur. Lösung: Kultur &
+  Erinnerung stellt D_t nur lesbar bereit, Menschen schreibt nie in die Kultur
+  (nachgetragen mit dem GDD Menschen & Bevölkerung).
 - **Kultur & Erinnerung ↔ Gotteshand & Ragdoll / Gotteskraft & Götterkräfte**:
   Eingriffe verändern die Kultur, die Kultur reagiert auf Eingriffe. Lösung: Die
   Kultur bietet „Eingriff erfassen“ an, Hand und Kräfte benutzen das. Aus der Physik
@@ -251,10 +255,10 @@ Effort estimates: S = 1 session, M = 2-3 sessions, L = 4+ sessions.
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 33 |
-| Design docs started | 1 |
+| Design docs started | 2 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
-| MVP systems designed | 1/16 |
+| MVP systems designed | 2/16 |
 | Vertical Slice systems designed | 0/9 |
 
 ---

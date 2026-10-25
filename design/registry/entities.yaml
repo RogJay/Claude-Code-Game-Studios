@@ -124,6 +124,21 @@ items: []
 # Optional: expression (the actual formula), notes
 
 formulas:
+  - name: gnade
+    status: active
+    source: design/gdd/menschen-und-bevoelkerung.md
+    referenced_by:
+      - design/gdd/menschen-und-bevoelkerung.md
+    variables:
+      - V_t
+      - D_t
+      - food_t
+      - cap_t
+    output_range: [0, 0.04]
+    expression: "G_t = V_t * (0.01 + 0.03 * D_t) * clamp(food_t / max(1, V_t), 0, 1), nur wenn food_t > 0 und V_t * 100 < cap_t * 105"
+    notes: "Unverändert aus Prototyp 1; output_range als Anteil von V_t pro Geschichtsjahr; erzeugt nur Masse"
+    added: 2026-10-25
+    revised: ""
   - name: geschichtszeit
     status: active
     source: design/gdd/simulationskern.md
@@ -143,6 +158,7 @@ formulas:
     source: design/gdd/simulationskern.md
     referenced_by:
       - design/gdd/simulationskern.md
+      - design/gdd/menschen-und-bevoelkerung.md
     variables:
       - t
       - t_birth
@@ -186,6 +202,56 @@ formulas:
 # Required fields: name, status, source, referenced_by, value, unit, added
 
 constants:
+  - name: start_volk_per_tribe
+    status: active
+    source: design/gdd/menschen-und-bevoelkerung.md
+    referenced_by:
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 48
+    unit: Köpfe
+    notes: "Startvolk je Stamm, 2 Stämme, wie Prototyp 1"
+    added: 2026-10-25
+    revised: ""
+  - name: n_target_einzelne
+    status: active
+    source: design/gdd/menschen-und-bevoelkerung.md
+    referenced_by:
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 40
+    unit: Einzelne
+    notes: "Sollzahl benannter Einzelner, wirksam min(40, floor(0,5 * V_total))"
+    added: 2026-10-25
+    revised: ""
+  - name: n_max_einzelne
+    status: active
+    source: design/gdd/menschen-und-bevoelkerung.md
+    referenced_by:
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 60
+    unit: Einzelne
+    notes: "Harte Obergrenze; Gotteshand kann bei Erreichen keine Statisten mehr packen"
+    added: 2026-10-25
+    revised: ""
+  - name: lebensdauer_lebensjahre
+    status: active
+    source: design/gdd/menschen-und-bevoelkerung.md
+    referenced_by:
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 40
+    unit: Lebensjahre
+    notes: "Mittel, persönlich 30–50; bei 60 Schritten pro Lebensjahr etwa 4 Minuten bei 1×"
+    added: 2026-10-25
+    revised: ""
+  - name: opfergewicht_einzelne
+    status: active
+    source: design/gdd/menschen-und-bevoelkerung.md
+    referenced_by:
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 0.25
+    unit: Gewicht relativ zu einem Kopf der Masse
+    notes: "Als Bruch 1/4 gerechnet"
+    added: 2026-10-25
+    revised: ""
   - name: history_years_per_second
     status: active
     source: design/gdd/simulationskern.md
@@ -227,6 +293,7 @@ constants:
     source: design/gdd/simulationskern.md
     referenced_by:
       - design/gdd/simulationskern.md
+      - design/gdd/menschen-und-bevoelkerung.md
     value: 60
     unit: Schritte
     notes: "Vorläufig; die Lebensdauer in Lebensjahren gehört Menschen & Bevölkerung"
@@ -237,6 +304,7 @@ constants:
     source: design/gdd/simulationskern.md
     referenced_by:
       - design/gdd/simulationskern.md
+      - design/gdd/menschen-und-bevoelkerung.md
     value: 2
     unit: Schritte
     added: 2026-10-25

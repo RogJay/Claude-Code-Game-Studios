@@ -371,7 +371,7 @@ Spielertyp: vor allem Creator und Explorer, mit Achiever-Anteil.
 | **Art Pipeline Complexity** | High (eigene 3D-Arbeit). Gesenkt durch einen offenen Grundkörper (z. B. MakeHuman/MPFB, CC0) und vorhandene Animationen; die Lizenz wird jeweils geprüft |
 | **Audio Needs** | Moderate (Umgebung, Reaktionen der Menschen, Feedback zu den Kräften) |
 | **Networking** | None |
-| **Content Volume** | MVP: eine Insel, 2 Stämme, 30–50 Menschen, 4 Kräfte, 2 Kulturrichtungen, Harem und Rituale, einfache Szenen. Volle Vision: viele Zivilisationen, 5+ Gesellschaftsformen, Ären, Dutzende Kräfte |
+| **Content Volume** | MVP: eine Insel, 2 Stämme, 30–50 benannte Einzelne in einem Volk von anfangs 96 Köpfen (`design/gdd/menschen-und-bevoelkerung.md`), 4 Kräfte, 2 Kulturrichtungen, Harem und Rituale, einfache Szenen. Volle Vision: viele Zivilisationen, 5+ Gesellschaftsformen, Ären, Dutzende Kräfte |
 | **Procedural Systems** | Zivilisations-Simulation, Kulturwandel, Körpervariation über Morphs; Inseln vorerst von Hand oder einfach generiert |
 
 Geplante kritische Architekturentscheidungen (ADRs), unabhängig von der Engine:
@@ -566,7 +566,7 @@ Faktor 2 bis 4 zu rechnen, bei unter 10 h/Woche mit 4 bis 5. Jede Stufe steht f�
 
 | Tier | Content | Features | Timeline |
 | ---- | ---- | ---- | ---- |
-| **MVP-0 („Gott-Spielzeug“)** | Eine Insel, 2 Stämme, 30–50 Menschen | Simulation, einfacher Kulturwandel, Zustimmungsmodell, Begehren und Lust mit einfachen Szenen, Harem und Rituale, Gotteshand und Ragdoll, 4 Kräfte, 1 Zoomstufe, Speichern, Zeitsteuerung, Chronik | 3–4 Monate (Schätzung galt für 1 Kraft, neu schätzen) |
+| **MVP-0 („Gott-Spielzeug“)** | Eine Insel, 2 Stämme, 30–50 Einzelne in einem Volk von anfangs 96 | Simulation, einfacher Kulturwandel, Zustimmungsmodell, Begehren und Lust mit einfachen Szenen, Harem und Rituale, Gotteshand und Ragdoll, 4 Kräfte, 1 Zoomstufe, Speichern, Zeitsteuerung, Chronik | ca. 6,5 Monate Vollzeit (`/estimate` 2026-10-25, siehe `production/roadmap.md`) |
 | **MVP-1** | Wie MVP-0 | Weitere Kräfte, zweite Zoomstufe, Morphs und Look B, volles System für Kulturwandel und Erinnerung | +2–3 Monate |
 | **Vertical Slice (v1)** | 1–3 Stämme, 30–80 Menschen | In dieser Reihenfolge: sichtbarer Krieg, Haut in Detailstufen, Besessen-Sein (Harem und Rituale sind seit 2026-10-25 im MVP-0). Die Kräfte aus MVP-1, 2–3 Zoomstufen | +6–10 Monate |
 | **Alpha (Ausbau)** | Weitere Gesellschaftsformen, Zeitalter mit Inhalten | Mehr Kräfte, Paar-Animationen (mit eigener Entscheidung, ob man sie baut), mehr Animationen | +6–12 Monate |

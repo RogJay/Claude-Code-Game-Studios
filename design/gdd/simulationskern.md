@@ -252,7 +252,7 @@ The Lebensjahr formula is defined as:
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
-| t_birth | int64 | ≥ 0 | calculated | Schritt, in dem der Mensch erschaffen wurde |
+| t_birth | int64 | beliebig, auch negativ | calculated | Schritt, in dem der Mensch hervorgetreten ist; für die ersten Einzelnen einer neuen Welt negativ, damit ihr Alter gestreut ist (GDD Menschen & Bevölkerung, Formel 7) |
 | held_steps | int64 | ≥ 0 | calculated | Summe aller Schritte, die der Mensch „in Gottes Hand“ war (Altern ist dann angehalten, Core Rule 10) |
 | age_steps | int64 | ≥ 0 | calculated | gelebte Schritte ohne die Zeit in Gottes Hand |
 | S_Lj | int | 30–120, Default 60, Vielfaches von S_year | data file | Schritte pro Lebensjahr |
@@ -312,16 +312,20 @@ The Takt formula is defined as:
 
 Versätze der Jahressysteme, in der Reihenfolge des Jahresschritts von Prototyp 1:
 
-| System | Welt & Insel | Kultur & Erinnerung (inkl. Verfall) | Stämme & Diplomatie (inkl. Krieg, Abspaltung) | Gotteskraft (Zufluss) | Chronik |
-|---|---|---|---|---|---|
-| O_year | 0 | 1 | 2 | 3 | 4 |
+| System | Welt & Insel | Kultur & Erinnerung (inkl. Verfall) | Menschen & Bevölkerung (Gnade, Aufstieg, Hingabe) | Stämme & Diplomatie (inkl. Krieg, Abspaltung) | Gotteskraft (Zufluss) | Chronik |
+|---|---|---|---|---|---|---|
+| O_year | 0 | 1 | 2 | 2 | 3 | 4 |
+
+Menschen & Bevölkerung und Stämme & Diplomatie teilen sich den Versatz 2. Im Schritt
+rechnet Menschen zuerst (Reihenfolge aus Core Rule 4), so wie in Prototyp 1 die Gnade
+vor Krieg und Abspaltung kommt (nachgetragen mit dem GDD Menschen & Bevölkerung).
 
 Begehren & Lust sowie Harem & Rituale arbeiten auf der Ebene einzelner Menschen und
 laufen im Personentakt. Ihre GDDs können einen eigenen Takt festlegen, der ein
 Vielfaches von P_person ist.
 
-**Output Range:** Pro Schritt laufen höchstens ein Jahressystem und ein Teil der
-Menschen. Das Muster wiederholt sich alle kgV(P_person, S_year) Schritte (10 beim
+**Output Range:** Pro Schritt laufen höchstens zwei Jahressysteme (beim Versatz 2:
+Menschen und Stämme) und ein Teil der Menschen im Personentakt. Das Muster wiederholt sich alle kgV(P_person, S_year) Schritte (10 beim
 Default). Ist O ≥ P, läuft ein System nie, das ist ein Konfigurationsfehler. P_person
 darf nicht größer als S_year sein, sonst entscheiden Menschen seltener als einmal pro
 Geschichtsjahr.
@@ -518,7 +522,7 @@ E_len = 25, P_person = 2, S_Lj = 60, cap = 8, dt_max = 0,1 s. Tests liegen unter
 - **AC-01 (Rule 1, 9) [Logic/EditMode]** **GIVEN** die Kern-Assembly hat eine asmdef mit `noEngineReferences`, **WHEN** ein Symbolscan über ihren Quelltext läuft, **THEN** gibt es 0 Treffer auf `UnityEngine`, `Time.`, `DateTime.Now`, `System.Random` und Physik-APIs.
 - **AC-02 (Rule 2, Formel 2) [Logic/EditMode]** **GIVEN** S_year = 5, **WHEN** t = 0, 4, 5, 124, 125, 1000 und 2^40 ist, **THEN** ist Y = 0, 0, 1, 24, 25, 200 und 2^40 / 5 (abgerundet) und Era = 0, 0, 0, 0, 1, 8 und korrekt ohne Überlauf; Alter wird als age_Lj, die Chronik in Y geführt, als getrennte Typen.
 - **AC-03 (Rule 2, Formel 2) [Logic/EditMode]** **GIVEN** ein Lauf ab t = 0, **WHEN** t = 125 erreicht ist, **THEN** entsteht genau 1 Ereignis „Neue Ära“, nach den Eingriffen und vor allen Ereignissen der Jahressysteme dieses Schritts; bei t = 0, 124 und 126 entsteht keines.
-- **AC-04 (Rule 3, Formel 5) [Logic/EditMode]** **GIVEN** die Default-Versätze (Welt 0, Kultur 1, Stämme 2, Gotteskraft 3, Chronik 4), **WHEN** t = 0 bis 999 läuft, **THEN** läuft jedes Jahressystem genau 200-mal, pro Schritt höchstens 1 Jahressystem; bei t = 11 laufen Kultur und die Menschen mit ungerader ID, bei t = 12 Stämme und die Menschen mit gerader ID; das Muster wiederholt sich alle 10 Schritte.
+- **AC-04 (Rule 3, Formel 5) [Logic/EditMode]** **GIVEN** die Default-Versätze (Welt 0, Kultur 1, Menschen 2, Stämme 2, Gotteskraft 3, Chronik 4), **WHEN** t = 0 bis 999 läuft, **THEN** läuft jedes Jahressystem genau 200-mal, pro Schritt höchstens 1 Jahressystem außer beim Versatz 2 (Menschen vor Stämmen); bei t = 11 laufen Kultur und die Menschen mit ungerader ID, bei t = 12 Stämme und die Menschen mit gerader ID; das Muster wiederholt sich alle 10 Schritte.
 - **AC-05 (Formel 1, 5) [Logic/EditMode]** **GIVEN** eine Konfiguration mit O_sys ≥ P_sys, P_person > S_year oder S_year < 5, **WHEN** sie geprüft wird, **THEN** meldet der Kern einen Konfigurationsfehler und startet nicht, statt ein System still nie laufen zu lassen.
 - **AC-06 (Rule 4) [Logic/EditMode]** **GIVEN** Stub-Systeme protokollieren ihre Aufrufe, **WHEN** ein Schritt mit einem Eingriff läuft, **THEN** ist die Reihenfolge: Eingriffe (nach Eingang) → Welt → Menschen → Kultur → Stämme → Begehren → Harem → Gotteskraft → Chronik → Zustellung der Ereignisse → Zähler t + 1.
 - **AC-07 (Rule 4.3, 15) [Logic/EditMode]** **GIVEN** System A meldet Ereignis E in Schritt t und System B empfängt E, **WHEN** die Schritte t und t + 1 laufen, **THEN** ist der Zustand von B nach t unverändert und nach t + 1 verändert; in t entsteht keine Folgekette.
