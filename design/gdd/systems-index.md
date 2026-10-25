@@ -77,10 +77,10 @@ GDD.
 
 | # | System Name | Category | Priority | Status | Design Doc | Depends On |
 |---|-------------|----------|----------|--------|------------|------------|
-| 1 | Simulationskern | Core | MVP | Designed | design/gdd/simulationskern.md | — |
+| 1 | Simulationskern | Core | MVP | In Review | design/gdd/simulationskern.md | — |
 | 2 | Welt & Insel (inferred) | Core | MVP | Not Started | — | Simulationskern |
-| 3 | Menschen & Bevölkerung | Core | MVP | Designed | design/gdd/menschen-und-bevoelkerung.md | Simulationskern, Welt & Insel, Kultur & Erinnerung (nur Stammeshingabe, lesend) |
-| 4 | Zustimmungsmodell | Gameplay | MVP | Designed | design/gdd/zustimmungsmodell.md | Menschen & Bevölkerung, Kultur & Erinnerung (Normen als Eingabe) |
+| 3 | Menschen & Bevölkerung | Core | MVP | In Review | design/gdd/menschen-und-bevoelkerung.md | Simulationskern, Welt & Insel, Kultur & Erinnerung (nur Stammeshingabe, lesend) |
+| 4 | Zustimmungsmodell | Gameplay | MVP | In Review | design/gdd/zustimmungsmodell.md | Menschen & Bevölkerung, Kultur & Erinnerung (Normen als Eingabe) |
 | 5 | Stämme & Diplomatie | Gameplay | MVP | Not Started | — | Menschen & Bevölkerung, Welt & Insel |
 | 6 | Kultur & Erinnerung | Gameplay | MVP | Not Started | — | Stämme & Diplomatie, Menschen & Bevölkerung |
 | 7 | Begehren & Lust | Gameplay | MVP | Not Started | — | Zustimmungsmodell, Kultur & Erinnerung, Menschen & Bevölkerung, Körper & Animation |

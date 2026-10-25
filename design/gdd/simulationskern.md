@@ -80,11 +80,30 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
       Bevölkerung → Kultur & Erinnerung → Stämme & Diplomatie → Begehren & Lust →
       Harem & Rituale → Gotteskraft & Götterkräfte → Chronik. Kultur vor Stämmen
       folgt dem Jahresschritt von Prototyp 1 (Verfall und Kulturwandel vor Krieg und
-      Abspaltung), damit dessen Messwerte übertragbar bleiben.
+      Abspaltung), damit dessen Messwerte übertragbar bleiben. Hat ein System
+      mehrere Rhythmen (Menschen: Jahresregeln und Personentakt), ist jeder Rhythmus
+      ein eigener Eintrag an derselben Stelle der Reihenfolge; die Reihenfolge
+      innerhalb des Systems legt dessen GDD fest.
+      **Lesezugriffe zwischen Systemen sind direkt** und gelten nicht als
+      Kettenreaktion: Ein System sieht den **schon aktualisierten** Zustand der
+      Systeme, die in dieser Reihenfolge vor ihm stehen und in diesem Schritt
+      gerechnet haben, und den Zustand **nach dem vorigen Schritt** bei allen
+      übrigen. Nur Ereignisse sind um einen Schritt verzögert (Punkt 3). Darauf
+      bauen die Jahresregeln: Menschen sieht Nahrung (Welt) und Stammeshingabe
+      (Kultur) desselben Jahres. Die zweite Ausnahme von der Verzögerung sind
+      **Aufträge**: ein synchroner Aufruf eines Systems an das System, dem der Zustand
+      gehört (zum Beispiel ein Verlust von Stämme & Diplomatie an Menschen &
+      Bevölkerung). Der Empfänger führt ihn sofort aus, noch im Schritt des
+      Auftraggebers, und würfelt dabei aus seinem eigenen Zufallsstrom (Regel 6). Welche
+      Aufträge es gibt, legt das GDD des Empfängers fest; ein Auftrag ruft kein drittes
+      System auf.
    3. **Ereignisse zustellen:** Die Ereignisse dieses Schritts gehen in der
-      Reihenfolge ihrer Entstehung an alle Empfänger. Wer auf ein Ereignis reagiert,
-      ändert den Zustand erst im **nächsten** Schritt. Innerhalb eines Schritts gibt
-      es keine Kettenreaktion.
+      Reihenfolge ihrer Entstehung in den Posteingang aller Empfänger. Der
+      Empfänger verarbeitet sie frühestens im **nächsten** Schritt, und zwar bei
+      seinem nächsten planmäßigen Lauf (Formel 5): ein System im Personentakt nach
+      1 bis P_person Schritten, ein Jahressystem nach 1 bis S_year Schritten.
+      Innerhalb eines Schritts gibt es keine Kettenreaktion. Der Posteingang ist
+      Teil des Zustands des Empfängers und wird gespeichert (Regel 16).
    4. **Schritt abschließen:** Der Zähler steigt um 1. Erst danach darf die Ansicht
       den neuen Zustand lesen.
 5. Innerhalb eines Systems werden Menschen, Stämme und Orte immer in aufsteigender
@@ -126,7 +145,10 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
     Ende mit festen Ereignissen. Erst das Endereignis (mit Ort und Ergebnis) gibt ihn
     zurück. Ist das Ergebnis ein tödlicher Aufprall, stirbt er beim Anwenden des
     Endereignisses. Welche Verletzungsklassen es gibt, legt das GDD Gotteshand &
-    Ragdoll fest.
+    Ragdoll fest. Der Kern merkt sich beim Anwenden des Beginns den Schritt
+    t_hold_start; das Alter ist ab da angehalten (Formel 3). Ein Endereignis für
+    einen Menschen, der nicht (mehr) gehalten wird, ist ein Eingriff ins Leere ohne
+    Wirkung (Edge Cases).
 11. Die Ansicht liest nur den Zustand nach einem abgeschlossenen Schritt und
     schreibt nie hinein. Was sie zwischen zwei Schritten zeigt (zum Beispiel
     Laufanimationen), ist Darstellung und hat keine Wirkung.
@@ -137,7 +159,9 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
     und Auswertungen **„ohne Grafik“** (so schnell, wie der Rechner kann).
 13. In der Pause läuft kein Schritt. Kamera, Chronik und das Ansehen von Menschen,
     Stämmen und Orten bleiben möglich. Kräfte und Gotteshand sind gesperrt, weil
-    jeder Eingriff einen Schritt braucht, der ihn anwendet.
+    jeder Eingriff einen Schritt braucht, der ihn anwendet. Einzige Ausnahme ist
+    der Zustand **Speichert**, der genau die Endereignisse „abgesetzt“ annimmt und
+    dafür einen Schritt rechnet (States and Transitions, Edge Cases).
 14. Schafft ein Bild nicht alle fälligen Schritte, rechnet der Kern höchstens eine
     feste Zahl Schritte pro Bild (siehe Formulas). Die Welt läuft dann langsamer als
     eingestellt, statt die Bildzeit aufzuschaukeln. Die Ansicht zeigt das an.
@@ -151,8 +175,9 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
     passiert ist (Pillar 2).
 16. Ereignisse sind reine Daten. Gespeichert wird nur zwischen zwei Schritten, dann
     sind alle Ereignisse des letzten Schritts zugestellt. Zum Spielstand gehören die
-    **Eingriffswarteschlange** und alles, was Systeme als Reaktion für den nächsten
-    Schritt vorgemerkt haben (das ist Teil ihres Zustands). Wie lange zugestellte
+    **Eingriffswarteschlange**, die **Posteingänge** der Systeme und alles, was
+    Systeme sonst als Reaktion für ihren nächsten Lauf vorgemerkt haben (das ist
+    Teil ihres Zustands). Wie lange zugestellte
     Ereignisse aufbewahrt werden, entscheiden die Chronik und Kultur & Erinnerung.
 
 ### States and Transitions
@@ -164,13 +189,16 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
 | **Läuft 4×** | Schnell | 4 × Grundrate | erlaubt |
 | **Läuft 16×** | Sehr schnell | 16 × Grundrate | erlaubt |
 | **Ohne Grafik** | Werkzeuge und Auswertung, keine Ansicht | so viele wie möglich | nur aus einer Eingriffsliste |
+| **Speichert** | Spielstand wird geschrieben. Hält die Hand jemanden, rechnet der Kern vorher genau 1 Schritt | 0 (oder genau 1 Schritt) | nur das Endereignis „abgesetzt“ |
 | **Lädt** | Spielstand wird eingelesen | 0 | gesperrt |
 
 | Von | Nach | Auslöser |
 |---|---|---|
 | Pausiert | Läuft 1×/4×/16× | Spieler wählt eine Geschwindigkeit |
 | Läuft (beliebig) | Läuft (andere Stufe) | Spieler wählt eine Geschwindigkeit, wirkt ab dem nächsten Bild |
-| Läuft (beliebig) | Pausiert | Spieler drückt Pause, oder ein Spielstand wird gespeichert (Speichern pausiert kurz und kehrt zur vorigen Stufe zurück) |
+| Läuft (beliebig) | Pausiert | Spieler drückt Pause |
+| Pausiert, Läuft (beliebig) | Speichert | Spieler speichert oder Autospeichern; die vorige Stufe wird gemerkt |
+| Speichert | vorige Stufe | Spielstand geschrieben (aus Pausiert bleibt es Pausiert) |
 | beliebig | Lädt | Spielstand laden |
 | Lädt | Pausiert | Spielstand vollständig eingelesen, die Ansicht ist neu aufgebaut |
 | (Start der Welt) | Pausiert | Neue Welt aus einem Startwert erzeugt |
@@ -247,13 +275,15 @@ Schritt nach dem Anwenden der Eingriffe und vor Welt & Insel. Bei t = 0 gibt es 
 
 The Lebensjahr formula is defined as:
 
-`age_Lj = floor(age_steps / S_Lj)` mit `age_steps = (t - t_birth) - held_steps` und `T_life = L_Lj * S_Lj / R`
+`age_Lj = floor(age_steps / S_Lj)` mit `age_steps = (t - t_birth) - held_steps`, `held_steps = held_closed + (t - t_hold_start, solange der Mensch gehalten wird, sonst 0)` und `T_life = L_Lj * S_Lj / R`
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
 | t_birth | int64 | beliebig, auch negativ | calculated | Schritt, in dem der Mensch hervorgetreten ist; für die ersten Einzelnen einer neuen Welt negativ, damit ihr Alter gestreut ist (GDD Menschen & Bevölkerung, Formel 7) |
-| held_steps | int64 | ≥ 0 | calculated | Summe aller Schritte, die der Mensch „in Gottes Hand“ war (Altern ist dann angehalten, Core Rule 10) |
+| held_steps | int64 | ≥ 0 | calculated | Summe aller Schritte, die der Mensch „in Gottes Hand“ war, **einschließlich der laufenden Haltezeit** (Altern ist dann angehalten, Core Rule 10) |
+| held_closed | int64 | ≥ 0 | calculated | Summe der abgeschlossenen Haltezeiten; beim Anwenden des Endereignisses in Schritt e wächst sie um e − t_hold_start |
+| t_hold_start | int64 | ≥ 0 | calculated | Schritt, in dem der Beginn „in Gottes Hand“ angewendet wurde; nur gültig, solange der Mensch gehalten wird |
 | age_steps | int64 | ≥ 0 | calculated | gelebte Schritte ohne die Zeit in Gottes Hand |
 | S_Lj | int | 30–120, Default 60, Vielfaches von S_year | data file | Schritte pro Lebensjahr |
 | L_Lj | int | Default 40 | data file | Lebensdauer in Lebensjahren, **Eigentum von Menschen & Bevölkerung** (hier nur zur Umrechnung) |
@@ -265,27 +295,29 @@ The Lebensjahr formula is defined as:
 12 Geschichtsjahre.
 **Example:** 40 × 60 / 10 = 240 s = 4 Minuten. Der Mensch erlebt dabei 480
 Geschichtsjahre, also etwa 19 Ären (gewollt, Core Rule 2). Ein Fest von 30 s bei 1×
-dauert 300 Schritte, also 5 Lebensjahre.
+dauert 300 Schritte, also 5 Lebensjahre. Hält die Hand einen Menschen von Schritt
+600 bis 1.200, steht sein age_steps in dieser Zeit still (held_steps = t − 600
+während der Haltezeit, held_closed = 600 ab Schritt 1.200).
 
 ### 4. Schrittbudget pro Bild
 
 The Schrittbudget formula is defined as:
 
-`A = A + min(dt, dt_max) * R * m` · `n = min(floor(A), cap)` · `A = min(A - n, 1)` · `v_eff = min(m, cap * fps / R)`
+`A = A + min(dt, dt_max) * R * m` · `n = min(floor(A), cap)` · `A = A - floor(A)` · `v_eff = min(m, cap * fps / R)`; bei m = 0 ist n = 0
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
 | dt | float | > 0 s | calculated | echte Bildzeit, nur im Treiber des Kerns, nie in einer Regel der Simulation |
 | dt_max | float | 0,1 s | data file | Deckel gegen lange Aussetzer (Laden, Fenster verschoben) |
-| A | float | 0 bis 1 nach jedem Bild (innerhalb des Bilds kurz bis cap + 1) | calculated | Schritt-Akkumulator |
+| A | float | 0 bis < 1 nach jedem Bild (innerhalb des Bilds bis 1 + dt_max · R · m) | calculated | Schritt-Akkumulator: nach jedem Bild bleibt nur der Bruchteil eines Schritts übrig |
 | cap | int | 4–32, Default 8 | data file | höchstens gerechnete Schritte pro Bild |
 | n | int | 0..cap | calculated | in diesem Bild gerechnete Schritte |
 | fps | float | > 0 | calculated | tatsächliche Bildrate |
 | v_eff | float | 0..m | calculated | tatsächliche Geschwindigkeit in Vielfachen von 1× |
 
 **Output Range:** n liegt zwischen 0 und cap. Ein Überschuss über cap wird verworfen
-(A bleibt ≤ 1): Die Welt läuft langsamer, baut aber keinen Rückstand auf, und das
+(A bleibt < 1, in der Pause ist n immer 0): Die Welt läuft langsamer, baut aber keinen Rückstand auf, und das
 Ergebnis der Simulation ändert sich nicht. Damit 16× bei der kleinsten unterstützten
 Bildrate erreichbar bleibt, gilt `cap ≥ ceil(16 * R / fps_min)`. Bei fps_min = 30
 sind das 6, mit Reserve ergibt sich der Default 8.
@@ -322,7 +354,10 @@ vor Krieg und Abspaltung kommt (nachgetragen mit dem GDD Menschen & Bevölkerung
 
 Begehren & Lust sowie Harem & Rituale arbeiten auf der Ebene einzelner Menschen und
 laufen im Personentakt. Ihre GDDs können einen eigenen Takt festlegen, der ein
-Vielfaches von P_person ist.
+Vielfaches von P_person ist. Einzige Ausnahme ist die Sperrenprüfung laufender intimer
+Handlungen: Sie läuft als eigener Eintrag mit Takt 1 in jedem Schritt, an der Stelle von
+Begehren & Lust bzw. Harem & Rituale in der Reihenfolge (Zustimmungsmodell, Regel 14), damit eine
+Handlung im selben Schritt endet wie die Sperre.
 
 **Output Range:** Pro Schritt laufen höchstens zwei Jahressysteme (beim Versatz 2:
 Menschen und Stämme) und ein Teil der Menschen im Personentakt. Das Muster wiederholt sich alle kgV(P_person, S_year) Schritte (10 beim
@@ -414,15 +449,26 @@ System 4 nicht.
   Ein Flug von 2 echten Sekunden bei 16× dauert 320 Schritte, also 64
   Geschichtsjahre, in denen der Mensch angehalten ist und nicht altert. Das ist
   gewollt, die Hand ist bei jeder Geschwindigkeit erlaubt.
-- **If gespeichert wird, während ein Mensch „in Gottes Hand“ ist**: Vor dem
-  Speichern setzt die Ansicht ihn an der Stelle der Hand ab und meldet das
-  Endereignis („abgesetzt“). Ein Spielstand enthält nie einen Menschen in der Hand
-  oder im Flug.
+- **If gespeichert wird, während ein Mensch „in Gottes Hand“ ist** (Entscheidung
+  des Entwicklers vom 2026-10-25: ein Ausräumschritt, dann Snapshot): Der Kern geht
+  in den Zustand Speichert. Die Ansicht setzt jeden gehaltenen oder fliegenden
+  Menschen an der Stelle der Hand ab und meldet das Endereignis („abgesetzt“). Der
+  Kern nimmt genau diese Endereignisse an und rechnet **genau einen Schritt**, der
+  sie anwendet: ein normaler Schritt mit allen fälligen Systemen, die Endereignisse
+  stehen mit dieser Schrittnummer in der Aufzeichnung, danach steigt der Zähler um
+  1. Schon eingereihte andere Eingriffe werden in diesem Schritt ebenfalls
+  angewendet. Erst danach wird der Zustand geschrieben. Ein Spielstand enthält nie
+  einen Menschen in der Hand oder im Flug und nie ein offenes Endereignis. Hält die
+  Hand niemanden, rechnet Speichern keinen Schritt und lässt den Zähler
+  unverändert. Ein später doppelt gemeldetes Endereignis für denselben Menschen ist
+  ein Eingriff ins Leere.
 - **If die Ansicht eine gehaltene oder fliegende Figur verliert** (Figur
   verschwindet, Fehler in der Ansicht): Beim nächsten Abgleich meldet die Ansicht
   für jeden Menschen „in Gottes Hand“ ohne zugehörige Figur ein Endereignis
   „abgesetzt“ an der zuletzt bekannten Zelle. Kein Mensch bleibt dauerhaft
-  angehalten.
+  angehalten. Meldet die Ansicht es mehrfach, etwa weil die Welt pausiert ist und
+  die erste Meldung noch nicht angewendet wurde, wirkt nur die erste; jede weitere
+  ist ein Eingriff ins Leere.
 - **If der Welt-Startwert 0 ist**: erlaubt. SplitMix64 erzeugt auch aus 0 gültige,
   nicht verschwindende Ströme.
 - **If ein Spielstand in einem anderen Build geladen wird**: Er lädt, weil er den
@@ -527,6 +573,7 @@ E_len = 25, P_person = 2, S_Lj = 60, cap = 8, dt_max = 0,1 s. Tests liegen unter
 - **AC-06 (Rule 4) [Logic/EditMode]** **GIVEN** Stub-Systeme protokollieren ihre Aufrufe, **WHEN** ein Schritt mit einem Eingriff läuft, **THEN** ist die Reihenfolge: Eingriffe (nach Eingang) → Welt → Menschen → Kultur → Stämme → Begehren → Harem → Gotteskraft → Chronik → Zustellung der Ereignisse → Zähler t + 1.
 - **AC-07 (Rule 4.3, 15) [Logic/EditMode]** **GIVEN** System A meldet Ereignis E in Schritt t und System B empfängt E, **WHEN** die Schritte t und t + 1 laufen, **THEN** ist der Zustand von B nach t unverändert und nach t + 1 verändert; in t entsteht keine Folgekette.
 - **AC-08 (Rule 5) [Logic/EditMode]** **GIVEN** Menschen und Stämme werden in der Reihenfolge 7, 3, 9, 1 angelegt, **WHEN** ein System sie abarbeitet, **THEN** ist die Reihenfolge 1, 3, 7, 9; bei 100 verschiedenen Anlegereihenfolgen ist der Zustands-Hash identisch.
+- **AC-30 (Rule 4.2 und 4.3, Formel 5) [Logic/EditMode]** **GIVEN** zwei Stub-Systeme X und Y, X steht in der Reihenfolge vor Y, beide laufen in Schritt t, **WHEN** X in t den Wert v von 0 auf 1 setzt und Y in t v liest, **THEN** liest Y 1; liest X dagegen einen Wert w, den Y in t schreibt, liest X den Wert aus Schritt t − 1. **GIVEN** ein Stub-Jahressystem mit P = 5 und O = 2 und ein Ereignis E, das am Ende von Schritt 11 zugestellt wird, **WHEN** die Schritte 12 bis 16 laufen, **THEN** verarbeitet es E genau einmal, in Schritt 12; wird nach Schritt 11 gespeichert und geladen, ist der Hash gleich und E wird weiterhin in Schritt 12 verarbeitet. **GIVEN** ein Auftrag von System X an System Y (Y steht in der Reihenfolge vor X), **WHEN** X ihn in Schritt t erteilt, **THEN** führt Y ihn sofort aus, X liest danach den neuen Zustand noch in t, und Y hat dabei aus seinem eigenen Strom gewürfelt (der Strom von X ist unverändert).
 
 ### B. Zufall
 - **AC-09 (Formel 6) [Logic/EditMode]** **GIVEN** world_seed ∈ {0, 42, 2^64 − 1} und die system_id 1 bis 8, **WHEN** seed_sys berechnet wird, **THEN** stimmt es mit festen Referenzwerten überein (Referenz für SplitMix64(0): 0xE220A8397B1DCDAF, gegen eine Referenzimplementierung zu prüfen), alle seed_sys sind paarweise verschieden, der xoshiro-Zustand ist nie ganz null, und es gibt keine Ausnahme bei Überlauf.
@@ -542,18 +589,20 @@ E_len = 25, P_person = 2, S_Lj = 60, cap = 8, dt_max = 0,1 s. Tests liegen unter
 
 ### E. Zeitsteuerung
 - **AC-15 (Formel 1, Rule 12) [Logic/EditMode]** **GIVEN** m ∈ {0, 1, 4, 16} und S_year = 5, **WHEN** R_v berechnet wird, **THEN** ist R_v = 0, 10, 40 und 160; für S_year 5 bis 10 gilt R = 2 · S_year.
-- **AC-16 (Rule 13, States) [Logic/EditMode]** **GIVEN** die Welt ist pausiert, **WHEN** 600 Bilder mit dt = 1/60 laufen, **THEN** läuft kein Schritt, Lesezugriffe funktionieren, und ein Eingriff in „Pausiert“ oder „Lädt“ wird abgelehnt (0 Einträge in der Warteschlange); Speichern pausiert und kehrt zur vorigen Stufe zurück, Laden endet in „Pausiert“, und ein Geschwindigkeitswechsel wirkt ab dem nächsten Bild.
+- **AC-16 (Rule 13, States) [Logic/EditMode]** **GIVEN** die Welt ist pausiert, **WHEN** 600 Bilder mit dt = 1/60 laufen, **THEN** läuft kein Schritt, Lesezugriffe funktionieren, und ein Eingriff in „Pausiert“ oder „Lädt“ wird abgelehnt (0 Einträge in der Warteschlange); Speichern (Zustand Speichert) kehrt zur vorigen Stufe zurück und lässt den Schrittzähler unverändert, wenn niemand gehalten wird, Laden endet in „Pausiert“, und ein Geschwindigkeitswechsel wirkt ab dem nächsten Bild.
 - **AC-17 (Formel 4, Rule 14) [Logic/EditMode]** **GIVEN** 16× bei 60 fps, **WHEN** 60 Bilder laufen, **THEN** ist n pro Bild 2 oder 3 und die Summe 160 ± 1; bei 1× sind es 10 ± 1 Schritte, und immer gilt n ≤ cap.
-- **AC-18 (Formel 4, Rule 14, Edge Case) [Logic/EditMode + Manual]** **GIVEN** 16× bei 15 fps, **WHEN** 100 Bilder laufen, **THEN** ist n = 8 pro Bild, A ≤ 1 nach jedem Bild, v_eff = 12, das Signal „läuft langsamer“ ist gesetzt, und der Zustand nach k Schritten gleicht dem bei voller Geschwindigkeit; [Manual] das HUD zeigt „läuft langsamer (12×)“ nach spätestens 1 s und blendet es aus, sobald v_eff 15,2 erreicht.
+- **AC-18 (Formel 4, Rule 14, Edge Case) [Logic/EditMode + Manual]** **GIVEN** 16× bei 15 fps, **WHEN** 100 Bilder laufen, **THEN** ist n = 8 pro Bild, A < 1 nach jedem Bild, v_eff = 12, das Signal „läuft langsamer“ ist gesetzt, und der Zustand nach k Schritten gleicht dem bei voller Geschwindigkeit; [Manual] das HUD zeigt „läuft langsamer (12×)“ nach spätestens 1 s und blendet es aus, sobald v_eff 15,2 erreicht.
 - **AC-19 (Edge Case dt_max) [Logic/EditMode]** **GIVEN** ein Bild mit dt = 2 s, **WHEN** es verarbeitet wird, **THEN** wird nur 0,1 s angerechnet (n ≤ cap), und im folgenden Bild wird nichts nachgeholt.
+- **AC-31 (Formel 4, Rule 13) [Logic/EditMode]** **GIVEN** 16× bei 15 fps mit cap = 8 (n = cap, Überschuss verworfen) oder ein Bild mit dt = 2 s, **WHEN** im nächsten Bild Pause gewählt wird und 60 Bilder mit dt = 1/60 laufen, **THEN** ist n in jedem dieser Bilder 0, A < 1 nach jedem Bild, und der Schrittzähler ändert sich nicht.
 
 ### F. Lebenszeit, Ereignisse, Sonderfälle
 - **AC-20 (Formel 3) [Logic/EditMode]** **GIVEN** t_birth = 0, S_Lj = 60 und keine Zeit in Gottes Hand, **WHEN** t = 59, 60 und 2.399 ist, **THEN** ist age_Lj = 0, 1 und 39, T_life = 240 s bei R = 10, und ein Fest von 30 s sind 300 Schritte oder 5 Lebensjahre; **GIVEN** zusätzlich 120 Schritte in Gottes Hand, **THEN** ist age_Lj bei t = 2.399 gleich 37.
+- **AC-32 (Formel 3, Rule 10) [Logic/EditMode]** **GIVEN** t_birth = 0, S_Lj = 60, der Beginn „in Gottes Hand“ wird in Schritt 600 angewendet und das Endereignis in Schritt 1.200, **WHEN** t = 600, 900 und 1.199 ist, **THEN** ist age_Lj jeweils 10 und held_steps = t − 600; **WHEN** t = 1.259 und 1.260 ist, **THEN** ist age_Lj = 10 und 11 und held_closed = 600.
 - **AC-21 (Rule 15, 16) [Logic/EditMode]** **GIVEN** die Kette Eingriff → E1 → E2, **WHEN** die Ursache-Kette von E2 zurückverfolgt wird, **THEN** endet sie lückenlos bei der Eingriffs-ID; jedes Ereignis hat Typ, Schritt, IDs, Ursache und Gewicht; 10.000 Ereignisse in einem Schritt werden alle zugestellt; Eingriffswarteschlange und vorgemerkte Reaktionen überstehen Speichern und Laden mit gleichem Hash.
 - **AC-22 (Edge Case Eingriff ins Leere) [Logic/EditMode]** **GIVEN** das Ziel eines Eingriffs ist vor der Anwendung gestorben, **WHEN** der Eingriff an der Reihe ist, **THEN** bleibt der Zustand unverändert, und es entsteht das Ereignis „Eingriff ins Leere“ mit der ursprünglichen Absicht und der Eingriffs-ID als Ursache.
 - **AC-23 (Edge Cases Eingriffe) [Logic/EditMode]** **GIVEN** zwei Eingriffe auf dasselbe Ziel im selben Schritt, **WHEN** sie angewendet werden, **THEN** sieht der zweite das Ergebnis des ersten, und mit vertauschtem Eingang entsteht ein anderes Ergebnis; **GIVEN** ein Eingriff für den schon gerechneten Schritt t, **THEN** wird er in t + 1 angewendet und t + 1 aufgezeichnet.
 - **AC-24 (Edge Case Tod aufgeschoben) [Logic/EditMode]** **GIVEN** ein Mensch erreicht L_Lj, während er gehalten wird, **WHEN** das Endereignis in Schritt e angewendet wird, **THEN** stirbt er im ersten Schritt s > e mit s mod P_person = id mod P_person und nicht früher.
-- **AC-25 (Edge Case Speichern in der Hand) [Integration/PlayMode]** **GIVEN** ein Mensch wird gehalten, **WHEN** gespeichert wird, **THEN** wird vorher das Endereignis „abgesetzt“ angewendet, und der Spielstand enthält 0 Menschen „in Gottes Hand“.
+- **AC-25 (Edge Case Speichern in der Hand) [Integration/PlayMode]** **GIVEN** ein Mensch wird gehalten und der nächste Schritt ist k, **WHEN** gespeichert wird, **THEN** geht der Kern in den Zustand Speichert und rechnet genau den Schritt k (Zähler danach k + 1), in dem das Endereignis „abgesetzt“ angewendet wird und mit Schritt k in der Aufzeichnung steht; der Spielstand enthält 0 Menschen „in Gottes Hand“ und kein offenes Endereignis; **GIVEN** niemand wird gehalten, **THEN** bleibt der Zähler beim Speichern unverändert; ein danach noch einmal gemeldetes „abgesetzt“ für denselben Menschen erzeugt „Eingriff ins Leere“ und ändert den Zustand nicht.
 - **AC-26 (Edge Case verlorene Figur) [Integration/PlayMode]** **GIVEN** die Figur eines gehaltenen Menschen wird zerstört, **WHEN** der nächste Abgleich läuft, **THEN** kommt das Endereignis „abgesetzt“ an der letzten bekannten Zelle, und einen Schritt später ist der Mensch nicht mehr angehalten.
 - **AC-27 (Edge Case anderer Build) [Logic/EditMode]** **GIVEN** eine Aufzeichnung mit abweichender Build-Kennung, **WHEN** sie abgespielt wird, **THEN** erscheint eine Warnung ohne Abbruch; ein Spielstand aus einem anderen Build lädt, und der Hash des geladenen Zustands gleicht dem gespeicherten.
 - **AC-28 (Edge Cases Pause im Flug, Wurf bei 16×) [Manual]** **GIVEN** ein Mensch fliegt, **WHEN** pausiert wird, **THEN** stehen Physik und Schrittzähler still; **GIVEN** 16× und ein Flug von 2 s, **THEN** steigt der Schrittzähler um 320 (64 Geschichtsjahre), und das Alter des Menschen bleibt gleich.

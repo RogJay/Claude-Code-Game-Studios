@@ -137,11 +137,14 @@ formulas:
       - F_i
       - k_i
       - T_i
+      - g_i
     output_range: [0, 1]
-    expression: "w_i = max(0, W_D*D_i + W_L*L_i + W_N*n_i + W_G*G_i + W_F*F_i - c_pub*pi*(1-G_i) - c_bind*k_i*T_i)"
-    notes: "Gewichte je Handlungsart summieren sich zu 1; nie Hingabe, Rang oder Eingriffe als Eingabe"
+    # revised 2026-10-25 (zustimmungsmodell review): added the desire factor g_i.
+    # Old expression: w_i = max(0, W_D*D_i + ... - c_bind*k_i*T_i)
+    expression: "w_i = g_i * max(0, W_D*D_i + W_L*L_i + W_N*n_i + W_G*G_i + W_F*F_i - c_pub*pi*(1-G_i) - c_bind*k_i*T_i); g_i = min(1, min_j b_ij / b_ref)"
+    notes: "Gewichte je Handlungsart summieren sich zu 1 (1 +- 1e-6); nie Hingabe, Rang oder Eingriffe als Eingabe; ohne Begehren ist w = 0; D_i = Begehren (nicht Hingabe), L_i = Lust"
     added: 2026-10-25
-    revised: ""
+    revised: 2026-10-25
   - name: gnade
     status: active
     source: design/gdd/menschen-und-bevoelkerung.md
@@ -181,12 +184,15 @@ formulas:
       - t
       - t_birth
       - held_steps
+      - held_closed
+      - t_hold_start
       - S_Lj
     output_range: [0, 1000]
     expression: "age_Lj = floor(((t - t_birth) - held_steps) / S_Lj)"
-    notes: "Zeit in Gottes Hand zählt nicht als Alter"
+    # was: notes "Zeit in Gottes Hand zählt nicht als Alter", variables without held_closed/t_hold_start, before 2026-10-25
+    notes: "Zeit in Gottes Hand zählt nicht als Alter; held_steps = held_closed + (t - t_hold_start), solange der Mensch gehalten wird, schließt also eine laufende Haltezeit ein"
     added: 2026-10-25
-    revised: ""
+    revised: 2026-10-25
 
 # Example:
 #
@@ -287,7 +293,18 @@ constants:
       - design/gdd/zustimmungsmodell.md
     value: 4
     unit: Beteiligte
-    notes: "Größte Gruppe, mindestens 3"
+    # was: notes "Größte Gruppe, mindestens 3" before 2026-10-25
+    notes: "Größte Gruppe, mindestens 3; gilt auch für das Ritual (2 bis N_gruppe_max Beteiligte)"
+    added: 2026-10-25
+    revised: 2026-10-25
+  - name: begehren_ref
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.3
+    unit: Begehren 0-1
+    notes: "b_ref: ab diesem Begehren bremst der Begehrens-Faktor nicht mehr; darunter sinkt w linear auf 0; sicherer Bereich 0,2-0,5; Begehren & Lust muss b_ij auf derselben 0-1-Skala liefern"
     added: 2026-10-25
     revised: ""
   - name: start_volk_per_tribe
