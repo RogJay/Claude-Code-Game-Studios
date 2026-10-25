@@ -4,7 +4,7 @@
 
 # Weltengott — Concept Prototype 1
 
-**Status:** in progress (built, awaiting the user's playtest)
+**Status:** concluded 2026-10-25, verdict **PROCEED** (see `REPORT.md`)
 
 ## Hypothesis
 
@@ -74,4 +74,8 @@ read as noise; that is for the playtest to judge.
 
 ## Findings
 
-To be filled in after the playtest (`/prototype` Phase 6).
+See `REPORT.md`. In short: the simulation works as a foundation (alive, traceable
+cause and effect, attachment to a favoured tribe), but the playtest found it "too
+flat": nothing visible, only 2 powers, a repetitive war-heavy Chronik, too much
+waiting. These become design requirements for the GDDs; feel is untested
+(prototype 2).
