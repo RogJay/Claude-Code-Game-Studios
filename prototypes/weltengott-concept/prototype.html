@@ -1,0 +1,690 @@
+<!-- PROTOTYPE - NOT FOR PRODUCTION -->
+<!-- Question: Does an unattended tribe simulation produce histories worth watching, and can the player trace culture changes back to their own interventions? -->
+<!-- Date: 2026-10-25 -->
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Weltengott – Prototyp 1</title>
+<style>
+  :root { --bg:#14130f; --panel:#1d1b16; --ink:#ece5d6; --muted:#a59c8b; --line:#38332a; --god:#bfe2ff; --amber:#ffbf5e; --blood:#c0392b; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.45 system-ui, "Segoe UI", sans-serif; }
+  header { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; padding:10px 14px; border-bottom:1px solid var(--line); }
+  header h1 { font-size:17px; margin:0; font-weight:600; }
+  .clock { font-family:ui-monospace, Consolas, monospace; color:var(--muted); }
+  button { font:inherit; color:var(--ink); background:#2a2620; border:1px solid var(--line); padding:5px 10px; cursor:pointer; border-radius:3px; }
+  button:hover { border-color:#6a6052; }
+  button.on { border-color:var(--god); box-shadow:inset 0 0 0 1px var(--god); }
+  button.power.on { background:#1e2c38; }
+  input { font:inherit; width:7em; background:#2a2620; color:var(--ink); border:1px solid var(--line); padding:4px 6px; }
+  main { display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:0; }
+  @media (max-width:980px){ main { grid-template-columns:minmax(0,1fr); } }
+  #mapwrap { padding:12px; }
+  canvas { width:100%; height:auto; display:block; background:#0d2530; border:1px solid var(--line); cursor:crosshair; }
+  aside { border-left:1px solid var(--line); padding:12px; display:grid; gap:14px; align-content:start; }
+  .godbar { height:10px; background:#2a2620; position:relative; }
+  .godbar span { position:absolute; inset:0 auto 0 0; background:linear-gradient(90deg,#7fb7e0,#e8f5ff); }
+  .lbl { font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .tribe { border:1px solid var(--line); padding:8px 10px; display:grid; gap:4px; cursor:pointer; }
+  .tribe:hover { border-color:#6a6052; }
+  .tribe.dead { opacity:.4; cursor:default; }
+  .tribe .top { display:flex; justify-content:space-between; gap:8px; }
+  .sw { display:inline-block; width:10px; height:10px; margin-right:6px; vertical-align:baseline; }
+  .axis { height:6px; background:linear-gradient(90deg,#8fa7c9,#3a3a3a 50%,#ffbf5e); position:relative; }
+  .axis i { position:absolute; top:-3px; width:3px; height:12px; background:#fff; }
+  .axislbl { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); }
+  .small { font-size:12px; color:var(--muted); }
+  #chron { max-height:430px; overflow:auto; display:grid; gap:6px; font-size:13px; }
+  .ev { border-top:1px solid var(--line); padding-top:5px; }
+  .ev .y { font-family:ui-monospace, Consolas, monospace; font-size:11px; color:var(--muted); }
+  .ev.imp3 b { color:#fff; }
+  .ev .why { color:var(--muted); }
+  .ev.player .why { color:var(--god); }
+  .ev.imp1 { opacity:.65; }
+  #report { padding:12px 14px; border-top:1px solid var(--line); display:none; }
+  #report table { border-collapse:collapse; margin-top:6px; }
+  #report td { padding:3px 12px 3px 0; border-bottom:1px solid var(--line); }
+  #report td:last-child { font-family:ui-monospace, Consolas, monospace; }
+  .hint { color:var(--muted); font-size:12px; max-width:70ch; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Weltengott · Prototyp 1</h1>
+  <span class="clock" id="clock">Ära I · Jahr 0</span>
+  <span>
+    <button id="pause">❚❚</button><button data-speed="1" class="on">1×</button><button data-speed="4">4×</button><button data-speed="16">16×</button>
+  </span>
+  <span>Welt-Seed <input id="seed" value="7"> <button id="newworld">Neue Welt</button></span>
+  <button id="batch">Auswertung: 100 Welten ohne Eingriffe</button>
+</header>
+<div id="report"></div>
+<main>
+  <div id="mapwrap">
+    <canvas id="map" width="960" height="672"></canvas>
+    <p class="hint">Wähle rechts eine Kraft und klicke dann auf einen Stamm (auf der Karte oder in der Liste). Blitz: schlägt Furcht und Ehrfurcht, kostet Leben. Fest-Segen: Nahrung, Freude, neue Erwachsene. Kulturen erinnern sich an deine Eingriffe, und die Erinnerung verblasst mit der Zeit. Gotteskraft wächst aus den Ritualen deiner Anhänger.</p>
+  </div>
+  <aside>
+    <div>
+      <div class="lbl">Gotteskraft</div>
+      <div class="godbar"><span id="godfill"></span></div>
+      <div class="small" id="godtxt"></div>
+      <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap">
+        <button class="power" data-power="blitz">⚡ Blitz · 15</button>
+        <button class="power" data-power="fest">✦ Fest-Segen · 20</button>
+      </div>
+    </div>
+    <div>
+      <div class="lbl">Stämme</div>
+      <div id="tribes" style="display:grid; gap:8px; margin-top:6px"></div>
+    </div>
+    <div>
+      <div class="lbl" style="display:flex; justify-content:space-between"><span>Chronik</span><label class="small"><input type="checkbox" id="onlyimp" style="width:auto"> nur wichtige</label></div>
+      <div id="chron"></div>
+    </div>
+  </aside>
+</main>
+
+<script id="sim">
+// PROTOTYPE - NOT FOR PRODUCTION
+// Question: Does an unattended tribe simulation produce histories worth watching?
+// Date: 2026-10-25
+(function (root) {
+  var YEARS_PER_ERA = 25, ERAS = 10, W = 40, H = 28, MAX_TRIBES = 7;
+  var ERA_NAMES = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV'];
+  var NAMES = ['Ura','Mirr','Kesh','Talo','Vend','Oru','Sela','Brak','Ilm','Daru','Feno','Ask','Lumi','Tharn'];
+  var COLORS = ['#c9853a','#9a4a72','#6f8f3e','#b8483a','#7d8088','#d1bf86','#9c6b3a','#5f8f86','#a8a04a','#c2766a'];
+  var COST = { blitz: 15, fest: 20 };
+
+  function rngFrom(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      var t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function die(n) { return n === 1 ? '1 Mensch stirbt' : n + ' sterben'; }
+  function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+  function eraOf(year) { return Math.floor(year / YEARS_PER_ERA); }
+  function eraName(year) { return ERA_NAMES[eraOf(year)] || String(eraOf(year) + 1); }
+
+  function makeIsland(rng) {
+    var cells = new Float32Array(W * H);
+    var bumps = [];
+    for (var b = 0; b < 9; b++) bumps.push({ x: 6 + rng() * (W - 12), y: 5 + rng() * (H - 10), r: 3 + rng() * 6, h: 0.3 + rng() * 0.5 });
+    for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
+      var dx = (x - W / 2) / (W * 0.42), dy = (y - H / 2) / (H * 0.40);
+      var base = 1 - Math.sqrt(dx * dx + dy * dy);
+      var n = 0;
+      for (var k = 0; k < bumps.length; k++) {
+        var bx = x - bumps[k].x, by = y - bumps[k].y;
+        n += bumps[k].h * Math.exp(-(bx * bx + by * by) / (2 * bumps[k].r * bumps[k].r));
+      }
+      var land = base + 0.25 * n + (rng() - 0.5) * 0.12;
+      cells[y * W + x] = land > 0.08 ? clamp(0.25 + 0.75 * (0.5 * n + 0.6 * base) + (rng() - 0.5) * 0.2, 0.1, 1) : -1;
+    }
+    return cells;
+  }
+
+  function landNear(world, cx, cy, minD, maxD) {
+    var best = null, bestScore = -1;
+    for (var t = 0; t < 120; t++) {
+      var ang = world.rng() * Math.PI * 2, d = minD + world.rng() * (maxD - minD);
+      var x = Math.round(cx + Math.cos(ang) * d), y = Math.round(cy + Math.sin(ang) * d);
+      if (x < 1 || y < 1 || x >= W - 1 || y >= H - 1) continue;
+      var f = world.cells[y * W + x];
+      if (f <= 0) continue;
+      var crowd = 0;
+      for (var i = 0; i < world.tribes.length; i++) {
+        var o = world.tribes[i]; if (!o.alive) continue;
+        var dd = Math.hypot(o.x - x, o.y - y); if (dd < 5) crowd += (5 - dd);
+      }
+      var s = f - crowd * 0.3;
+      if (s > bestScore) { bestScore = s; best = { x: x, y: y }; }
+    }
+    return best;
+  }
+
+  function newTribe(world, x, y, pop, axis, aggr, dev, parent) {
+    var id = world.nextId++;
+    var t = {
+      id: id, name: NAMES[id % NAMES.length], color: COLORS[id % COLORS.length],
+      x: x, y: y, pop: pop, food: pop, axis: axis, aggr: aggr, devotion: dev,
+      gov: 'Stammesrat', alive: true, born: world.year, parent: parent,
+      griev: {}, memory: [], ledger: {}, wars: {}, peaceUntil: {}, graceAcc: 0,
+      famineCooldown: 0, cells: 0, capacity: 0, lastFamine: -99, temper: (world.rng() - 0.5) * 0.012
+    };
+    t.gov = govFor(t.axis, 'Stammesrat');
+    world.tribes.push(t);
+    return t;
+  }
+
+  function createWorld(seed) {
+    var rng = rngFrom(seed * 2654435761);
+    var w = { seed: seed, rng: rng, year: 0, cells: null, owner: null, scorch: {}, glow: {}, tribes: [], events: [],
+      godPower: 40, drought: 0, droughtFactor: 1, nextId: 0, playerActs: 0, flashes: [] };
+    w.cells = makeIsland(rng);
+    w.owner = new Int16Array(W * H).fill(-1);
+    var a = landNear(w, W * 0.34, H * 0.5, 0, 3) || { x: 10, y: 14 };
+    newTribe(w, a.x, a.y, 48, (rng() - 0.5) * 0.4, 0.25 + rng() * 0.25, 0.4, null);
+    var b = landNear(w, W * 0.66, H * 0.5, 0, 3) || { x: 30, y: 14 };
+    newTribe(w, b.x, b.y, 48, (rng() - 0.5) * 0.4, 0.25 + rng() * 0.25, 0.4, null);
+    log(w, 2, 'Zwei Stämme, ' + w.tribes[0].name + ' und ' + w.tribes[1].name + ', erwachen auf der Insel.', '', false, [0, 1]);
+    assignTerritory(w);
+    return w;
+  }
+
+  function log(w, imp, text, why, player, ids) {
+    w.events.push({ year: w.year, era: eraOf(w.year), imp: imp, text: text, why: why || '', player: !!player, ids: ids || [] });
+  }
+
+  function alive(w) { return w.tribes.filter(function (t) { return t.alive; }); }
+  function byId(w, id) { for (var i = 0; i < w.tribes.length; i++) if (w.tribes[i].id === id) return w.tribes[i]; return null; }
+  function radius(t) { return 2 + Math.sqrt(t.pop) * 0.75; }
+
+  function assignTerritory(w) {
+    var live = alive(w);
+    for (var i = 0; i < live.length; i++) { live[i].cells = 0; live[i].capacity = 0; }
+    for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
+      var idx = y * W + x, f = w.cells[idx];
+      w.owner[idx] = -1;
+      if (f <= 0) continue;
+      var best = null, bd = 1e9;
+      for (var k = 0; k < live.length; k++) {
+        var t = live[k], d = Math.hypot(t.x - x, t.y - y) / radius(t);
+        if (d < 1 && d < bd) { bd = d; best = t; }
+      }
+      if (best) {
+        w.owner[idx] = best.id;
+        best.cells++;
+        var sc = w.scorch[idx] ? 0.5 : 1;
+        best.capacity += f * 0.55 * sc;
+      }
+    }
+  }
+
+  function govFor(axis, cur) {
+    if (cur === 'Lust-Sekte') return axis < 0.35 ? 'Stammesrat' : 'Lust-Sekte';
+    if (cur === 'Gottesstaat') return axis > -0.35 ? 'Stammesrat' : 'Gottesstaat';
+    if (axis > 0.5) return 'Lust-Sekte';
+    if (axis < -0.5) return 'Gottesstaat';
+    return 'Stammesrat';
+  }
+
+  function addLedger(t, key, v) { t.ledger[key] = (t.ledger[key] || 0) + v; }
+  function addGriev(a, bId, reason, v) {
+    var g = a.griev[bId] || (a.griev[bId] = { total: 0, reasons: {} });
+    g.reasons[reason] = (g.reasons[reason] || 0) + v;
+    g.total += v;
+  }
+  function remember(t, w, kind, push, text) {
+    t.memory.push({ key: 'mem' + w.year + kind + t.memory.length, year: w.year, kind: kind, push: push, wt: 1, text: text });
+    if (t.memory.length > 8) t.memory.shift();
+  }
+
+  var CAUSE_TEXT = {
+    wohlstand: 'nach Jahren voller Vorräte und Frieden',
+    hunger: 'nach Hunger und Not',
+    krieg: 'nach den Verlusten im Krieg',
+    duerre: 'unter der langen Dürre',
+    zufall: 'aus innerer Unruhe',
+    sog: 'weil der alte Glaube sich festigte'
+  };
+  function causeOf(w, t, dir) {
+    var bestK = null, bestV = 0;
+    for (var k in t.ledger) { var v = t.ledger[k] * dir; if (v > bestV) { bestV = v; bestK = k; } }
+    if (!bestK) return { text: CAUSE_TEXT.zufall, player: false };
+    if (bestK.indexOf('mem') === 0) {
+      for (var i = 0; i < t.memory.length; i++) if (t.memory[i].key === bestK) return { text: t.memory[i].text, player: true };
+      return { text: 'in Erinnerung an einen alten Eingriff des Gottes', player: true };
+    }
+    return { text: CAUSE_TEXT[bestK] || CAUSE_TEXT.zufall, player: false };
+  }
+  var GRIEV_TEXT = {
+    grenze: 'Streit um Land an der Grenze',
+    hunger: 'Neid auf volle Speicher in der Hungerzeit',
+    ketzer: 'ihr Glaube ist dem anderen ein Gräuel',
+    abspaltung: 'alter Groll seit der Abspaltung',
+    rache: 'Rache für die Toten des letzten Krieges'
+  };
+
+  function step(w) {
+    w.year++;
+    var rng = w.rng, live = alive(w), i, j, t, o;
+
+    // climate
+    if (w.drought > 0) {
+      w.drought--;
+      if (w.drought === 0) { w.droughtFactor = 1; log(w, 1, 'Der Regen kehrt zurück, die Dürre endet.', '', false); }
+    } else if (rng() < 0.022) {
+      w.drought = 4 + Math.floor(rng() * 7); w.droughtFactor = 0.55;
+      log(w, 2, 'Eine Dürre legt sich über die Insel.', '', false);
+    }
+    for (var k in w.scorch) { w.scorch[k]--; if (w.scorch[k] <= 0) delete w.scorch[k]; }
+    for (var g in w.glow) { w.glow[g]--; if (w.glow[g] <= 0) delete w.glow[g]; }
+
+
+    var rituals = 0;
+    for (i = 0; i < live.length; i++) {
+      t = live[i];
+      // decay
+      for (var lk in t.ledger) { t.ledger[lk] *= 0.94; if (Math.abs(t.ledger[lk]) < 0.001) delete t.ledger[lk]; }
+      for (var gid in t.griev) {
+        var gr = t.griev[gid]; gr.total *= 0.965;
+        for (var r in gr.reasons) gr.reasons[r] *= 0.965;
+        if (!byId(w, +gid) || !byId(w, +gid).alive) delete t.griev[gid];
+      }
+      t.memory = t.memory.filter(function (m) { m.wt *= 0.965; return m.wt > 0.06; });
+
+      // food
+      var cap = t.capacity * w.droughtFactor;
+      var prod = Math.min(cap, t.pop * 1.25);
+      var atWar = Object.keys(t.wars).length > 0;
+      if (atWar) prod *= 0.85;
+      t.food += prod - t.pop;
+      if (t.food > t.pop * 3) t.food = t.pop * 3;
+      var famine = false;
+      if (t.food < 0) {
+        var deaths = Math.max(1, Math.round(t.pop * 0.06 + (-t.food) * 0.25));
+        t.pop -= deaths; t.food = 0; famine = true;
+        if (w.year - t.lastFamine > 6) log(w, 2, 'Hungersnot in ' + t.name + ': ' + die(deaths) + '.', '', false, [t.id]);
+        t.lastFamine = w.year;
+        // blame the best-fed neighbour
+        var rich = null;
+        for (j = 0; j < live.length; j++) { o = live[j]; if (o !== t && o.alive && (!rich || o.food / o.pop > rich.food / rich.pop)) rich = o; }
+        if (rich && Math.hypot(rich.x - t.x, rich.y - t.y) < radius(rich) + radius(t) + 6) addGriev(t, rich.id, 'hunger', 0.14);
+      }
+
+      // devotion & rituals
+      t.devotion = clamp(t.devotion + 0.004 * (Math.abs(t.axis) - 0.2) + (famine ? -0.01 : 0) + (rng() - 0.5) * 0.01, 0.05, 1);
+      rituals += t.devotion * t.pop;
+
+      // grace: the god creates adults, fed by rituals (passive) — only when there is food
+      if (t.food > 0 && t.pop < cap * 1.05) {
+        var prosper = clamp(t.food / Math.max(1, t.pop), 0, 1);
+        t.graceAcc += t.pop * (0.01 + 0.03 * t.devotion) * prosper;
+        var born = Math.floor(t.graceAcc);
+        if (born > 0) { t.pop += born; t.graceAcc -= born; }
+      }
+
+      // culture drift
+      var d = 0;
+      var noise = (rng() + rng() + rng() - 1.5) * 0.014;
+      d += noise + t.temper; addLedger(t, 'zufall', noise + t.temper);
+      if (!atWar && t.food > t.pop * 0.8 && !famine) { d += 0.003; addLedger(t, 'wohlstand', 0.003); }
+      if (famine) { d -= 0.03; addLedger(t, 'hunger', -0.03); }
+      if (w.drought > 0) { d -= 0.003; addLedger(t, 'duerre', -0.003); }
+      if (t.gov === 'Lust-Sekte') { d += 0.003; addLedger(t, 'sog', 0.003); }
+      if (t.gov === 'Gottesstaat') { d -= 0.003; addLedger(t, 'sog', -0.003); }
+      for (j = 0; j < t.memory.length; j++) {
+        var m = t.memory[j], push = m.push * m.wt * 0.03;
+        d += push; addLedger(t, m.key, push);
+      }
+      t.axis = clamp(t.axis + d, -1, 1);
+      t.aggr = clamp(t.aggr + 0.003 * (-t.axis) - (t.gov === 'Lust-Sekte' ? 0.002 : 0) + (rng() - 0.5) * 0.01, 0.05, 0.95);
+
+      var ng = govFor(t.axis, t.gov);
+      if (ng !== t.gov) {
+        var dir = ng === 'Lust-Sekte' ? 1 : ng === 'Gottesstaat' ? -1 : (t.gov === 'Lust-Sekte' ? -1 : 1);
+        var c = causeOf(w, t, dir);
+        var txt = ng === 'Stammesrat' ? t.name + ' gibt den Weg als ' + t.gov + ' auf und wird wieder ein Stammesrat' : t.name + ' wird zur ' + (ng === 'Lust-Sekte' ? 'Lust-Sekte' : 'Theokratie (Gottesstaat)');
+        if (ng === 'Gottesstaat') txt = t.name + ' wird zum Gottesstaat';
+        log(w, 3, txt + ',', (c.player ? 'weil ' : '') + c.text + '.', c.player, [t.id]);
+        t.gov = ng;
+      }
+    }
+
+    // border friction and faith conflict
+    for (i = 0; i < live.length; i++) for (j = 0; j < live.length; j++) {
+      if (i === j) continue;
+      t = live[i]; o = live[j];
+      var dist = Math.hypot(t.x - o.x, t.y - o.y);
+      if (dist < radius(t) + radius(o)) addGriev(t, o.id, 'grenze', t.pop > t.capacity * w.droughtFactor * 0.9 ? 0.02 : 0.007);
+      var diff = Math.abs(t.axis - o.axis);
+      if (diff > 0.7 && dist < radius(t) + radius(o) + 8) addGriev(t, o.id, 'ketzer', 0.022 * diff);
+    }
+
+    // wars: declare
+    for (i = 0; i < live.length; i++) {
+      t = live[i];
+      for (var oid in t.griev) {
+        o = byId(w, +oid);
+        if (!o || !o.alive || t.wars[o.id] || (t.peaceUntil[o.id] || 0) > w.year) continue;
+        var gv = t.griev[oid];
+        if (gv.total * (0.5 + t.aggr) > 0.6 && t.pop >= 0.6 * o.pop && t.pop >= 12) {
+          var top = null, tv = 0;
+          for (var rr in gv.reasons) if (gv.reasons[rr] > tv) { tv = gv.reasons[rr]; top = rr; }
+          var why = GRIEV_TEXT[top] || top, pl = false;
+          if (top && top.indexOf('gott:') === 0) { why = top.slice(5); pl = true; }
+          t.wars[o.id] = { since: w.year, loss: 0 }; o.wars[t.id] = { since: w.year, loss: 0 };
+          log(w, 3, t.name + ' erklärt ' + o.name + ' den Krieg,', (pl ? 'weil ' : 'Grund: ') + why + '.', pl, [t.id, o.id]);
+        }
+      }
+    }
+    // wars: fight
+    for (i = 0; i < live.length; i++) {
+      t = live[i];
+      for (var wid in t.wars) {
+        o = byId(w, +wid);
+        if (!o || !o.alive) { delete t.wars[wid]; continue; }
+        if (t.id > o.id) continue; // resolve each pair once
+        var st = t.pop * (0.5 + t.aggr), so = o.pop * (0.5 + o.aggr);
+        var lo = Math.round(st * 0.03 * (0.6 + rng() * 0.8)), lt = Math.round(so * 0.03 * (0.6 + rng() * 0.8));
+        lo = Math.min(lo, o.pop); lt = Math.min(lt, t.pop);
+        o.pop -= lo; t.pop -= lt;
+        t.wars[o.id].loss += lt / Math.max(1, t.pop + lt); o.wars[t.id].loss += lo / Math.max(1, o.pop + lo);
+        var fearT = -0.004 * lt / Math.max(1, t.pop), fearO = -0.004 * lo / Math.max(1, o.pop);
+        t.axis = clamp(t.axis + fearT * 10, -1, 1); addLedger(t, 'krieg', fearT * 10);
+        o.axis = clamp(o.axis + fearO * 10, -1, 1); addLedger(o, 'krieg', fearO * 10);
+        addGriev(t, o.id, 'rache', 0.01); addGriev(o, t.id, 'rache', 0.01);
+        var loser = null, winner = null;
+        if (o.pop < 6 || o.pop < 0.22 * t.pop) { loser = o; winner = t; }
+        else if (t.pop < 6 || t.pop < 0.22 * o.pop) { loser = t; winner = o; }
+        if (loser) {
+          var joined = Math.floor(loser.pop * 0.5);
+          winner.pop += joined;
+          winner.axis = clamp((winner.axis * winner.pop + loser.axis * joined) / Math.max(1, winner.pop + joined), -1, 1);
+          loser.alive = false; loser.pop = 0;
+          delete winner.wars[loser.id];
+          log(w, 3, winner.name + ' erobert ' + loser.name + '.', joined + ' Überlebende werden Teil von ' + winner.name + '.', false, [winner.id, loser.id]);
+          continue;
+        }
+        if (t.wars[o.id].loss > 0.3 && o.wars[t.id].loss > 0.3 || w.year - t.wars[o.id].since > 18) {
+          delete t.wars[o.id]; delete o.wars[t.id];
+          t.peaceUntil[o.id] = w.year + 20; o.peaceUntil[t.id] = w.year + 20;
+          if (t.griev[o.id]) t.griev[o.id] = { total: 0.2, reasons: { rache: 0.2 } };
+          if (o.griev[t.id]) o.griev[t.id] = { total: 0.2, reasons: { rache: 0.2 } };
+          log(w, 3, 'Frieden zwischen ' + t.name + ' und ' + o.name + '.', 'Beide Seiten sind erschöpft.', false, [t.id, o.id]);
+        }
+      }
+    }
+
+    // schism
+    live = alive(w);
+    if (live.length < MAX_TRIBES) {
+      for (i = 0; i < live.length; i++) {
+        t = live[i];
+        var crowded = t.pop > t.capacity * w.droughtFactor * 0.9;
+        if (t.pop > 44 && Object.keys(t.wars).length === 0 && rng() < (crowded ? 0.06 : 0.025)) {
+          var spot = landNear(w, t.x, t.y, radius(t) + 1, radius(t) + 6);
+          if (!spot) continue;
+          var part = Math.floor(t.pop * (0.35 + rng() * 0.1));
+          var shift = (Math.abs(t.axis) > 0.3 ? -Math.sign(t.axis) : (rng() < 0.5 ? 1 : -1)) * 0.6;
+          t.pop -= part;
+          var child = newTribe(w, spot.x, spot.y, part, clamp(t.axis + shift, -1, 1), clamp(t.aggr + (rng() - 0.5) * 0.2, 0.05, 0.95), t.devotion, t.id);
+          child.food = part * 0.5;
+          addGriev(t, child.id, 'abspaltung', 0.35); addGriev(child, t.id, 'abspaltung', 0.35);
+          log(w, 3, 'Abspaltung: ' + part + ' Menschen verlassen ' + t.name + ' und gründen ' + child.name + '.', shift > 0 ? 'Sie suchen ein freieres, lustvolleres Leben.' : 'Sie suchen einen strengeren Glauben.', false, [t.id, child.id]);
+          break;
+        }
+      }
+    }
+
+    // extinction
+    for (i = 0; i < w.tribes.length; i++) {
+      t = w.tribes[i];
+      if (t.alive && t.pop < 3) { t.alive = false; t.pop = 0; log(w, 3, t.name + ' ist untergegangen.', '', false, [t.id]); }
+    }
+
+    w.godPower = clamp(w.godPower + rituals * 0.0025, 0, 100);
+    assignTerritory(w);
+  }
+  function assignTerritoryIfDirty(w) { if (w.year % 2 === 1) assignTerritory(w); }
+
+  function applyPower(w, kind, tribeId) {
+    var t = byId(w, tribeId);
+    if (!t || !t.alive || w.godPower < COST[kind]) return false;
+    w.godPower -= COST[kind];
+    w.playerActs++;
+    var live = alive(w), i, o, when = 'in Ära ' + eraName(w.year) + ' (Jahr ' + w.year + ')';
+    if (kind === 'blitz') {
+      var killed = Math.max(1, Math.round(t.pop * (0.03 + w.rng() * 0.03)));
+      t.pop -= killed;
+      t.devotion = clamp(t.devotion + 0.15, 0, 1);
+      t.axis = clamp(t.axis - 0.12, -1, 1); addLedger(t, 'blitz' + w.year, -0.12);
+      remember(t, w, 'blitz', -1, 'du ' + when + ' deinen Blitz auf ' + t.name + ' geschleudert hast');
+      t.ledger[t.memory[t.memory.length - 1].key] = -0.12;
+      delete t.ledger['blitz' + w.year];
+      for (i = 0; i < live.length; i++) {
+        o = live[i]; if (o === t) continue;
+        if (o.axis < 0.1) addGriev(o, t.id, 'gott:du ' + when + ' ' + t.name + ' mit dem Blitz gezeichnet hast und ' + o.name + ' es für verflucht hält', 0.35);
+      }
+      var cx = Math.round(t.x), cy = Math.round(t.y);
+      for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { var idx = (cy + dy) * W + (cx + dx); if (w.cells[idx] > 0) w.scorch[idx] = 40; }
+      log(w, 2, 'Du schleuderst einen Blitz auf ' + t.name + '. ' + die(killed) + ', die Überlebenden fallen auf die Knie.', '', true, [t.id]);
+      w.flashes.push({ kind: 'blitz', x: t.x, y: t.y, t0: Date.now() });
+    } else if (kind === 'fest') {
+      var gift = Math.max(2, Math.round(t.pop * 0.12));
+      t.pop += gift; t.food += t.pop * 0.6;
+      t.devotion = clamp(t.devotion + 0.1, 0, 1);
+      t.axis = clamp(t.axis + 0.15, -1, 1);
+      remember(t, w, 'fest', +1, 'du ' + when + ' das Fest von ' + t.name + ' gesegnet hast');
+      t.ledger[t.memory[t.memory.length - 1].key] = 0.15;
+      for (i = 0; i < live.length; i++) {
+        o = live[i]; if (o === t) continue;
+        if (o.axis < -0.1) addGriev(o, t.id, 'gott:du ' + when + ' das Fest von ' + t.name + ' gesegnet hast und ' + o.name + ' das als Frevel sieht', 0.4);
+      }
+      w.glow[Math.round(t.y) * W + Math.round(t.x)] = 6;
+      log(w, 2, 'Du segnest das Fest von ' + t.name + '. ' + gift + ' neue Erwachsene treten aus dem Feuerschein.', '', true, [t.id]);
+      w.flashes.push({ kind: 'fest', x: t.x, y: t.y, t0: Date.now() });
+    }
+    return true;
+  }
+
+  function runUnattended(seed, years) {
+    var w = createWorld(seed);
+    for (var y = 0; y < years; y++) step(w);
+    return w;
+  }
+
+  function evalStart(n) {
+    return { worlds: n, extinct: 0, earlyDom: 0, frozenWorlds: 0, frozenEras: 0, majorPerEra: 0, tribesEnd: 0, govs: {}, worldsAllCriteria: 0, kinds: {}, frozenByEra: new Array(ERAS).fill(0), warReasons: {} };
+  }
+  function evalSeed(res, s) {
+      var w = createWorld(s), aliveMid = 2;
+      for (var yy = 0; yy < YEARS_PER_ERA * ERAS; yy++) { step(w); if (w.year === YEARS_PER_ERA * 5) aliveMid = alive(w).length; }
+      var perEra = new Array(ERAS).fill(0);
+      w.events.forEach(function (e) {
+        if (e.imp === 3 && e.era < ERAS && e.year > 0) {
+          perEra[e.era]++;
+          var kind = /Krieg/.test(e.text) ? 'Krieg' : /Frieden/.test(e.text) ? 'Frieden' : /erobert/.test(e.text) ? 'Eroberung' : /Abspaltung/.test(e.text) ? 'Abspaltung' : /untergegangen/.test(e.text) ? 'Untergang' : 'Kulturwandel';
+          res.kinds[kind] = (res.kinds[kind] || 0) + 1;
+        }
+      });
+      var frozen = perEra.filter(function (c) { return c === 0; }).length;
+      perEra.forEach(function (c, i) { if (c === 0) res.frozenByEra[i]++; });
+      w.events.forEach(function (e) { var m = /Grund: ([^.]*)\./.exec(e.why); if (m) res.warReasons[m[1]] = (res.warReasons[m[1]] || 0) + 1; });
+      var aliveEnd = alive(w).length;
+      if (aliveEnd === 0) res.extinct++;
+      if (frozen > 0) res.frozenWorlds++;
+      res.frozenEras += frozen;
+      res.majorPerEra += perEra.reduce(function (a, b) { return a + b; }, 0) / ERAS;
+      res.tribesEnd += aliveEnd;
+      if (aliveMid <= 1) res.earlyDom++;
+      w.tribes.forEach(function (t) { res.govs[t.gov] = 1; });
+      w.events.forEach(function (e) { var m = /(Lust-Sekte|Gottesstaat|Stammesrat)/.exec(e.text); if (m && e.imp === 3) res.govs[m[1]] = 1; });
+      if (aliveEnd > 0 && frozen === 0) res.worldsAllCriteria++;
+  }
+  function evalEnd(res) { res.majorPerEra /= res.worlds; res.tribesEnd /= res.worlds; return res; }
+  function evaluate(n) { var res = evalStart(n); for (var s = 1; s <= n; s++) evalSeed(res, s); return evalEnd(res); }
+
+  root.Sim = { createWorld: createWorld, step: step, applyPower: applyPower, evaluate: evaluate, evalStart: evalStart, evalSeed: evalSeed, evalEnd: evalEnd, runUnattended: runUnattended,
+    alive: alive, byId: byId, radius: radius, eraName: eraName, eraOf: eraOf, W: W, H: H, YEARS_PER_ERA: YEARS_PER_ERA, ERAS: ERAS, COST: COST };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+
+<script>
+// PROTOTYPE - NOT FOR PRODUCTION
+// Question: Does an unattended tribe simulation produce histories worth watching?
+// Date: 2026-10-25
+(function () {
+  var S = window.Sim, world, speed = 1, paused = false, power = null, acc = 0, last = performance.now(), lastPanel = 0;
+  var cv = document.getElementById('map'), ctx = cv.getContext('2d');
+  var CW = cv.width / S.W, CH = cv.height / S.H;
+
+  function reset() { world = S.createWorld(parseInt(document.getElementById('seed').value, 10) || 1); render(); renderPanel(); }
+
+  function hash(a, b) { var h = (a * 374761393 + b * 668265263) >>> 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+
+  function render() {
+    var w = world, x, y;
+    ctx.fillStyle = '#0d2530'; ctx.fillRect(0, 0, cv.width, cv.height);
+    var dry = w.droughtFactor < 1;
+    for (y = 0; y < S.H; y++) for (x = 0; x < S.W; x++) {
+      var f = w.cells[y * S.W + x]; if (f <= 0) continue;
+      var r = 185 - 74 * f, g = 167 - 42 * f + (dry ? -10 : 0), b = 116 - 47 * f;
+      if (dry) { r += 18; b -= 6; }
+      ctx.fillStyle = 'rgb(' + (r | 0) + ',' + (g | 0) + ',' + (b | 0) + ')';
+      ctx.fillRect(x * CW, y * CH, CW + 0.5, CH + 0.5);
+      if (w.scorch[y * S.W + x]) { ctx.fillStyle = 'rgba(20,12,8,' + Math.min(0.75, w.scorch[y * S.W + x] / 40) + ')'; ctx.fillRect(x * CW, y * CH, CW + 0.5, CH + 0.5); }
+      var own = w.owner[y * S.W + x];
+      if (own >= 0) { var t = S.byId(w, own); ctx.fillStyle = t.color + '80'; ctx.fillRect(x * CW, y * CH, CW + 0.5, CH + 0.5); }
+    }
+    // borders between territories
+    ctx.strokeStyle = 'rgba(15,12,9,.75)'; ctx.lineWidth = 2; ctx.beginPath();
+    for (y = 0; y < S.H; y++) for (x = 0; x < S.W; x++) {
+      var ow = w.owner[y * S.W + x]; if (ow < 0) continue;
+      if (x + 1 < S.W && w.owner[y * S.W + x + 1] !== ow && w.cells[y * S.W + x + 1] > 0) { ctx.moveTo((x + 1) * CW, y * CH); ctx.lineTo((x + 1) * CW, (y + 1) * CH); }
+      if (y + 1 < S.H && w.owner[(y + 1) * S.W + x] !== ow && w.cells[(y + 1) * S.W + x] > 0) { ctx.moveTo(x * CW, (y + 1) * CH); ctx.lineTo((x + 1) * CW, (y + 1) * CH); }
+    }
+    ctx.stroke();
+    // wars
+    S.alive(w).forEach(function (t) {
+      Object.keys(t.wars).forEach(function (oid) {
+        var o = S.byId(w, +oid); if (!o || t.id > o.id) return;
+        ctx.strokeStyle = '#c0392b'; ctx.setLineDash([8, 6]); ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo((t.x + .5) * CW, (t.y + .5) * CH); ctx.lineTo((o.x + .5) * CW, (o.y + .5) * CH); ctx.stroke(); ctx.setLineDash([]);
+      });
+    });
+    // people
+    S.alive(w).forEach(function (t) {
+      var n = Math.min(t.pop, 160), rad = S.radius(t) * 0.8;
+      ctx.fillStyle = t.color;
+      for (var i = 0; i < n; i++) {
+        var a = hash(t.id, i) * Math.PI * 2, d = Math.sqrt(hash(i, t.id + 99)) * rad;
+        var px = (t.x + .5 + Math.cos(a) * d) * CW, py = (t.y + .5 + Math.sin(a) * d) * CH;
+        ctx.fillStyle = 'rgba(10,8,6,.7)'; ctx.fillRect(px - 2.5, py - 2.5, 5, 5);
+        ctx.fillStyle = t.color; ctx.fillRect(px - 1.5, py - 1.5, 3, 3);
+      }
+      ctx.fillStyle = '#f4efe4'; ctx.strokeStyle = '#0b1418'; ctx.lineWidth = 3; ctx.font = '600 14px system-ui';
+      var label = t.name + ' · ' + t.pop;
+      ctx.strokeText(label, (t.x + .5) * CW + 10, (t.y + .5) * CH - 10); ctx.fillText(label, (t.x + .5) * CW + 10, (t.y + .5) * CH - 10);
+      ctx.font = '12px system-ui'; ctx.fillStyle = t.gov === 'Lust-Sekte' ? '#ffbf5e' : t.gov === 'Gottesstaat' ? '#d9d2c2' : '#b9b09f';
+      ctx.strokeText(t.gov, (t.x + .5) * CW + 10, (t.y + .5) * CH + 6); ctx.fillText(t.gov, (t.x + .5) * CW + 10, (t.y + .5) * CH + 6);
+    });
+    // festival glow
+    for (var gk in w.glow) {
+      var gx = gk % S.W, gy = Math.floor(gk / S.W), al = w.glow[gk] / 6;
+      var grd = ctx.createRadialGradient((gx + .5) * CW, (gy + .5) * CH, 2, (gx + .5) * CW, (gy + .5) * CH, 70);
+      grd.addColorStop(0, 'rgba(255,191,94,' + (0.6 * al) + ')'); grd.addColorStop(1, 'rgba(255,191,94,0)');
+      ctx.fillStyle = grd; ctx.fillRect(0, 0, cv.width, cv.height);
+    }
+    // divine flashes (god colour)
+    var now = Date.now();
+    w.flashes = w.flashes.filter(function (f) { return now - f.t0 < 1500; });
+    w.flashes.forEach(function (f) {
+      var p = (now - f.t0) / 1500, cx = (f.x + .5) * CW, cy = (f.y + .5) * CH;
+      var grd = ctx.createRadialGradient(cx, cy, 2, cx, cy, 120 * (0.4 + p));
+      grd.addColorStop(0, 'rgba(232,245,255,' + (0.9 * (1 - p)) + ')'); grd.addColorStop(1, 'rgba(159,208,255,0)');
+      ctx.fillStyle = grd; ctx.fillRect(0, 0, cv.width, cv.height);
+      if (f.kind === 'blitz' && p < 0.3) { ctx.strokeStyle = 'rgba(232,245,255,' + (1 - p * 3) + ')'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(cx - 20, 0); ctx.lineTo(cx + 10, cy * 0.5); ctx.lineTo(cx - 8, cy * 0.6); ctx.lineTo(cx, cy); ctx.stroke(); }
+    });
+  }
+
+  var lastEvCount = -1;
+  function renderPanel() {
+    var w = world;
+    document.getElementById('clock').textContent = 'Ära ' + S.eraName(w.year) + ' · Jahr ' + w.year + (w.droughtFactor < 1 ? ' · Dürre' : '');
+    document.getElementById('godfill').style.width = w.godPower + '%';
+    document.getElementById('godtxt').textContent = Math.floor(w.godPower) + ' / 100 · deine Eingriffe: ' + w.playerActs;
+    document.querySelectorAll('.power').forEach(function (b) { b.disabled = w.godPower < S.COST[b.dataset.power]; });
+    var html = '';
+    w.tribes.slice().sort(function (a, b) { return (b.alive - a.alive) || (b.pop - a.pop); }).forEach(function (t) {
+      var wars = Object.keys(t.wars).map(function (id) { return S.byId(w, +id).name; });
+      var mem = t.memory.slice(-2).map(function (m) { return m.kind === 'blitz' ? '⚡' : '✦'; }).join(' ');
+      html += '<div class="tribe' + (t.alive ? '' : ' dead') + '" data-id="' + t.id + '">' +
+        '<div class="top"><b><span class="sw" style="background:' + t.color + '"></span>' + t.name + '</b><span>' + (t.alive ? t.pop + ' Erwachsene' : 'untergegangen') + '</span></div>' +
+        (t.alive ? '<div class="small">' + t.gov + (wars.length ? ' · <span style="color:#e06b5d">Krieg mit ' + wars.join(', ') + '</span>' : '') + (mem ? ' · erinnert sich: ' + mem : '') + '</div>' +
+        '<div class="axis"><i style="left:calc(' + ((t.axis + 1) * 50) + '% - 1px)"></i></div><div class="axislbl"><span>Gottesstaat</span><span>Lust-Sekte</span></div>' +
+        '<div class="small">Hingabe ' + Math.round(t.devotion * 100) + '% · Vorrat ' + Math.round(t.food) + ' · Land ' + t.cells + ' Felder</div>' : '') +
+        '</div>';
+    });
+    document.getElementById('tribes').innerHTML = html;
+    if (w.events.length !== lastEvCount || renderPanel.forceChron) {
+      lastEvCount = w.events.length; renderPanel.forceChron = false;
+      var only = document.getElementById('onlyimp').checked, ch = '';
+      for (var i = w.events.length - 1; i >= 0 && i >= w.events.length - 200; i--) {
+        var e = w.events[i]; if (only && e.imp < 3 && !e.player) continue;
+        ch += '<div class="ev imp' + e.imp + (e.player ? ' player' : '') + '"><span class="y">Ära ' + S.eraName(e.year) + ' · Jahr ' + e.year + '</span><br><b>' + e.text + '</b> <span class="why">' + e.why + '</span></div>';
+      }
+      document.getElementById('chron').innerHTML = ch;
+    }
+  }
+
+  function loop(now) {
+    var dt = (now - last) / 1000; last = now;
+    if (!paused) {
+      acc += dt * speed * 2; // 2 years per second at 1x
+      var steps = 0;
+      while (acc >= 1 && steps < 64) { S.step(world); acc -= 1; steps++; }
+      if (steps && now - lastPanel > 250) { renderPanel(); lastPanel = now; }
+    }
+    render();
+    requestAnimationFrame(loop);
+  }
+
+  function pick(id) {
+    if (!power) return;
+    if (S.applyPower(world, power, id)) { renderPanel(); }
+    setPower(null);
+  }
+  function setPower(p) {
+    power = p;
+    document.querySelectorAll('.power').forEach(function (b) { b.classList.toggle('on', b.dataset.power === p); });
+  }
+
+  document.querySelectorAll('.power').forEach(function (b) { b.onclick = function () { setPower(power === b.dataset.power ? null : b.dataset.power); }; });
+  document.getElementById('tribes').onpointerdown = function (ev) { var el = ev.target.closest('.tribe'); if (el && !el.classList.contains('dead')) pick(+el.dataset.id); };
+  cv.onclick = function (ev) {
+    var r = cv.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width * S.W - .5, y = (ev.clientY - r.top) / r.height * S.H - .5;
+    var best = null, bd = 1e9;
+    S.alive(world).forEach(function (t) { var d = Math.hypot(t.x - x, t.y - y); if (d < S.radius(t) + 2 && d < bd) { bd = d; best = t; } });
+    if (best) pick(best.id);
+  };
+  document.getElementById('pause').onclick = function () { paused = !paused; this.classList.toggle('on', paused); renderPanel(); };
+  document.querySelectorAll('[data-speed]').forEach(function (b) { b.onclick = function () { speed = +b.dataset.speed; paused = false; document.getElementById('pause').classList.remove('on'); document.querySelectorAll('[data-speed]').forEach(function (x) { x.classList.toggle('on', x === b); }); }; });
+  document.getElementById('newworld').onclick = reset;
+  document.getElementById('onlyimp').onchange = function () { renderPanel.forceChron = true; renderPanel(); };
+  document.getElementById('batch').onclick = function () {
+    var el = document.getElementById('report'); el.style.display = 'block'; el.textContent = 'Rechne 100 Welten …';
+    var r = S.evalStart(100), next = 1;
+    (function chunk() {
+      for (var k = 0; k < 4 && next <= 100; k++) S.evalSeed(r, next++);
+      if (next <= 100) { el.textContent = 'Rechne Welt ' + (next - 1) + ' von 100 …'; return setTimeout(chunk, 0); }
+      S.evalEnd(r);
+      var pct = function (v) { return Math.round(v / r.worlds * 100) + ' %'; };
+      el.innerHTML = '<b>Auswertung: 100 Welten, je 10 Ären (250 Jahre), ohne einen einzigen Eingriff</b>' +
+        '<table>' +
+        '<tr><td>Welten, in denen alle Stämme aussterben</td><td>' + pct(r.extinct) + '</td></tr>' +
+        '<tr><td>Welten mit mindestens einer Ära ohne großes Ereignis (erstarrt)</td><td>' + pct(r.frozenWorlds) + '</td></tr>' +
+        '<tr><td>Ären ohne großes Ereignis, insgesamt</td><td>' + r.frozenEras + ' von ' + (r.worlds * 10) + '</td></tr>' +
+        '<tr><td>Nur noch 1 Stamm (oder keiner) nach Ära V</td><td>' + pct(r.earlyDom) + '</td></tr>' +
+        '<tr><td>Ø große Ereignisse pro Ära</td><td>' + r.majorPerEra.toFixed(1) + '</td></tr>' +
+        '<tr><td>Ø Stämme am Ende</td><td>' + r.tribesEnd.toFixed(1) + '</td></tr>' +
+        '<tr><td>Arten großer Ereignisse</td><td>' + Object.keys(r.kinds).map(function (k) { return k + ' ' + r.kinds[k]; }).join(' · ') + '</td></tr>' +
+        '<tr><td>Welten, die Prüfpunkt 1 erfüllen (lebt + jede Ära ≥ 1 großes Ereignis)</td><td>' + pct(r.worldsAllCriteria) + '</td></tr>' +
+        '</table><p class="hint">„Groß“ heißt: Krieg, Frieden, Eroberung, Abspaltung, Untergang oder Wechsel der Gesellschaftsform. Diese Zahlen beobachten nur; ob die Ereignisse wirklich spannend sind, entscheidest du beim Zuschauen.</p>';
+    })();
+  };
+
+  reset();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
