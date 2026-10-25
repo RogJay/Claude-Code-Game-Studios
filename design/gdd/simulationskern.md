@@ -85,7 +85,8 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
       „Neue Ära“ (Formel 2), in Schritt 0 stattdessen „Welt erschaffen“ (Regel 17).
    2. **Fällige Systeme rechnen,** in fester Reihenfolge: Welt & Insel → Menschen &
       Bevölkerung → Kultur & Erinnerung → Stämme & Diplomatie → Begehren & Lust →
-      Harem & Rituale → Gotteskraft & Götterkräfte → Chronik. Kultur vor Stämmen
+      Harem & Rituale → Gotteskraft & Götterkräfte → (Sperrenprüfung laufender
+      Handlungen, Formel 5) → Chronik. Kultur vor Stämmen
       folgt dem Jahresschritt von Prototyp 1 (Verfall und Kulturwandel vor Krieg und
       Abspaltung), damit dessen Messwerte übertragbar bleiben. Hat ein System
       mehrere Rhythmen (Menschen: Jahresregeln und Personentakt), ist jeder Rhythmus
@@ -544,7 +545,7 @@ pro Bild die fälligen Schritte auslöst, sitzt in der Unity-Bildschleife.
 
 | System | Was es vom Kern braucht | GDD |
 |---|---|---|
-| Welt & Insel | Jahrestakt, Zufallsstrom, Ereignisse | noch keins |
+| Welt & Insel | Jahrestakt, Zufallsstrom, Ereignisse, Erzeugen als erstes System | ✓ `design/gdd/welt-und-insel.md` (Entwurf) |
 | Menschen & Bevölkerung | Personentakt, Umrechnung Lebensjahr ↔ Schritte, Zufallsstrom, Status „in Gottes Hand“, Aufträge | ✓ `design/gdd/menschen-und-bevoelkerung.md` |
 | Kultur & Erinnerung | Jahrestakt, Ereignisse mit Ursache-Kette, angewendete Eingriffe | noch keins |
 | Stämme & Diplomatie | Jahrestakt, Zufallsstrom, Ereignisse | noch keins |

@@ -249,7 +249,7 @@ Merkmale.
 | System | Was hineingeht | Was herauskommt | Wer besitzt die Schnittstelle |
 |---|---|---|---|
 | Simulationskern | Personentakt, Jahrestakt, Zufallsstrom (system_id 2), Status „in Gottes Hand“, Umrechnung Lebensjahr; Aufträge: Hervortreten eines gepackten Statisten, Rückgabe aus Gottes Hand | Ereignisse: Hervortreten, Tod | Kern |
-| Welt & Insel | Zellen, Gebiet jedes Stamms, Nahrung und Tragfähigkeit pro Stamm | Orte der Einzelnen | Welt & Insel (vorläufig, GDD fehlt) |
+| Welt & Insel | Zellen, Gebiet jedes Stamms, Nahrung und Tragfähigkeit pro Stamm, Startplätze; Auftrag „Verlust durch Hunger“ | Orte der Einzelnen, V_t | Welt & Insel (`design/gdd/welt-und-insel.md`, Entwurf) |
 | Kultur & Erinnerung | Stammeshingabe D_t | – | Kultur & Erinnerung (vorläufig) |
 | Stämme & Diplomatie | Aufträge (Regel 23): Verluste als Zahl, Abspaltung, Eroberung, Gefangennahme, Befreiung, Kampf-Merkmal | V_t, Einzelne pro Stamm | Stämme & Diplomatie gibt die Zahlen vor, Menschen wählt die Personen |
 | Zustimmungsmodell | – | Zustimmungsprofil (Regel 18) | Menschen (Profilinhalt ist eine Grenze und darf nicht erweitert werden) |
@@ -463,7 +463,7 @@ mit 0,15. Ein persönlicher Eingriff bleibt damit etwa ein Achtel eines Lebens d
 sichtbar (Pillar 2). Gelesen wird h_i von Gotteskraft & Götterkräfte (Zufluss aus
 Hingabe) und von der Anzeige eines Einzelnen.
 
-### 9. Bewegung (vorläufig, Welt & Insel hat noch kein GDD)
+### 9. Bewegung
 
 The Bewegung formula is defined as:
 
@@ -560,7 +560,7 @@ kaum ändern. Gemessen wird sie trotzdem neu mit den Debug- und Balancing-Werkze
 | System | Art | Was gebraucht wird | GDD |
 |---|---|---|---|
 | Simulationskern | hart | Personentakt, Jahrestakt beim Versatz 2, Zufallsstrom (system_id 2), Status „in Gottes Hand“, Umrechnung Lebensjahr | ✓ `design/gdd/simulationskern.md` |
-| Welt & Insel | hart | Zellen, Gebiet je Stamm, Nahrung food_t und Tragfähigkeit cap_t je Stamm | ✗ noch keins (vorläufiger Vertrag in diesem GDD) |
+| Welt & Insel | hart | Zellen, Gebiet je Stamm, Nahrung food_t und Tragfähigkeit cap_t je Stamm, Startplätze, Hunger als Auftrag | ✓ `design/gdd/welt-und-insel.md` (Entwurf) |
 | Kultur & Erinnerung | hart für die Gnade, nur lesend | Stammeshingabe D_t | ✗ noch keins (vorläufiger Vertrag) |
 
 Kultur & Erinnerung hängt seinerseits von Menschen ab (Systemübersicht). Diese

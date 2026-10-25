@@ -95,6 +95,22 @@ Mitgezogen: Simulationskern (Sperrenprüfung nach Gotteskraft, Sperrmerkmale) un
 Bevölkerung (Opferwahl zieht keine Beteiligten einer Handlung; Stammeswechsel wird
 gemerkt; nur „frei“ lässt zu).
 
+### 4. Konsistenz-Check (alle vier GDDs)
+
+Kein Widerspruch bei den registrierten Werten. Veraltete Verweise („Welt & Insel hat noch
+kein GDD“) in Kern und Menschen sind angeglichen, die Sperrenprüfung steht jetzt auch in
+der Schritt-Reihenfolge von Kern-Regel 4.2. Registry: 4 neue Einträge für Welt & Insel
+(Rastergröße 40 × 28, Formeln Tragfähigkeit und Nahrung).
+
+### 5. Welt & Insel, Entwurf
+
+Neu: `design/gdd/welt-und-insel.md` (Status **Draft**). Ich habe die Inselregeln aus
+Prototyp 1 übernommen (Insel erzeugen, Startplätze, Gebiet, Tragfähigkeit, Ernte und
+Hunger, Dürre, verbrannte Erde), damit die Messwerte aus Prototyp 1 gelten, und die
+Verträge erfüllt, die Kern und Menschen schon festlegen. Nachgerechnet mit einem
+Python-Nachbau: etwa 61 % Land, ein Startstamm hat etwa 154 Zellen und eine
+Tragfähigkeit von etwa 77 bei 48 Köpfen, Dürre in etwa 13 % der Jahre.
+
 ## Entscheidungen ohne Freigabe
 
 | # | GDD | Entscheidung | Warum | Zurücknehmen |
@@ -118,3 +134,7 @@ gemerkt; nur „frei“ lässt zu).
 | 17 | Zustimmung | Neues Handlungsregister als einziger Weg in eine Handlung; wie es in Assemblies geschnitten wird, entscheidet die Architektur | Ohne einen Besitzer der laufenden Handlungen lässt sich „kein anderer Weg“ nicht prüfen | Regel 18 |
 | 18 | Zustimmung | Ladeprüfung: θ 0,30–0,90, W_D + W_L ≥ 0,40, W_N ≤ 0,40, (θ − Δ) · b_ref ≥ 0,09 | Alle Default-Zeilen bestehen; eine Mod-Tabelle kann die Kultur nicht mehr allein entscheiden lassen | Formel 2 |
 | 19 | Kern, Menschen | Sperrenprüfung als eigener Eintrag nach Gotteskraft; Opferwahl zieht keine Beteiligten einer Handlung | Gegenstücke zum Zustimmungsmodell; der Creative Director hätte sie dir überlassen, ich habe sie mitgezogen, damit die GDDs sich nicht widersprechen | Kern Formel 5, Menschen Regel 13 |
+| 20 | Welt & Insel | Ganzes GDD als Entwurf geschrieben, Regeln 1:1 aus Prototyp 1 | Kalibrierung bleibt gültig; jede Abweichung ist im GDD genannt | ganzes GDD |
+| 21 | Welt & Insel | Welt & Insel legt beim Erzeugen die zwei Startplätze und die Stammes-IDs 0 und 1 fest, Stämme & Diplomatie übernimmt sie | Welt wird zuerst erzeugt, Menschen braucht die Gebiete vor Stämme & Diplomatie | Regel 4 |
+| 22 | Welt & Insel | Hunger ist ein Auftrag „Verlust“ von Welt & Insel an Menschen; die Ernte gehört zur Welt, nicht zu den Stämmen | Menschen hatte food_t und cap_t schon Welt & Insel zugeordnet | Regel 9 |
+| 23 | Welt & Insel | Keine von Hand gebauten Inseln im MVP-0 (offene Frage) | Das Konzept lässt beides zu; erzeugt reicht für die Kalibrierung | Regel 5 |

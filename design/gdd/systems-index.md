@@ -78,7 +78,7 @@ GDD.
 | # | System Name | Category | Priority | Status | Design Doc | Depends On |
 |---|-------------|----------|----------|--------|------------|------------|
 | 1 | Simulationskern | Core | MVP | In Review | design/gdd/simulationskern.md | — |
-| 2 | Welt & Insel (inferred) | Core | MVP | Not Started | — | Simulationskern |
+| 2 | Welt & Insel (inferred) | Core | MVP | Designed | design/gdd/welt-und-insel.md | Simulationskern |
 | 3 | Menschen & Bevölkerung | Core | MVP | In Review | design/gdd/menschen-und-bevoelkerung.md | Simulationskern, Welt & Insel, Kultur & Erinnerung (nur Stammeshingabe, lesend) |
 | 4 | Zustimmungsmodell | Gameplay | MVP | In Review | design/gdd/zustimmungsmodell.md | Menschen & Bevölkerung, Kultur & Erinnerung (Normen als Eingabe) |
 | 5 | Stämme & Diplomatie | Gameplay | MVP | Not Started | — | Menschen & Bevölkerung, Welt & Insel |
@@ -255,10 +255,10 @@ Effort estimates: S = 1 session, M = 2-3 sessions, L = 4+ sessions.
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 33 |
-| Design docs started | 3 |
-| Design docs reviewed | 0 |
+| Design docs started | 4 |
+| Design docs reviewed | 3 |
 | Design docs approved | 0 |
-| MVP systems designed | 3/16 |
+| MVP systems designed | 4/16 |
 | Vertical Slice systems designed | 0/9 |
 
 ---

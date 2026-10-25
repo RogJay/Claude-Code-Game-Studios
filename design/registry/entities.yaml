@@ -193,6 +193,36 @@ formulas:
     notes: "Zeit in Gottes Hand zählt nicht als Alter; held_steps = held_closed + (t - t_hold_start), solange der Mensch gehalten wird, schließt also eine laufende Haltezeit ein"
     added: 2026-10-25
     revised: 2026-10-25
+  - name: tragfaehigkeit
+    status: active
+    source: design/gdd/welt-und-insel.md
+    referenced_by:
+      - design/gdd/welt-und-insel.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    variables:
+      - f_c
+      - verbrannt_c
+      - delta
+    output_range: [0, 616]
+    expression: "cap_t = delta * sum over Gebiet(t) of f_c * 0.55 * (1 - 0.5 * verbrannt_c)"
+    notes: "delta = 1 oder 0,55 bei Dürre; Startstamm etwa 77; Obergrenze 1120 Zellen * 0,55"
+    added: 2026-10-25
+    revised: ""
+  - name: nahrung
+    status: active
+    source: design/gdd/welt-und-insel.md
+    referenced_by:
+      - design/gdd/welt-und-insel.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    variables:
+      - food_t
+      - cap_t
+      - V_t
+    output_range: [0, 3]
+    expression: "food_t = min(food_t + min(cap_t, 1.25 * V_t) * (0.85 im Krieg) - V_t, 3 * V_t); Hunger bei food_t < 0 mit k = max(1, round(0.06 * V_t + 0.25 * (-food_t)))"
+    notes: "output_range als Vielfaches von V_t; beim Erzeugen food_t = V_t"
+    added: 2026-10-25
+    revised: ""
 
 # Example:
 #
@@ -436,6 +466,27 @@ constants:
     value: 2
     unit: Schritte (O_year)
     notes: "Versatz der Jahresregeln von Menschen & Bevölkerung, geteilt mit Stämme & Diplomatie; Menschen rechnet zuerst"
+    added: 2026-10-25
+    revised: ""
+  - name: welt_raster_breite
+    status: active
+    source: design/gdd/welt-und-insel.md
+    referenced_by:
+      - design/gdd/welt-und-insel.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 40
+    unit: Zellen
+    notes: "Zellen-ID = y * 40 + x; Karte von Prototyp 1"
+    added: 2026-10-25
+    revised: ""
+  - name: welt_raster_hoehe
+    status: active
+    source: design/gdd/welt-und-insel.md
+    referenced_by:
+      - design/gdd/welt-und-insel.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 28
+    unit: Zellen
     added: 2026-10-25
     revised: ""
 
