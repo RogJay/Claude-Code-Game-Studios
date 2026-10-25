@@ -499,7 +499,8 @@ Teil (Gotteshand mit Ragdoll) ist ungetestet und bleibt Prototyp 2.*
    30 fps mit 10 Figuren.
 
 **Required for MVP** (MVP-0, „Gott-Spielzeug“):
-1. Die Simulation ohne Grafik: deterministischer Tick, 2 Stämme, Ären (abstrakt)
+1. Die Simulation ohne Grafik: deterministischer Tick, 2 Stämme, Ären und Krieg
+   zwischen Stämmen (alles abstrakt, als Daten wie in Prototyp 1)
 2. Einfacher Kulturwandel auf einer Achse (Lust-Sekte oder Gottesstaat) mit
    Erinnerung an Eingriffe
 3. Das Zustimmungsmodell als reine Funktion mit Tests, von Anfang an
@@ -515,7 +516,9 @@ das volle System für Kulturwandel und Erinnerung.
 
 **Explicitly NOT in MVP** (defer to later):
 - Besessen-Sein von Erwählten
-- Krieg zwischen Stämmen (kommt in v1)
+- Sichtbarer Krieg: Schlachten und Kampfszenen in 3D (kommt in v1). Abstrakter
+  Krieg in der Simulation ist Teil von MVP-0, weil der Beleg aus Prototyp 1 und
+  der Prüfmaßstab von Pillar 1 daran hängen
 - Paar-Animationen und detaillierte sexuelle Szenen (im MVP nur angedeutet)
 - Android
 - Nahtloser Zoom
@@ -531,7 +534,7 @@ Faktor 4 bis 5 zu rechnen. Jede Stufe steht für sich als spielbares Spiel.
 | ---- | ---- | ---- | ---- |
 | **MVP-0 („Gott-Spielzeug“)** | Eine Insel, 2 Stämme, 30–50 Menschen | Simulation, einfacher Kulturwandel, Zustimmungsmodell, Gotteshand und Ragdoll, 4 Kräfte, 1 Zoomstufe, Speichern, Zeitsteuerung, Chronik | 3–4 Monate (Schätzung galt für 1 Kraft, neu schätzen) |
 | **MVP-1** | Wie MVP-0 | Weitere Kräfte, zweite Zoomstufe, Morphs und Look B, volles System für Kulturwandel und Erinnerung | +2–3 Monate |
-| **Vertical Slice (v1)** | 1–3 Stämme, 30–80 Menschen | In dieser Reihenfolge: Krieg, Harem und Rituale, Haut in Detailstufen, Besessen-Sein. 3 Kräfte, 2–3 Zoomstufen | +6–10 Monate |
+| **Vertical Slice (v1)** | 1–3 Stämme, 30–80 Menschen | In dieser Reihenfolge: sichtbarer Krieg, Harem und Rituale, Haut in Detailstufen, Besessen-Sein. Die Kräfte aus MVP-1, 2–3 Zoomstufen | +6–10 Monate |
 | **Alpha (Ausbau)** | Weitere Gesellschaftsformen, Zeitalter mit Inhalten | Mehr Kräfte, Paar-Animationen (mit eigener Entscheidung, ob man sie baut), mehr Animationen | +6–12 Monate |
 | **Android (optional)** | Gleiche Simulation | Draufsicht, Touch-Gotteshand, einfacher Look; Einstieg erst nach dem Haut-Test auf dem Gerät | eigene Stufe |
 | **Full Vision** | Viele Zivilisationen, Fantasy- und Tiervölker | Nahtloser Zoom, detaillierte Szenen, tiefe Verletzungssimulation | 30–48 Monate insgesamt |
@@ -548,7 +551,7 @@ Prototype-first (die Kernmechanik ist teilweise bewiesen):
 
 - [x] Engine wählen und konfigurieren (`/setup-engine`): Unity 6.3 LTS
 - [x] Prototyp 1 (Simulation ohne Grafik): PROCEED, siehe `prototypes/weltengott-concept/REPORT.md`
-- [x] Konzept prüfen (`/design-review design/gdd/game-concept.md`): NEEDS REVISION, danach überarbeitet
+- [x] Konzept prüfen (`/design-review design/gdd/game-concept.md`): drei Reviews, jeweils NEEDS REVISION und danach überarbeitet (zuletzt: Krieg in MVP-0 abstrakt, Kräftezahl im Vertical Slice)
 - [ ] **Prototyp 2** (Gotteshand und Ragdoll in Unity, 50 Menschen): offen, vor oder parallel zu den ersten System-GDDs
 - [ ] Art Bible (`/art-bible`)
 - [ ] Phasen-Check (`/gate-check`)

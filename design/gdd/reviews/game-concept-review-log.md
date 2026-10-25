@@ -40,3 +40,23 @@ Note: the stamp below is the content hash of the document AS REVIEWED (before th
 Reviewed-Content-Hash: design/gdd/game-concept.md 59dedd0b9aa208e3a18a11138f66eb8842d553bc
 Reviewed-Content-Hash: design/registry/entities.yaml dfeacb02917f751cb1dfd88cf490c7ec3d8d2d0f
 Reviewed-Content-Hash: .claude/skills/design-review/SKILL.md a63d8fba9b7142eeb43791f061e2e1533c429b43
+
+## Review — 2026-10-25 — Verdict: NEEDS REVISION
+Review mode: lean · Workflow: standard
+Scope signal: XL
+Specialists: none (lean mode; senior verdict skipped)
+Blocking items: 2 | Recommended: 4
+Summary: Third review. Both earlier blocking items are resolved (time scale checked against prototype 1, engine row updated). Two new blocking items: whether MVP-0 has war was contradictory (listed as "not in MVP" but part of core mechanics, the core-loop command, the Pillar 1 measure and prototype 1's evidence), and the Vertical Slice tier listed 3 powers while MVP-0 already has 4. Both were revised in the same session (user decision: abstract war in MVP-0, visible battles in v1); the revised document has not been re-reviewed.
+Prior verdict resolved: Yes (2 of 2 blocking items)
+Findings:
+- [BLOCKING] MVP Definition / Core Loop: war in MVP-0 undecided; prototype 1 evidence and Pillar 1 measure depend on it
+- [BLOCKING] Scope Tiers: Vertical Slice lists 3 powers, MVP-0 already has 4
+- [RECOMMENDED] Flow State: onboarding (one tribe, one power, unlocks) vs MVP-0 (2 tribes, 4 powers, ~30 s density)
+- [RECOMMENDED] MVP Definition: prototype 2 fun criteria not measurable
+- [RECOMMENDED] Core Mechanic 4 / MVP: fourth power undefined but an MVP requirement
+- [RECOMMENDED] Core Loop / MVP: injuries ("Verletzte humpeln") not in the MVP-0 list
+Note: the stamp below is the content hash of the document AS REVIEWED (before this session's revision), so the next review reads it as CHANGED and re-reviews.
+Reviewed-Content-Hash: design/gdd/game-concept.md b0a6655caf80ec0b4b3334bbeaa94f41dc63332d
+Reviewed-Content-Hash: design/registry/entities.yaml dfeacb02917f751cb1dfd88cf490c7ec3d8d2d0f
+Reviewed-Content-Hash: .claude/skills/design-review/SKILL.md a63d8fba9b7142eeb43791f061e2e1533c429b43
+Reviewed-Content-Hash: prototypes/weltengott-concept/REPORT.md e9204c19a61fefb55207be0197cd90bd5576f6e0
