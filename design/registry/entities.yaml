@@ -273,9 +273,10 @@ constants:
       - design/gdd/zustimmungsmodell.md
     value: 0.45
     unit: Bereitschaft 0–1
-    notes: "Zustimmungsschwelle"
+    # was: notes "Zustimmungsschwelle" before 2026-10-25
+    notes: "Schwelle für die Teilnahme an einem Ritual; Kontakt im Ritual nutzt die Schwelle seiner eigenen Handlungsart"
     added: 2026-10-25
-    revised: ""
+    revised: 2026-10-25
   - name: haltemarge
     status: active
     source: design/gdd/zustimmungsmodell.md

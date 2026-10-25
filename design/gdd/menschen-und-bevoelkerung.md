@@ -64,7 +64,8 @@ zeigen.
      - **Hingabe** an den Gott (0–1)
      - **Gesundheit** (gesund, verletzt mit Verletzungsklasse und dem Schritt der
        Heilung, tot)
-     - **Freiheit** (frei oder gefangen)
+     - **Freiheit** (frei oder gefangen; nur „frei“ lässt das Zustimmungsmodell zu, jeder
+       spätere Wert wie „unfrei“ sperrt dort automatisch)
      - **im Kampf** (ja oder nein): gesetzt und gelöscht durch Aufträge (Regel 23) von Stämme &
        Diplomatie, wenn ein Einzelner an einem Kampf teilnimmt
      - **„in Gottes Hand“** (vom Simulationskern)
@@ -127,7 +128,8 @@ zeigen.
     als Zahl fest (ein Auftrag, Regel 23), etwa „Stamm A verliert 5“. Dieses System wählt die Opfer: Jedes
     Opfer wird aus dem ganzen Volk gezogen, Einzelne mit dem geringeren Gewicht w_E
     (Formulas). Damit sterben Lieblingsfiguren seltener, aber nicht nie. Einzelne „in
-    Gottes Hand“ werden nie gezogen, für sie wird ein anderes Opfer gezogen.
+    Gottes Hand“ und Beteiligte einer laufenden intimen Handlung (Zustimmungsmodell
+    Regel 21) werden nie gezogen, für sie wird ein anderes Opfer gezogen.
 14. **Direkter Tod** eines Einzelnen (Blitz auf eine Person, tödlicher Aufprall nach
     einem Wurf) senkt das Volk seines Stamms um 1.
 15. Ein toter Einzelner wird entfernt, seine ID wird nie wieder vergeben. **Jeder Tod
@@ -177,7 +179,9 @@ zeigen.
     fest, wie viele Köpfe wechseln. Die Einzelnen werden nach dem Verfahren des
     größten Rests im Verhältnis der neuen Volkszahlen verteilt (Edge Cases). Wer
     wechselt, wird mit dem Zufallsstrom dieses Systems gezogen; Einzelne „in Gottes
-    Hand“ werden dabei nie gezogen und bleiben in ihrem Stamm.
+    Hand“ werden dabei nie gezogen und bleiben in ihrem Stamm. Jeder Einzelne merkt sich
+    Stamm und Schritt seines letzten Wechsels (auch durch Gefangennahme); das
+    Zustimmungsmodell nimmt danach eine Zeit lang die strengere Norm beider Kulturen.
 
 **Ort und Bewegung**
 
@@ -360,7 +364,7 @@ The Opferwahl formula is defined as:
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
 | k | int | ≥ 0 | calculated | Verlust laut Auftrag (Stämme, Welt, Gotteskraft) |
-| H_t | int | 0 bis E_t | calculated | Einzelne „in Gottes Hand“: zählen zum Volk, werden nie gezogen |
+| H_t | int | 0 bis E_t | calculated | Einzelne „in Gottes Hand“ oder in einer laufenden intimen Handlung (Zustimmungsmodell Regel 21): zählen zum Volk, werden nie gezogen |
 | M | int | ≥ 0 | calculated | Masse = V_t − E_t |
 | E_el | int | 0 bis E_t | calculated | Einzelne, die gezogen werden dürfen |
 | w_E = a / b | Bruch | 0,05–1, Default 1/4 (a = 1, b = 4) | data file | Gewicht eines Einzelnen gegenüber einem Kopf der Masse; als ganzzahliger Bruch, damit u ganzzahlig bleibt |

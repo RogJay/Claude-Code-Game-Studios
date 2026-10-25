@@ -239,7 +239,7 @@ Schnellvorlauf ohne Grafik, kein verlässliches Speichern und keine Auswertung
 | Menschen & Bevölkerung | – | Takt (1–2 Schritte, Lebenszeit), Umrechnung Lebensjahr ↔ Schritte, Zufallsstrom, Status „in Gottes Hand“ | Kern |
 | Stämme & Diplomatie | – | Takt (jährlich), Zufallsstrom, Ereignisse (Krieg, Frieden, Abspaltung) | Kern |
 | Kultur & Erinnerung | – | Takt (jährlich), Ereignisse samt Ursache-Kette, angewendete Eingriffe | Kern; „Eingriff erfassen“ besitzt Kultur & Erinnerung |
-| Zustimmungsmodell | – | keine: Es ist eine reine Funktion ohne Zufall und ohne Takt, wird aber nur innerhalb eines Schritts aufgerufen | Zustimmungsmodell |
+| Zustimmungsmodell | – | Sperrmerkmale „in Gottes Hand“, „lebt“, „erschüttert“; Schrittnummer für den Stempel des Ergebnisses; Eintrag „Sperrenprüfung“ (Takt 1, nach Gotteskraft) für das Handlungsregister. Die Prüffunktion selbst hat keinen Zufall und keinen Takt und wird nur innerhalb eines Schritts aufgerufen | Zustimmungsmodell |
 | Begehren & Lust, Harem & Rituale | – | Takte, Zufallsströme, Ereignisse | Kern |
 | Gotteskraft & Götterkräfte | Eingriffe (Kraft, Ziel, Schritt) | Takt (jährlich), Eingriff angewendet als Ereignis | Kern (Eingriffswarteschlange) |
 | Gotteshand & Ragdoll | feste Eingriffsereignisse (Beginn und Ende „in Gottes Hand“, Ergebnis, Verletzungsklasse) | Status „in Gottes Hand“ | Kern (Format des Eingriffsereignisses) |
@@ -383,9 +383,11 @@ vor Krieg und Abspaltung kommt (nachgetragen mit dem GDD Menschen & Bevölkerung
 Begehren & Lust sowie Harem & Rituale arbeiten auf der Ebene einzelner Menschen und
 laufen im Personentakt. Ihre GDDs können einen eigenen Takt festlegen, der ein
 Vielfaches von P_person ist. Einzige Ausnahme ist die Sperrenprüfung laufender intimer
-Handlungen: Sie läuft als eigener Eintrag mit Takt 1 in jedem Schritt, an der Stelle von
-Begehren & Lust bzw. Harem & Rituale in der Reihenfolge (Zustimmungsmodell, Regel 14), damit eine
-Handlung im selben Schritt endet wie die Sperre.
+Handlungen: Sie läuft als eigener Eintrag mit Takt 1 in jedem Schritt **nach Gotteskraft &
+Götterkräfte und vor der Chronik**, also nach allen Systemen, die eine Sperre setzen können
+(Zustimmungsmodell, Regel 14), damit eine Handlung im selben Schritt endet wie die Sperre.
+Der Kern liefert dafür je Mensch die Sperrmerkmale „in Gottes Hand“, „lebt“ und
+„erschüttert“ (die ersten T_erschüttert Schritte nach der Rückgabe aus Gottes Hand).
 
 **Output Range:** Pro Schritt laufen höchstens zwei Jahressysteme (beim Versatz 2:
 Menschen und Stämme) und ein Teil der Menschen im Personentakt. Das Muster wiederholt sich alle kgV(P_person, S_year) Schritte (10 beim
@@ -637,7 +639,7 @@ E_len = 25, P_person = 2, S_Lj = 60, cap = 8, dt_max = 0,1 s. Tests liegen unter
 - **AC-03 (Rule 2, Formel 2) [Logic/EditMode]** **GIVEN** ein Lauf ab t = 0, **WHEN** t = 125 erreicht ist, **THEN** entsteht genau 1 Ereignis „Neue Ära“, nach den Eingriffen und vor allen Ereignissen der Jahressysteme dieses Schritts; bei t = 0, 124 und 126 entsteht keines; bei t = 0 entsteht stattdessen genau 1 Ereignis „Welt erschaffen“.
 - **AC-04 (Rule 3, Formel 5) [Logic/EditMode]** **GIVEN** die Default-Versätze (Welt 0, Kultur 1, Menschen 2, Stämme 2, Gotteskraft 3, Chronik 4), **WHEN** t = 0 bis 999 läuft, **THEN** läuft jedes Jahressystem genau 200-mal, pro Schritt höchstens 1 Jahressystem außer beim Versatz 2 (Menschen vor Stämmen); bei t = 11 laufen Kultur und die Menschen mit ungerader ID, bei t = 12 Stämme und die Menschen mit gerader ID; das Muster wiederholt sich alle 10 Schritte.
 - **AC-05 (Formel 1, 5) [Logic/EditMode]** **GIVEN** eine Konfiguration mit O_sys ≥ P_sys, P_person > S_year oder S_year < 5, **WHEN** sie geprüft wird, **THEN** meldet der Kern einen Konfigurationsfehler und startet nicht, statt ein System still nie laufen zu lassen.
-- **AC-06 (Rule 4) [Logic/EditMode]** **GIVEN** Stub-Systeme protokollieren ihre Aufrufe, **WHEN** ein Schritt mit einem Eingriff läuft, **THEN** ist die Reihenfolge: Eingriffe (nach Eingang) → Welt → Menschen → Kultur → Stämme → Begehren → Harem → Gotteskraft → Chronik → Zustellung der Ereignisse → Zähler t + 1.
+- **AC-06 (Rule 4) [Logic/EditMode]** **GIVEN** Stub-Systeme protokollieren ihre Aufrufe, **WHEN** ein Schritt mit einem Eingriff läuft, **THEN** ist die Reihenfolge: Eingriffe (nach Eingang) → Welt → Menschen → Kultur → Stämme → Begehren → Harem → Gotteskraft → Sperrenprüfung laufender Handlungen → Chronik → Zustellung der Ereignisse → Zähler t + 1.
 - **AC-07 (Rule 4.3, 15) [Logic/EditMode]** **GIVEN** System A meldet Ereignis E in Schritt t und System B empfängt E, **WHEN** die Schritte t und t + 1 laufen, **THEN** ist der Zustand von B nach t unverändert und nach t + 1 verändert; in t entsteht keine Folgekette.
 - **AC-08 (Rule 5) [Logic/EditMode]** **GIVEN** Menschen und Stämme werden in der Reihenfolge 7, 3, 9, 1 angelegt, **WHEN** ein System sie abarbeitet, **THEN** ist die Reihenfolge 1, 3, 7, 9; bei 100 verschiedenen Anlegereihenfolgen ist der Zustands-Hash identisch.
 - **AC-30 (Rule 4.2 und 4.3, Formel 5) [Logic/EditMode]** **GIVEN** zwei Stub-Systeme X und Y, X steht in der Reihenfolge vor Y, beide laufen in Schritt t, **WHEN** X in t den Wert v von 0 auf 1 setzt und Y in t v liest, **THEN** liest Y 1; liest X dagegen einen Wert w, den Y in t schreibt, liest X den Wert aus Schritt t − 1. **GIVEN** ein Stub-Jahressystem mit P = 5 und O = 2 und ein Ereignis E, das am Ende von Schritt 11 zugestellt wird, **WHEN** die Schritte 12 bis 16 laufen, **THEN** verarbeitet es E genau einmal, in Schritt 12; wird nach Schritt 11 gespeichert und geladen, ist der Hash gleich und E wird weiterhin in Schritt 12 verarbeitet. **GIVEN** ein Auftrag von System X an System Y (Y steht in der Reihenfolge vor X), **WHEN** X ihn in Schritt t erteilt, **THEN** führt Y ihn sofort aus, X liest danach den neuen Zustand noch in t, und Y hat dabei aus seinem eigenen Strom gewürfelt (der Strom von X ist unverändert).

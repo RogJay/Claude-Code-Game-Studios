@@ -29,3 +29,44 @@ Reviewed-Content-Hash: design/gdd/menschen-und-bevoelkerung.md ba63ca0d9489dd443
 Reviewed-Content-Hash: design/gdd/simulationskern.md 8ce34ee793a31403c88222b1793b32a3a335e7f8
 Reviewed-Content-Hash: design/gdd/game-concept.md 1928814c8180f283991e0bb1a8e9c6a34ff3dd9b
 Reviewed-Content-Hash: design/gdd/systems-index.md 9459ca6648bd384a506af3446f5815badd395ca1
+
+## Review — 2026-10-25 — Verdict: NEEDS REVISION
+Review mode: full · Workflow: standard
+Scope signal: M
+Specialists: game-designer, systems-designer, qa-lead, unity-specialist, security-engineer, creative-director (senior); night run with the developer's blanket permission, no questions asked
+Blocking items: 16 | Recommended: 14
+Summary: The core holds (one pure function, fail-closed, multiplicative desire factor, hysteresis), so not MAJOR. But enforcement can be forged (default result, result not bound to act or participants, caller-built requests and tables), lock timing has gaps (wrong slot in the step, view grabs before the simulation knows, held and dead people invisible to PrüfeSperren, loss draws can kill participants), violence works as a lever (killing or capturing a bound partner, conquest swapping norms, slavery as a role, captured harem members), and the ritual row lets piety stand in for desire inside contact. Last round allowed by the roadmap.
+Prior verdict resolved: Yes (all five round-1 blockers addressed; new findings come from the full-mode specialists)
+Findings:
+- [BLOCKING] Rule 18 / AC-25: default(Zustimmungsergebnis) forgeable; result not bound to act type, participants, step or phase [unity-specialist, security-engineer, qa-lead]
+- [BLOCKING] Rule 14 / Rule 18: continue path undefined; one owner of running acts needed [unity-specialist]
+- [BLOCKING] Rule 14 / Kern Formula 5: lock check slot before Gotteskraft and Chronik; orders after it are seen one step late [unity-specialist, security-engineer]
+- [BLOCKING] Rule 20 / AC-21: the view grabs in real time before the simulation applies the intervention; scene and ragdoll can overlap for frames [unity-specialist]
+- [BLOCKING] Rule 4 / Rule 14: "in Gottes Hand" and death invisible to Prüfe and PrüfeSperren; AC-21 vs AC-26 reason conflict [security-engineer, qa-lead, game-designer]
+- [BLOCKING] Rules 4/19: caller builds Anfrage, profile and Datentabelle; no public constructors and one builder needed [security-engineer]
+- [BLOCKING] Rule 8 / Menschen Rule 18: Freiheit only frei/gefangen; slavery as a role would pass [security-engineer]
+- [BLOCKING] Rule 16 / concept: capture must end harem membership; return only via a fresh join [security-engineer]
+- [BLOCKING] Rule 19 / k_i: killing or capturing the bound partner removes the refusal [game-designer]
+- [BLOCKING] Rule 4 norms: conquest swaps a person's norms in one step [game-designer, security-engineer]
+- [BLOCKING] Formula 1 Ritual / Rule 6-7: piety substitutes for desire inside contact; ritual is the easiest sexual path; "pairwise" undefined [game-designer, security-engineer, systems-designer]
+- [BLOCKING] Formula 4: "kein Begehren" guarantee fails when penalties push w_roh to 0 [systems-designer, qa-lead]
+- [BLOCKING] AC-02: default(Norm) looks valid and drops a taboo [qa-lead]
+- [BLOCKING] AC-19: negative weights, ranges, NaN, missing rows, default table not tested [qa-lead]
+- [BLOCKING] AC: one-sided desire and Blitz have no AC [qa-lead]
+- [BLOCKING] Menschen Rule 13: loss draws can kill participants of a running act [security-engineer]
+- [RECOMMENDED] Formula 2/3 load rules: θ range, float tolerance, weight normalisation, hold desire floor, personal-weight floors [systems-designer, security-engineer]
+- [RECOMMENDED] Formula 4: culture invisible in refusals; computed "kulturell" flag [game-designer]
+- [RECOMMENDED] Edge Cases: "erschüttert" lock after release from the hand [game-designer]
+- [RECOMMENDED] Dependencies: no repeated identical requests; recheck after loading; desire must not grow from hand placements [game-designer, security-engineer]
+- [RECOMMENDED] AC-20 tolerances too loose; AC-06 parse asmdef; AC-09 IL scan; AC-21 frame recorder; AC-22 PNG sequence [systems-designer, unity-specialist, qa-lead]
+- [RECOMMENDED] Formulas intro stale; typo; Rule 13 reasons; invalid-table edge case list [main review]
+- [RECOMMENDED] AC-03, AC-13, AC-14, AC-16, AC-18, AC-27 rewrites; stratified AC-01 [qa-lead] (left for the developer)
+- [RECOMMENDED] Tuning Knobs (advisory): table missing [systems-designer called it blocking; creative-director ruled advisory at workflow standard]
+Note: the stamp below is the content hash of the documents AS REVIEWED (before the revisions above), so the next review reads them as CHANGED and re-reviews.
+Reviewed-Content-Hash: design/gdd/zustimmungsmodell.md 125b1bb366e693cfc0c981b5688ad3bb387666de
+Reviewed-Content-Hash: design/registry/entities.yaml 2051506f2e18b2b923afde0e26e479b34aab23c9
+Reviewed-Content-Hash: .claude/skills/design-review/SKILL.md a63d8fba9b7142eeb43791f061e2e1533c429b43
+Reviewed-Content-Hash: design/gdd/menschen-und-bevoelkerung.md 98ca581754d417dc0ac1c1af4e855e5727a63e27
+Reviewed-Content-Hash: design/gdd/simulationskern.md 65360b9e6fece24faa12f2add83cc022dd39c773
+Reviewed-Content-Hash: design/gdd/game-concept.md 168cdc5ff8f56635a08ebbb674fe517b93ded4c6
+Reviewed-Content-Hash: design/gdd/systems-index.md 62096626557e3ec51fec3ceb141c4996cbd1e715

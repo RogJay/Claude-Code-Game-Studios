@@ -68,11 +68,18 @@ Grund sichtbar, damit der Spieler sieht, wie Kultur Lust formt (Pillar 2 und 3).
    - die **Phase**: Beginn (vor dem Start) oder Halten (Prüfung während einer laufenden
      Handlung, Regel 14)
    - die **Beteiligten** als Zustimmungsprofile aus Menschen & Bevölkerung (5
-     Eigenschaften, Geschlecht, Freiheit, Gesundheit, im Kampf, Stammes-ID)
-   - den **Ort**: privat, öffentlich, Fest, Ritual
+     Eigenschaften, Geschlecht, Freiheit, Gesundheit, im Kampf, Stammes-ID), dazu je
+     Beteiligtem seine ID und drei **Sperrmerkmale** vom Simulationskern: **in Gottes
+     Hand**, **lebt** und **erschüttert** (Regel 8). Diese Merkmale können nur sperren, nie
+     Zustimmung schaffen; deshalb widersprechen sie Regel 5 nicht
+   - den **Ort**: privat, öffentlich, Fest, Ritual (der Ort „Ritual“ ist nur mit der
+     Handlungsart Ritual gültig, sonst „ungültige Eingabe“)
    - die **Normen** der Kultur jedes Beteiligten für diese Handlungsart an diesem Ort:
      ein Wert 0–1 (Offenheit) und ein Merkmal „Tabu“ (Kultur & Erinnerung, vorläufiger
-     Vertrag)
+     Vertrag). Hat ein Beteiligter in den letzten T_akkult Geschichtsjahren den Stamm
+     gewechselt (Eroberung, Abspaltung, Gefangenschaft), gilt die strengere Norm beider
+     Kulturen, `n = min(n_Herkunft, n_neu)`, und ein Tabu einer der beiden sperrt. Ein
+     Krieg macht so niemanden über Nacht offener
    - das **Begehren** jedes Beteiligten für jeden anderen, ein Wert 0–1 (Begehren &
      Lust). Es darf nur aus Eigenschaften und Vorlieben der Person entstehen und
      gehört zu jeder Anfrage, auch zum Ritual.
@@ -92,15 +99,26 @@ Grund sichtbar, damit der Spieler sieht, wie Kultur Lust formt (Pillar 2 und 3).
 7. Zärtlichkeit und Sex zu zweit haben genau 2 Beteiligte. Eine Gruppe hat 3 bis
    N_gruppe_max (Formulas). Harem beitreten hat 2: die Person, die beitritt, und das
    Haremshaupt. Beide müssen zustimmen, aber der Status des Haremshaupts zählt nicht.
-   Ein Ritual hat 2 bis N_gruppe_max Beteiligte wie eine Gruppe (Entscheidung des
-   Entwicklers vom 2026-10-25: Ein Ritual kann Kontakt zwischen den Beteiligten
-   enthalten und wird deshalb paarweise geprüft). Jede Person darf in einer Anfrage nur einmal
+   Ein Ritual hat 2 bis N_gruppe_max Beteiligte. Die Anfrage „Ritual“ prüft nur, ob
+   jemand **teilnimmt**; dort zählt die Frömmigkeit, und wer weniger als F_min hat, nimmt
+   nie teil. Jeder **Kontakt** im Ritual (Entscheidung des Entwicklers vom 2026-10-25: ein
+   Ritual kann Kontakt enthalten) ist eine **eigene Anfrage der Handlungsart, die er ist**:
+   zwei Personen als Zärtlichkeit oder Sex zu zweit, drei oder mehr zugleich als Gruppe,
+   jeweils mit deren Gewichten (dort ist W_F = 0), Schwelle und Strafe für
+   Öffentlichkeit, an dem Ort, an dem er stattfindet (öffentlich, wenn weitere
+   Teilnehmer zusehen). Das heißt „paarweise geprüft“: Jeder Kontakt besteht die Prüfung
+   seiner eigenen Art, und Frömmigkeit ersetzt nie Begehren. Jede Person darf in einer Anfrage nur einmal
    vorkommen. Andernfalls lautet das Ergebnis „ungültige Eingabe“.
 
 **Harte Sperren** (lehnen immer ab, unabhängig von allem anderen)
 
 8. Die Anfrage wird abgelehnt, wenn bei **irgendeinem** Beteiligten eines davon gilt:
-   - **gefangen**
+   - **nicht frei**: jeder Wert der Freiheit außer „frei“ (heute „gefangen“; einen
+     späteren Zustand wie Sklaverei modelliert jedes System als Freiheit ≠ frei, nie als
+     Rolle)
+   - **in Gottes Hand** oder **nicht lebend**
+   - **erschüttert**: in den ersten T_erschüttert Schritten nach der Rückgabe aus Gottes
+     Hand, damit ein Wurf aufs Fest nie im nächsten Takt zu einer Handlung führt
    - **verletzt** (jede Verletzungsklasse)
    - **im Kampf**
    - die Kultur des Beteiligten hat für diese Handlungsart an diesem Ort ein **Tabu**
@@ -111,7 +129,10 @@ Grund sichtbar, damit der Spieler sieht, wie Kultur Lust formt (Pillar 2 und 3).
 10. Menschen „in Gottes Hand“ treffen keine Entscheidungen (Simulationskern). Begehren
     & Lust sowie Harem & Rituale stellen für sie keine Anfrage. Wird ein Beteiligter
     während einer Handlung gepackt, endet die Handlung im selben Schritt (Sperrenprüfung,
-    Regel 14), und die Ansicht zeigt die Szene nicht mehr, bevor die Physik ihn bewegt. Gewalt und Sex überschneiden sich so nie.
+    Regel 14), und die Ansicht zeigt die Szene nicht mehr, bevor die Physik ihn bewegt.
+    Weil die Ansicht in echter Zeit packt, der Kern den Griff aber erst im nächsten
+    Schritt anwendet, setzt der Griff zuerst eine Sperre in der Ansicht (Regel 20). Gewalt
+    und Sex überschneiden sich so nie.
 
 **Die eigene Entscheidung**
 
@@ -124,37 +145,44 @@ Grund sichtbar, damit der Spieler sieht, wie Kultur Lust formt (Pillar 2 und 3).
     Handlungsart erreicht.
 12. Die Handlung findet nur statt, wenn **alle** zustimmen. Das Ergebnis nennt bei
     Ablehnung jeden, der ablehnt, mit seinem **Hauptgrund**: dem Teil seines
-    Bereitschaftswerts, der ihn am weitesten unter die Schwelle drückt (Formulas).
+    Bereitschaftswerts, der ihm am meisten fehlt (Formel 4), und dem Merkmal
+    **„kulturell“**, wenn er bei voller Offenheit seiner Kultur zugestimmt hätte.
 
 **Gründe** (für Anzeige und Chronik)
 
-13. Mögliche Gründe einer Ablehnung: gefangen, verletzt, im Kampf, Tabu der Kultur,
-    ungültige Eingabe, kein Begehren, treu gebunden, zu wenig Lust, Norm zu streng, zu
+13. Mögliche Gründe einer Ablehnung: ungültige Eingabe, tot, in Gottes Hand, nicht frei,
+    verletzt, im Kampf, erschüttert, Tabu der Kultur (die Sperren in dieser Rangfolge,
+    der erste zutreffende gewinnt; Beteiligte in der Reihenfolge der Anfrage), kein Begehren, treu gebunden, zu wenig Lust, Norm zu streng, zu
     wenig Geselligkeit, zu wenig Frömmigkeit, zu öffentlich. Die Anzeige formt daraus einen Satz, etwa „Ilsa lehnt ab: treu
-    gebunden“.
+    gebunden“, mit dem Merkmal „kulturell“ etwa „Ilsa lehnt ab: Norm zu streng; in einer
+    offeneren Kultur hätte sie zugestimmt“.
 
 **Während der Handlung**
 
-14. Eine laufende Handlung wird auf zwei Takten geprüft. **Harte Sperren** (Regel 8,
-    dazu der Status „in Gottes Hand“ vom Kern) prüft der Aufrufer für jede laufende
-    Handlung **in jedem Schritt**, als eigenen Eintrag mit Takt 1 vor den Regeln der
-    Handlung: Greift eine Sperre (zum Beispiel weil jemand verletzt, gefangen, in einen
-    Kampf gezogen oder von der Gotteshand gepackt wird), endet die Handlung in
-    demselben Schritt, in dem sich der Zustand ändert, denn Aufträge und Eingriffe
-    wirken vor diesem Eintrag (Simulationskern). Die **Bereitschaft** prüft er **in
-    jedem Personentakt** der Beteiligten neu; sie muss mindestens die Einwilligungslinie
-    θ − Δ_hold erreichen, sonst endet die Handlung (Formulas). Entscheidung des
-    Entwicklers vom 2026-10-25: Der Beginn verlangt θ, die Einwilligung gilt bis
-    θ − Δ_hold. Eine Handlung läuft also weiter, wenn die Bereitschaft zwischen beiden
-    liegt; die Marge verhindert, dass kleine Schwankungen der Normen eine Szene
-    abbrechen. Die Hilfsfunktion `PrüfeSperren(Beteiligte)` prüft nur die harten
-    Sperren und ist ebenfalls rein.
+14. Eine laufende Handlung wird auf zwei Takten geprüft. **Harte Sperren** (Regel 8)
+    prüft das Handlungsregister (Regel 18) für jede laufende Handlung **in jedem Schritt**,
+    als eigenen Eintrag mit Takt 1 **nach Gotteskraft & Götterkräfte und vor der Chronik**,
+    also nach allen Systemen, die eine Sperre setzen können (Simulationskern Formel 5).
+    Greift eine Sperre (zum Beispiel weil jemand verletzt, gefangen, in einen Kampf
+    gezogen, gepackt wird oder stirbt), endet die Handlung in demselben Schritt, in dem
+    sich der Zustand ändert. Die **Bereitschaft** prüft es im Personentakt **jedes**
+    Beteiligten neu (bei zwei Personen mit verschiedenem Takt also in jedem Schritt) und
+    zusätzlich im ersten Schritt nach dem Laden eines Spielstands; sie muss mindestens die
+    Einwilligungslinie θ − Δ_hold erreichen, sonst endet die Handlung (Formulas).
+    Entscheidung des Entwicklers vom 2026-10-25: Der Beginn verlangt θ, die Einwilligung
+    gilt bis θ − Δ_hold. Eine Handlung läuft also weiter, wenn die Bereitschaft zwischen
+    beiden liegt; die Marge verhindert, dass kleine Schwankungen der Normen eine Szene
+    abbrechen. Die Hilfsfunktion `PrüfeSperren(Beteiligte)` prüft nur die harten Sperren,
+    sieht über die Sperrmerkmale auch „in Gottes Hand“ und „lebt“ und ist ebenfalls rein.
 15. Jeder Beteiligte kann eine Handlung jederzeit beenden. Wann das geschieht, legen
     Begehren & Lust sowie Harem & Rituale fest. Das Zustimmungsmodell erzwingt nie, dass
     eine Handlung weitergeht.
 16. Einen Harem **verlassen** braucht keine Prüfung und ist immer möglich, außer in
     Gottes Hand (dann im ersten Personentakt danach). Eine Mitgliedschaft heißt nie,
-    dass jemand jeder Handlung zustimmt: Jede Handlung im Harem wird einzeln geprüft.
+    dass jemand jeder Handlung zustimmt: Jede Handlung im Harem wird einzeln geprüft. Wird
+    ein Mitglied gefangen genommen, endet seine Mitgliedschaft im selben Schritt; nach
+    der Befreiung kommt es nur über eine neue Anfrage „Harem beitreten“ zurück (Konzept,
+    nicht verhandelbare Grenzen).
 
 **Was der Spieler beeinflussen kann**
 
@@ -166,41 +194,65 @@ Grund sichtbar, damit der Spieler sieht, wie Kultur Lust formt (Pillar 2 und 3).
 
 **Durchsetzung** (die Funktion allein kann nicht verhindern, dass ein Aufrufer sie umgeht)
 
-18. Das Ergebnis von `Prüfe` ist ein `Zustimmungsergebnis`: Es hat keinen öffentlichen
-    Konstruktor (nur `Prüfe` erzeugt es), enthält Handlungsart, Phase, Beteiligte und das
-    Urteil je Beteiligtem und kann nicht gespeichert werden (in C# ein `ref struct`). Die
-    Schnittstelle, die eine intime oder sexuelle Handlung beginnt oder fortsetzt
-    (Begehren & Lust, Harem & Rituale), nimmt nur ein `Zustimmungsergebnis` mit Urteil
-    Zustimmung entgegen, das in derselben Aufrufkette erzeugt wurde. Ein altes Urteil
-    lässt sich so nicht wiederverwenden, und eine Ablehnung nicht überspielen.
-19. Die Aufrufer schulden dem Modell ehrliche Eingaben: Das Begehren b_ij ist eine reine
-    Funktion der Eigenschaften und Vorlieben der Person, die Bindung k_i kommt nur aus den
-    Beziehungen, die Normen nur von Kultur & Erinnerung. Hingabe, Eingriffe, Kräfte und
-    Rang ändern keinen dieser Werte (Property-Test im GDD des Aufrufers, siehe
-    Dependencies). Normen ändern sich nur langsam und nie durch einen einzelnen Eingriff
-    (Vertrag für Kultur & Erinnerung).
-20. Die Ansicht zeigt eine Szene nur, solange die Sperrenprüfung für alle Beteiligten
-    frei ist (lesend aus dem Zustimmungsprofil und dem Status des Kerns), und beendet sie
-    vor dem ersten Bild einer Gewalt-Darstellung (Ragdoll, Blitz, Verletzung). So gibt es
-    in keinem Bild Gewalt und Sex zugleich, auch nicht in den Schritten zwischen Eingriff
-    und Ende der Handlung.
+18. **Ergebnis und Handlungsregister.** `Prüfe` liefert für den Beginn ein
+    `Zustimmungsergebnis` und für das Halten ein eigenes `Halteergebnis`; beide sind
+    Werte, die sich nicht speichern lassen (in C# `ref struct`), und haben keinen
+    öffentlichen Konstruktor. Jede Aufzählung im Modell hat den Wert 0 = „ungültig“, ein
+    leerer oder gefälschter Wert (in C# `default`) gilt also nie als Zustimmung. Das
+    Ergebnis trägt als eigene Werte das Gesamturteil, die Handlungsart, die IDs der
+    Beteiligten und einen **Stempel** (Schrittnummer, Prüfsumme der Anfrage, Kennung der
+    Datentabelle), den nur `Prüfe` setzt. Laufende intime Handlungen hält genau ein
+    Besitzer, das **Handlungsregister**: Es hat nach außen nur `Beginne(Zustimmungsergebnis)`
+    und `Beende(Handlung, Grund)`. `Beginne` lehnt ab, wenn der Stempel fehlt, nicht vom
+    aktuellen Schritt ist oder Handlungsart und Beteiligte nicht zur gewünschten Handlung
+    passen; Begehren & Lust sowie Harem & Rituale beginnen Handlungen nur über `Beginne`.
+    Das Register führt die Sperrenprüfung jedes Schritts und die Halteprüfung selbst aus
+    (Regel 14). Wie das in Assemblies geschnitten wird, entscheidet die Architektur
+    (technical-director); die Regel ist: kein anderer Weg in eine Handlung.
+19. **Die Anfrage baut das Modell, nicht der Aufrufer.** `Anfrage`, `Zustimmungsprofil`
+    und `Datentabelle` haben keinen öffentlichen Konstruktor. Ein einziger
+    Anfrage-Baustein nimmt nur IDs (Handlungsart, Beteiligte, Ort) und holt jeden Wert bei
+    seinem Besitzer: das Profil bei Menschen & Bevölkerung, die Sperrmerkmale beim Kern,
+    das Begehren b_ij bei Begehren & Lust, die Bindung k_i aus den Beziehungen, die
+    Normen bei Kultur & Erinnerung, die Tabelle aus dem geprüften Ladevorgang. Für diese
+    Werte gilt:
+    - b_ij ist eine reine Funktion fester Eigenschaften und einmal gewürfelter Vorlieben;
+      es wächst nie dadurch, dass die Gotteshand zwei Menschen zusammenbringt.
+    - Eine Bindung bleibt für die Bereitschaft noch **T_trauer** bestehen, nachdem der
+      Partner gestorben oder gefangen genommen ist. Ein Blitz auf den Partner oder seine
+      Gefangennahme macht eine Ablehnung „treu gebunden“ also nie sofort zur Zustimmung.
+    - Normen ändern sich nur langsam und nie durch einen einzelnen Eingriff; nach einem
+      Stammeswechsel gilt Regel 4.
+    - Hingabe, Eingriffe, Kräfte und Rang ändern keinen dieser Werte (Property-Test im
+      GDD des Besitzers, siehe Dependencies).
+    - Dieselbe Anfrage (gleiche Beteiligte, gleiche Handlungsart) stellen die Aufrufer
+      erst wieder, wenn sich einer ihrer Werte geändert hat.
+20. **Die Ansicht.** Sie zeigt eine Szene nur, solange (a) die Sperrenprüfung für alle
+    Beteiligten frei ist, (b) kein eingereihter, noch nicht angewendeter Eingriff einen
+    Beteiligten betrifft und (c) ihre eigene Sperre frei ist. Ein Griff der Gotteshand
+    oder eine Gewalt-Kraft setzt zuerst diese eigene Sperre, blendet die Szene aus und
+    startet erst danach die Physik. Ragdolls kollidieren nie mit Beteiligten einer
+    laufenden Szene (eigene Kollisionsebene). So gibt es in keinem gezeichneten Bild
+    Gewalt und Sex zugleich, auch nicht in den Bildern zwischen Eingriff und Ende der
+    Handlung.
 21. **Umgekehrt** (Konzept: Kampf- und Verletzungszustände sperren Sexuelles und
     umgekehrt): Stämme & Diplomatie zieht niemanden, der in einer laufenden Handlung
-    steht, in einen Kampf oder in Gefangenschaft. Gewalttätige Kräfte und die Gotteshand
+    steht, in einen Kampf oder in Gefangenschaft, und die Opferwahl von Menschen &
+    Bevölkerung zieht ihn bei einem Verlust nicht. Gewalttätige Kräfte und die Gotteshand
     dürfen einen Beteiligten treffen, aber die Handlung endet dann nach Regel 14 im
-    selben Schritt.
+    selben Schritt und die Ansicht nach Regel 20 schon vorher.
 
 ### States and Transitions
 
-Das Zustimmungsmodell hat **keinen eigenen Zustand**. Den Ablauf einer Handlung
-(angefragt, läuft, beendet) führen Begehren & Lust sowie Harem & Rituale. Die Prüfung
-greift an zwei Stellen ein:
+Die Prüffunktion hat **keinen Zustand**. Die laufenden Handlungen hält das
+Handlungsregister (Regel 18); wann eine Handlung angefragt und freiwillig beendet wird,
+entscheiden Begehren & Lust sowie Harem & Rituale. Die Prüfung greift an drei Stellen ein:
 
 | Zeitpunkt | Prüfung | Ergebnis |
 |---|---|---|
 | Vor Beginn | volle Prüfung: Sperren, dann Bereitschaft gegen Schwelle | Zustimmung → Handlung beginnt; Ablehnung → sie beginnt nicht, Grund wird gemeldet |
-| In jedem Schritt während der Handlung | nur die harten Sperren (`PrüfeSperren`) | weiter, oder Ende in demselben Schritt mit dem Grund der Sperre |
-| In jedem Personentakt während der Handlung | Sperren, dann Bereitschaft gegen die Einwilligungslinie (Schwelle minus Haltemarge) | weiter, oder sofortiges Ende mit Grund |
+| In jedem Schritt während der Handlung, nach Gotteskraft und vor der Chronik | nur die harten Sperren (`PrüfeSperren`) | weiter, oder Ende in demselben Schritt mit dem Grund der Sperre |
+| Im Personentakt jedes Beteiligten und im ersten Schritt nach dem Laden | Sperren, dann Bereitschaft gegen die Einwilligungslinie (Schwelle minus Haltemarge) | weiter, oder sofortiges Ende mit Grund |
 
 ### Interactions with Other Systems
 
@@ -208,21 +260,22 @@ greift an zwei Stellen ein:
 |---|---|---|---|
 | Menschen & Bevölkerung | Zustimmungsprofile (fester Inhalt, siehe dort Regel 18) | – | Menschen |
 | Kultur & Erinnerung | Normen: Offenheit 0–1 und Tabu je Handlungsart und Ort | – | Kultur & Erinnerung (vorläufig, GDD fehlt) |
-| Begehren & Lust | Anfragen für Zärtlichkeit, Sex zu zweit, Gruppe; Begehren-Werte; Bindungen | Ergebnis mit Gründen | Zustimmungsmodell (Format von Anfrage und Ergebnis) |
-| Harem & Rituale | Anfragen für Harem beitreten und Ritual; Bindungen im Harem | Ergebnis mit Gründen | Zustimmungsmodell |
-| Simulationskern | – | nichts: kein Zufall, kein Takt, Aufruf nur im Schritt | Kern |
+| Begehren & Lust | Anfrage per IDs (Zärtlichkeit, Sex zu zweit, Gruppe, Kontakt im Ritual); Begehren b_ij und Bindungen als Funktion | Ergebnis mit Gründen; Beginne / Beende im Handlungsregister | Zustimmungsmodell (Anfrage-Baustein, Ergebnis, Handlungsregister) |
+| Harem & Rituale | Anfrage per IDs (Harem beitreten, Teilnahme am Ritual); Bindungen im Harem | Ergebnis mit Gründen; Beginne / Beende im Handlungsregister | Zustimmungsmodell |
+| Simulationskern | Sperrmerkmale in Gottes Hand, lebt, erschüttert; Schrittnummer für den Stempel | Eintrag „Sperrenprüfung“ mit Takt 1 nach Gotteskraft (Handlungsregister); die Prüffunktion selbst hat keinen Zufall und keinen Takt | Kern (Reihenfolge), Zustimmungsmodell (Register) |
 | Chronik, HUD & Chronik-Ansicht | – | Gründe einer Ablehnung, die das aufrufende System als Ereignis meldet | aufrufendes System meldet, Chronik wählt aus |
 | Gotteskraft & Götterkräfte, Gotteshand & Ragdoll | **keine Eingabe** (Regel 5, 17) | – | – |
 | Stämme & Diplomatie | – | Vertrag (Regel 21): zieht niemanden aus einer laufenden Handlung in Kampf oder Gefangenschaft | Stämme & Diplomatie (vorläufig, GDD fehlt) |
-| Weltansicht & Kamera | Sperrenprüfung lesend | Szene nur, solange alle Beteiligten frei von Sperren sind (Regel 20) | Weltansicht |
+| Weltansicht & Kamera | Sperrenprüfung und eingereihte Eingriffe lesend | Szene nur nach Regel 20, eigene Sperre vor jeder Gewalt-Darstellung, Kollisionsebene | Weltansicht |
+| Menschen & Bevölkerung (Opferwahl, Stammeswechsel) | – | Vertrag: Beteiligte einer laufenden Handlung werden bei Verlusten nicht gezogen; Stamm und Schritt des letzten Wechsels für Regel 4 | Menschen |
 
 ## Formulas
 
 Vorschlag des `systems-designer` (2026-10-25), im guided-Modus ohne Einzelfreigabe
-übernommen; der Entwickler prüft ihn mit dem GDD. Alle Schätzungen unten sind
-Näherungen über die Normalverteilung, keine Simulation. Bei der Umsetzung sind sie mit
-einem Monte-Carlo-Test zu prüfen (Acceptance Criteria). Gleitkommazahlen sind erlaubt,
-weil Determinismus nur auf demselben Rechner verlangt wird (Simulationskern).
+übernommen; der Entwickler prüft ihn mit dem GDD. Die Anteile in Formel 5 sind
+Monte-Carlo-Schätzungen; die Umsetzung prüft sie mit AC-20. Gerechnet wird überall in
+double. Gleitkommazahlen sind erlaubt, weil Determinismus nur auf demselben Rechner verlangt
+wird (Simulationskern); Vergleiche beim Laden der Tabelle haben eine Toleranz von 1e-9.
 
 ### 1. Bereitschaft
 
@@ -246,12 +299,13 @@ mehr (g = 1), und die Schwellen aus Formel 2 gelten wie zuvor.
 | n_i | float | 0–1 | calculated | Offenheit der Norm seiner Kultur für diese Handlungsart an diesem Ort (Kultur & Erinnerung) |
 | b_ij | float | 0–1 | calculated | Begehren von i für j (Begehren & Lust) |
 | k_i | bool | 0 oder 1 | calculated | an jemanden gebunden, der nicht teilnimmt |
-| W_D, W_L, W_N, W_G, W_F | float | je ≥ 0, Summe 1 ± 1e-6 | data file | Gewichte je Handlungsart (beim Ritual ist W_D > 0) |
+| W_D, W_L, W_N, W_G, W_F | double | je ≥ 0, Summe 1 ± 1e-6, beim Laden auf genau 1 normiert; W_D + W_L ≥ 0,40; W_N ≤ 0,40; beim Ritual W_D > 0 | data file | Gewichte je Handlungsart |
 | c_pub[a], c_bind[a] | float | 0–0,6 | data file | Stärke der Strafen je Handlungsart |
 | π[Ort] | float | 0–1 | data file | wie öffentlich der Ort ist |
 | μ | float | 0–1, Default 0,5 | data file | Anteil des kleinsten Begehrens in der Gruppe und beim Ritual |
 | b_ref | float | 0,2–0,5, Default 0,3 | data file | Begehren, ab dem der Faktor g nicht mehr bremst; darunter sinkt w linear auf 0 |
 | g_i | float | 0–1 | calculated | Begehrens-Faktor von i |
+| F_min | double | 0–0,5, Vorschlag 0,30 (wartet auf den Entwickler) | data file | nur Ritual: mindestens so viel Frömmigkeit, sonst nimmt jemand nicht teil (Regel 7); etwa 12 % haben weniger |
 | w_i | float | 0–1 | calculated | Bereitschaft von i |
 
 **Standardwerte der Datentabelle:**
@@ -264,15 +318,17 @@ mehr (g = 1), und die Schwellen aus Formel 2 gelten wie zuvor.
 | Harem beitreten | 0,35 | 0,10 | 0,30 | 0,25 | 0 | 0 | 0,50 |
 | Ritual | 0,25 | 0,15 | 0,30 | 0 | 0,30 | 0 | 0,40 |
 
-π: privat 0, Ritual 0, Fest 0,5, öffentlich 1. Die Ritual-Zeile ist ein Vorschlag für ein
-Ritual mit Kontakt (Entscheidung vom 2026-10-25) und mit dem Monte-Carlo-Test (AC-20) zu prüfen.
+π: privat 0, Ritual 0, Fest 0,5, öffentlich 1. Die Ritual-Zeile prüft nur die
+**Teilnahme**; jeder Kontakt im Ritual nutzt die Zeile der Handlung, die er ist (Regel 7),
+dort ist W_F = 0. Der Ort „Ritual“ gilt nur für die Handlungsart Ritual.
 
 **Output Range:** 0–1. Die Gewichte ergeben zusammen 1, deshalb gibt es keine Division.
 Den Wert 1 erreicht w nur, wenn alle Terme 1 sind und keine Strafe greift. Unter 0
 verhindert das max. Jeder positive Term hat ein Gewicht ≥ 0, und die Strafe für
 Öffentlichkeit sinkt mit steigender Geselligkeit. Mehr Begehren, Lust, Offenheit,
 Geselligkeit oder Frömmigkeit senkt w also nie. Eine Datentabelle, deren Gewichte nicht
-nicht 1 ± 1e-6 ergeben, gilt als ungültig (Formel 2). Auch g_i ist nie negativ und steigt mit dem
+1 ± 1e-6 ergeben, gilt als ungültig (Formel 2); eine gültige wird beim Laden auf genau 1
+normiert, sodass w nie über 1 steigt. Auch g_i ist nie negativ und steigt mit dem
 Begehren, das Produkt senkt w bei mehr Begehren also nie. Zusicherung: Für jeden Beteiligten mit
 min_j b_ij < θ[a] · b_ref gilt w_i ≤ g_i < θ[a], er lehnt also ab (Grund „kein Begehren“), was auch
 immer seine übrigen Werte sind. Bei den Defaults ist das ein Begehren unter 0,12 (Zärtlichkeit),
@@ -295,13 +351,24 @@ The Schwelle formula is defined as:
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
-| θ[a] | float | 0,10–0,90 | data file | Beginn-Schwelle je Handlungsart. Defaults: Zärtlichkeit 0,40, Sex zu zweit 0,48, Gruppe 0,52, Harem beitreten 0,55, Ritual 0,45 |
+| θ[a] | double | 0,30–0,90 | data file | Beginn-Schwelle je Handlungsart. Defaults: Zärtlichkeit 0,40, Sex zu zweit 0,48, Gruppe 0,52, Harem beitreten 0,55, Ritual 0,45 |
 | N_gruppe_max | int | 3–6, Default 4 | data file | größte Gruppe, auch beim Ritual. Mehr Beteiligte machen die Zustimmung aller unwahrscheinlicher und die Anzeige schwerer lesbar |
 
 **Output Range:** ja oder nein je Beteiligtem. θ = 0 wäre automatische Zustimmung, θ > 1
-hieße nie. Beides ist verboten, ebenso alles außerhalb von 0,10–0,90. Beim Laden der
-Daten muss gelten: θ_Zärtlichkeit ≤ θ_Sex ≤ θ_Gruppe. Verletzt die Datentabelle eine
-dieser Regeln, lehnt das Modell jede Anfrage mit „ungültige Eingabe“ ab (Regel 3).
+hieße nie. Beides ist verboten, ebenso alles außerhalb von 0,30–0,90. Beim Laden der
+Daten muss (mit Toleranz 1e-9) gelten:
+- θ_Zärtlichkeit ≤ θ_Sex ≤ θ_Gruppe
+- θ − Δ_hold ≥ 0,20 und (θ − Δ_hold) · b_ref ≥ 0,09 für jede Handlungsart, damit auch
+  eine laufende Handlung nie bei fast keinem Begehren weiterläuft (bei den Defaults
+  0,096 / 0,12 / 0,132 / 0,141 / 0,111)
+- W_D + W_L ≥ 0,40 und W_N ≤ 0,40, damit nie die Kultur allein entscheidet; beim Ritual
+  W_D > 0
+- jede Zahl endlich und in ihrem Bereich, keine Zeile fehlt, N_gruppe_max 3–6, μ, π und
+  b_ref in ihren Bereichen
+
+Verletzt die Datentabelle eine dieser Regeln, lehnt das Modell jede Anfrage mit
+„ungültige Eingabe“ ab (Regel 3). Die Tabelle hat keinen öffentlichen Konstruktor, nur der
+Ladevorgang erzeugt sie (Regel 19); eine leere Tabelle (`default`) ist ungültig.
 **Example:** Der Beteiligte aus Formel 1 hat w = 0,175 gegen θ = 0,48 und lehnt ab.
 
 ### 3. Haltemarge
@@ -320,7 +387,8 @@ The Haltemarge formula is defined as:
 einmal klar zugestimmt hat, bleibt bis zur Linie dabei, und kleine Schwankungen brechen keine
 Szene ab. Der Preis: Eine Handlung läuft weiter, solange w im Streifen [θ − Δ_hold, θ) liegt.
 Darunter endet sie sofort. Der Begehrens-Faktor gilt unverändert (fällt das Begehren auf 0, ist
-w = 0 und die Handlung endet). Beim
+w = 0 und die Handlung endet). Eine laufende Handlung braucht mindestens das Begehren
+(θ − Δ_hold) · b_ref, bei den Defaults 0,096 bis 0,141 (Formel 2). Beim
 Laden muss θ − Δ_hold ≥ 0,20 gelten, damit eine Handlung nicht durch eine fast leere
 Schwelle unbegrenzt weiterläuft. Δ_hold = 0 bedeutet keine Hysterese.
 **Example:** Sex zu zweit beginnt ab 0,48 und endet unter 0,40. Sinkt w durch eine
@@ -339,8 +407,9 @@ The Hauptgrund formula is defined as:
 | w_roh | float | 0–1 | calculated | Bereitschaft vor dem Begehrens-Faktor, das `max(0, …)` aus Formel 1 |
 | Hauptgrund | enum | einer der Gründe unten | calculated | gemeldeter Grund eines Ablehnenden |
 
-Zuordnung und Reihenfolge bei Gleichstand (Werte innerhalb von 1e-9 gelten als gleich,
-dann gewinnt der Erste in dieser Liste):
+Vor dem argmax gilt: Ist g_i < θ[a] (in der Phase Halten g_i < θ[a] − Δ_hold), ist der
+Hauptgrund immer „kein Begehren“, auch wenn Strafen w_roh auf 0 drücken. Sonst gewinnt
+der größte Beitrag: m = max(s), und der Erste in dieser Liste mit s ≥ m − 1e-9:
 
 | Term | Grund |
 |---|---|
@@ -351,6 +420,11 @@ dann gewinnt der Erste in dieser Liste):
 | s_N | Norm zu streng |
 | s_G | zu wenig Geselligkeit |
 | s_F | zu wenig Frömmigkeit |
+
+Das Merkmal **„kulturell“** ist gesetzt, wenn derselbe Beteiligte mit n = 1 (und sonst
+gleichen Werten) zugestimmt hätte. Es macht sichtbar, wo die Kultur entschieden hat, auch
+wenn ein anderer Term der größte ist (bei Norm 0,5 wird „Norm zu streng“ sonst nie
+Hauptgrund).
 
 **Output Range:** Berechnet nur für Ablehnende (w unter θ, oder bei laufender Handlung
 unter θ − Δ_hold). Ohne Klemmen gilt w = 1 − Σ s. Bei einer Ablehnung ist die Summe also
@@ -373,13 +447,13 @@ betrachtet. Zärtlichkeit, Sex, Harem und Ritual haben 2 Beteiligte, die Gruppe 
 wurde per Monte Carlo (300.000 Wiederholungen je Feld, fester Startwert, 2026-10-25), weil der
 Begehrens-Faktor die Normalverteilungsnäherung der ersten Fassung ungenau macht.
 
-| Handlungsart | Norm 0,5 | Lust-Sekte (Norm 0,9) | Gottesstaat (Norm 0,15) |
+| Handlungsart | Norm 0,5 | Lust-Sekte (Norm 0,9) | strenge Norm (0,15) |
 |---|---|---|---|
 | Zärtlichkeit | ca. 66 % | ca. 81 % | ca. 23 % |
 | Sex zu zweit | ca. 33 % | ca. 69 % | ca. 6,6 % |
 | Gruppe (3) | ca. 2,2 % | ca. 32 % | unter 0,1 % |
 | Harem beitreten | ca. 7,4 % | ca. 59 % | ca. 0,1 % |
-| Ritual (2) | ca. 50 % | ca. 80 % | ca. 5,4 % |
+| Teilnahme am Ritual (2, mit F_min = 0,30) | ca. 45 % | ca. 63 % | ca. 5,3 % |
 
 Der Begehrens-Faktor kostet gegenüber der ersten Fassung (ohne Faktor) bei Sex zu zweit in
 der Lust-Sekte etwa 9 Punkte (78 % → 69 %); bei Norm 0,5 und im Gottesstaat ändert sich
@@ -388,7 +462,8 @@ stark; deshalb liegt der Default bei 0,3.
 
 Die Kultur verändert das Verhalten um das 3,5- bis über 10-Fache (Sex zu zweit: 6,6 % gegen
 69 %), und bei Norm 0,5 stimmt weder jeder immer noch nie zu (Pillar 3). Ein Gottesstaat, der
-für Rituale eine hohe Norm setzt, kommt auf etwa 80 %. Die Spanne bei Sex zu zweit ist das
+für Rituale eine hohe Norm setzt, kommt bei der Teilnahme auf etwa 63 %; Kontakt im Ritual
+folgt den Anteilen von Zärtlichkeit, Sex zu zweit und Gruppe (Regel 7). Die Spanne bei Sex zu zweit ist das
 Prüfziel für Pillar 3 (Acceptance Criteria). Gruppen sind bei neutraler Norm selten (2 %) und
 werden erst in einer Lust-Sekte häufig (32 %); das ist gewollt, weil die Gruppe die höchste
 Hürde hat. Die Schätzung übersieht, dass Begehren zwischen zwei Partnern zusammenhängen kann.
@@ -402,7 +477,7 @@ Ein Mensch mit Treue 0 bekommt keine Bindungsstrafe, das ist gewollt.
   beendet die Darstellung der Szene im selben Bild, bevor der Ragdoll startet (Regel
   20). Die Simulation beendet die Handlung in dem Schritt, in dem der Kern das Ereignis
   „Beginn in Gottes Hand“ anwendet (die Sperrenprüfung jedes Schritts sieht den
-  Status), mit dem Grund „unterbrochen“. Dasselbe gilt für jede gewalttätige Kraft
+  Status), mit dem Grund „in Gottes Hand“. Dasselbe gilt für jede gewalttätige Kraft
   (Blitz): Die Ansicht beendet die Szene vor dem ersten Wirkungsbild. Ragdoll und Szene
   sind also nie gleichzeitig zu sehen (nicht verhandelbare Grenze „Gewalt und Sex
   überschneiden sich nie“).
@@ -415,11 +490,24 @@ Ein Mensch mit Treue 0 bekommt keine Bindungsstrafe, das ist gewollt.
 - **If in einer Gruppe ein Einzelner ablehnt**: Die ganze Gruppenhandlung findet nicht
   statt. Begehren & Lust darf danach eine neue Anfrage mit weniger Beteiligten stellen,
   und die wird neu und vollständig geprüft.
-- **If eine einzelne Person allein betet, opfert oder sich einem Ritual ohne Kontakt
-  anschließt**: Das ist keine intime Handlung und geht nicht durch das Modell. Sobald ein
-  Ritual Kontakt zwischen Beteiligten enthält, ist es eine Anfrage mit 2 bis
-  N_gruppe_max Beteiligten, die paarweise geprüft wird. Ein Ritual mit Kontakt zwischen
-  mehr Personen gibt es nicht.
+- **If eine einzelne Person allein betet oder opfert**: Das ist keine intime Handlung
+  und geht nicht durch das Modell. Die Teilnahme an einem Ritual mit anderen ist die
+  Anfrage „Ritual“ (2 bis N_gruppe_max Beteiligte); jeder Kontakt darin ist eine eigene
+  Anfrage seiner Handlungsart (Regel 7). Ein Kontakt zwischen mehr als N_gruppe_max
+  Personen zugleich gibt es nicht.
+- **If der Partner eines Gebundenen getötet oder gefangen genommen wird** (zum Beispiel
+  durch einen Blitz, nachdem die Anzeige „treu gebunden“ gezeigt hat): Die Bindung zählt
+  noch T_trauer weiter (Regel 19). Gewalt öffnet so keine Zustimmung.
+- **If ein Stamm erobert wird oder sich abspaltet**: Wer den Stamm wechselt, behält
+  T_akkult lang die strengere Norm beider Kulturen (Regel 4).
+- **If ein Harem-Mitglied gefangen genommen wird**: Die Mitgliedschaft endet im selben
+  Schritt; nach der Befreiung nur über eine neue Beitrittsanfrage (Regel 16).
+- **If ein Beteiligter während einer Handlung stirbt** (Alter, Hunger, Blitz): Sperre
+  „tot“, die Handlung endet im selben Schritt; die Opferwahl zieht Beteiligte einer
+  laufenden Handlung ohnehin nicht (Regel 21).
+- **If ein Spielstand mit laufenden Handlungen geladen wird**: Im ersten Schritt prüft das
+  Register alle laufenden Handlungen neu (Regel 14), auch wenn sich die Datentabelle
+  seither geändert hat.
 - **If während einer Handlung die Norm sinkt** (zum Beispiel durch Kulturwandel): Die
   Handlung läuft weiter, solange die Bereitschaft aller über θ − Δ_hold liegt. Darunter
   endet sie. Gemeldet werden alle, die darunter liegen, mit ihrem Hauptgrund, in der
@@ -438,8 +526,11 @@ Ein Mensch mit Treue 0 bekommt keine Bindungsstrafe, das ist gewollt.
 - **If ein Wert in der Anfrage NaN, unendlich oder außerhalb von 0–1 ist, oder die
   Handlungsart oder der Ort unbekannt**: „ungültige Eingabe“. Das Modell versucht nie,
   einen Wert zu korrigieren oder zu klemmen.
-- **If die Datentabelle ungültig ist** (Gewichte ergeben nicht 1, eine Schwelle liegt
-  außerhalb von 0,10–0,90, die Reihenfolge der Schwellen stimmt nicht, θ − Δ_hold < 0,20):
+- **If die Datentabelle ungültig ist** (eine Regel aus Formel 2 verletzt: Gewichte
+  ergeben nicht 1 oder sind negativ, eine Schwelle außerhalb von 0,30–0,90, die
+  Reihenfolge der Schwellen stimmt nicht, θ − Δ_hold < 0,20, (θ − Δ_hold) · b_ref < 0,09,
+  W_D + W_L < 0,40, W_N > 0,40, Ritual mit W_D = 0, b_ref oder F_min außerhalb des
+  Bereichs, NaN oder eine fehlende Zeile):
   Jede Anfrage wird mit „ungültige Eingabe“ abgelehnt. Das Spiel läuft weiter, nur ohne
   sexuelle Handlungen. Den Fehler meldet der Ladevorgang der Datentabelle einmal in der
   Konsole und im Debug-Werkzeug; die Prüffunktion selbst meldet nichts.
@@ -449,7 +540,8 @@ Ein Mensch mit Treue 0 bekommt keine Bindungsstrafe, das ist gewollt.
   Begehren & Lust sowie Harem & Rituale stellen sicher, dass ein Mensch höchstens an
   einer laufenden Handlung teilnimmt. Die zweite Anfrage stellen sie nicht.
 - **If ein Mensch aufs Fest geworfen wird**: Der Wurf selbst ist keine Eingabe. Landet
-  er unverletzt, kann Begehren & Lust später eine normale Anfrage stellen. Ist er
+  er unverletzt, ist er zuerst T_erschüttert lang gesperrt („erschüttert“, Regel 8);
+  danach kann Begehren & Lust eine normale Anfrage stellen. Ist er
   verletzt, sperrt die Verletzung jede Handlung, bis er geheilt ist.
 - **If zwei Menschen desselben Geschlechts einander begehren**: Das Modell
   berücksichtigt das Geschlecht nicht. Ob jemand begehrt wird, entscheidet allein der
@@ -481,15 +573,48 @@ Ragdoll liefern keine Eingabe (Core Rules 5 und 17).
 **Pflichten, die andere Systeme übernehmen müssen** (jedes dieser GDDs nennt sie in
 seinen Dependencies und führt die Tests):
 
-- Begehren & Lust und Harem & Rituale: Handlungen nur über ein `Zustimmungsergebnis`
-  (Regel 18); `PrüfeSperren` in jedem Schritt (Regel 14); b_ij und k_i sind reine
-  Funktionen der Eigenschaften und Vorlieben bzw. der Beziehungen, mit einem
-  Property-Test, dass Hingabe, Eingriffe, Kräfte und Rang sie nie ändern (Regel 19).
+- Begehren & Lust und Harem & Rituale: Handlungen nur über `Beginne` im
+  Handlungsregister (Regel 18); Anfragen nur über den Anfrage-Baustein (Regel 19); b_ij
+  ist eine reine Funktion fester Eigenschaften und einmal gewürfelter Vorlieben, wächst
+  nie durch Platzieren mit der Gotteshand (Wiedergabe-Test mit und ohne Platzieren),
+  und k_i hält T_trauer nach Tod oder Gefangennahme des Partners an; Property-Test, dass
+  Hingabe, Eingriffe, Kräfte und Rang b_ij und k_i nie ändern; dieselbe Anfrage erst
+  wieder, wenn sich ein Wert geändert hat.
+- Harem & Rituale zusätzlich: Gefangennahme beendet die Mitgliedschaft im selben
+  Schritt, Rückkehr nur über eine neue Beitrittsanfrage; jeder Kontakt im Ritual als
+  eigene Anfrage seiner Handlungsart (Regel 7).
 - Kultur & Erinnerung: Normen ändern sich nur langsam, kein Eingriff setzt eine Norm
   direkt (die Höchständerung pro Geschichtsjahr legt das GDD fest).
+- Menschen & Bevölkerung: Freiheit hat nur „frei“ als Wert, der nicht sperrt; die
+  Opferwahl zieht keine Beteiligten einer laufenden Handlung; Stamm und Schritt des
+  letzten Stammeswechsels für die Normen (Regel 4).
+- Simulationskern: Eintrag „Sperrenprüfung“ mit Takt 1 nach Gotteskraft und vor der
+  Chronik; Sperrmerkmale in Gottes Hand, lebt und erschüttert für jeden Beteiligten.
 - Stämme & Diplomatie: zieht niemanden aus einer laufenden Handlung in Kampf oder
-  Gefangenschaft (Regel 21).
-- Weltansicht & Kamera: zeigt Szenen nur nach Regel 20.
+  Gefangenschaft (Regel 21); der Test dafür steht in deren GDD gegen den echten
+  Auswahlweg.
+- Weltansicht & Kamera: zeigt Szenen nur nach Regel 20, mit eigener Sperre vor jeder
+  Gewalt-Darstellung und einer Kollisionsebene für Ragdolls.
+
+## Tuning Knobs
+
+| Regler | Default | Sicherer Bereich | Wirkung |
+|---|---|---|---|
+| θ je Handlungsart | 0,40 / 0,48 / 0,52 / 0,55 / 0,45 | 0,30–0,90, Reihenfolge Zärtlichkeit ≤ Sex ≤ Gruppe | wie leicht eine Handlung beginnt |
+| Δ_hold | 0,08 | 0–0,15, θ − Δ_hold ≥ 0,20 | wie weit die Bereitschaft während einer Handlung sinken darf |
+| b_ref | 0,3 | 0,2–0,5, (θ − Δ_hold) · b_ref ≥ 0,09 | ab welchem Begehren der Faktor nicht mehr bremst |
+| Gewichte W | Tabelle in Formel 1 | Summe 1, W_D + W_L ≥ 0,40, W_N ≤ 0,40 | wie viel Person und Kultur zählen |
+| c_pub, c_bind | Tabelle in Formel 1 | 0–0,6 | Strafe für Öffentlichkeit und Bindung nach außen |
+| π je Ort | 0 / 0 / 0,5 / 1 | 0–1 | wie öffentlich ein Ort ist |
+| μ | 0,5 | 0–1 | wie stark das kleinste Begehren in der Gruppe zählt |
+| N_gruppe_max | 4 | 3–6 | größte Gruppe und größter Kontakt im Ritual |
+| F_min | 0,30 (Vorschlag) | 0–0,5 | wer an einem Ritual nie teilnimmt |
+| T_trauer | 5 Lebensjahre (Vorschlag) | 1–20 Lebensjahre | wie lange eine Bindung nach Tod oder Gefangennahme des Partners zählt |
+| T_akkult | 60 Geschichtsjahre (Vorschlag) | 25–250 | wie lange nach einem Stammeswechsel die strengere Norm gilt |
+| T_erschüttert | 1 Lebensjahr (Vorschlag) | 0,5–5 Lebensjahre | Sperre nach der Rückgabe aus Gottes Hand |
+
+Die mit „Vorschlag“ markierten Werte hat die Nachtarbeit gesetzt; sie warten auf den
+Entwickler (Open Questions).
 
 ## Visual/Audio Requirements
 
@@ -539,20 +664,20 @@ Startwert im Zufallsgenerator des **Tests**, nie im Modell. „Standardtabelle�
 die Defaults aus den Formeln 1 bis 3.
 
 ### Harte Sperren und Eingabe (nicht verhandelbar)
-- **AC-01 [Logic/EditMode]** **GIVEN** 100.000 zufällige Anfragen, jede mit mindestens einem Beteiligten, der gefangen, verletzt oder im Kampf ist oder dessen Kultur ein Tabu setzt, **WHEN** `Prüfe` läuft, **THEN** gibt es 100.000 Ablehnungen und 0 Zustimmungen, der Grund ist immer eine Sperre und nie ein Bereitschaftsgrund, auch bei Begehren 1, Norm 1 und Lust 1.
-- **AC-02 [Logic/EditMode]** **GIVEN** 100.000 Anfragen mit je einem ungültigen Wert (NaN, ± unendlich, unter 0, über 1, unbekannte Handlungsart, unbekannter Ort, unbekannte Phase, fehlende Norm), falscher Zahl von Beteiligten, doppelter Person oder einer Gruppe über N_gruppe_max, **WHEN** geprüft wird, **THEN** lautet das Ergebnis immer „ungültige Eingabe“, und die Anfrage des Aufrufers ist danach unverändert (nichts wird geklemmt).
+- **AC-01 [Logic/EditMode]** **GIVEN** 100.000 zufällige Anfragen, jede mit mindestens einem Beteiligten, der gefangen, verletzt oder im Kampf ist oder dessen Kultur ein Tabu setzt, **WHEN** `Prüfe` läuft, **THEN** gibt es 100.000 Ablehnungen und 0 Zustimmungen, der Grund ist immer eine Sperre und nie ein Bereitschaftsgrund, auch bei Begehren 1, Norm 1 und Lust 1; die Anfragen decken jede Handlungsart × jede Sperre (dazu Freiheit ≠ frei, in Gottes Hand, nicht lebend, erschüttert) × jede Position in der Anfrage × beide Phasen ab, und bei mehreren Sperren gilt die Rangfolge aus Regel 13.
+- **AC-02 [Logic/EditMode]** **GIVEN** 100.000 Anfragen mit je einem ungültigen Wert (NaN, ± unendlich, unter 0, über 1, unbekannte Handlungsart, unbekannter Ort, unbekannte Phase, fehlende Norm), falscher Zahl von Beteiligten, doppelter Person oder einer Gruppe über N_gruppe_max, **WHEN** geprüft wird, **THEN** lautet das Ergebnis immer „ungültige Eingabe“, und die Anfrage des Aufrufers ist danach unverändert (nichts wird geklemmt); ebenso für `default`-Werte jedes Typs (eine leere Norm entfernt nie ein Tabu), null, zu kurze Felder, eine Begehrensmatrix kleiner als N × N und nicht definierte Werte einer Aufzählung, ohne Ausnahme; jede Aufzählung hat den Wert 0 = „ungültig“.
 - **AC-03 [Logic/EditMode]** **GIVEN** gültige Anfragen aller 5 Handlungsarten, **WHEN** die Zahl der Beteiligten variiert wird, **THEN** werden genau 2 (Zärtlichkeit, Sex, Harem), 3 bis N_gruppe_max (Gruppe) und 2 bis N_gruppe_max (Ritual) akzeptiert; ob ein Beteiligter Haremshaupt ist, ändert das Ergebnis nie (Vergleich gleicher Anfragen).
 - **AC-04 [Logic/EditMode]** **GIVEN** ein Beteiligter ist gesperrt und liegt zugleich unter der Schwelle, **WHEN** geprüft wird, **THEN** ist der Grund die Sperre.
 
 ### Schnittstelle (nicht verhandelbar)
-- **AC-05 [Logic/EditMode]** **GIVEN** die Typen `Anfrage` und `Beteiligter` und die Signatur von `Prüfe`, **WHEN** sie per Reflection geprüft werden, **THEN** ist die Feldmenge genau die Liste aus Core Rule 4; es gibt kein Feld mit Namen oder Typ Hingabe, Rolle, Rang, Gotteskraft, Eingriff, Spielerwahl, Ruf, Haremshaupt-Status oder Gefangenenhalter, und die Parameter sind genau `Anfrage` und `Datentabelle`, ohne `object`, `dynamic` oder Wörterbücher mit Zeichenketten-Schlüsseln.
-- **AC-06 [Logic/EditMode]** **GIVEN** die Assembly des Zustimmungsmodells, **WHEN** ihre Referenzen gelesen werden, **THEN** verweist sie weder auf Gotteskraft, Gotteshand noch auf die Innereien von Menschen & Bevölkerung, nur auf die Assembly des Zustimmungsprofils; ein zusätzlicher Verweis lässt den Test scheitern.
-- **AC-25 Durchsetzung [Logic/EditMode]** **GIVEN** der Typ `Zustimmungsergebnis`, **WHEN** er per Reflection geprüft wird, **THEN** ist er ein `ref struct` (kann nicht gespeichert werden) ohne öffentlichen Konstruktor, und jede Methode, die eine intime oder sexuelle Handlung beginnt oder fortsetzt (in den Assemblies von Begehren & Lust und Harem & Rituale, sobald sie existieren), hat genau einen Parameter dieses Typs und es gibt keinen anderen Weg, eine Handlung zu beginnen.
+- **AC-05 [Logic/EditMode]** **GIVEN** die Typen `Anfrage` und `Beteiligter` und die Signatur von `Prüfe`, **WHEN** sie per Reflection geprüft werden, **THEN** ist die Feldmenge genau die Liste aus Core Rule 4; es gibt kein Feld mit Namen oder Typ Hingabe, Rolle, Rang, Gotteskraft, Eingriff, Spielerwahl, Ruf, Haremshaupt-Status oder Gefangenenhalter, und die Parameter sind genau `Anfrage` und `Datentabelle`, ohne `object`, `dynamic` oder Wörterbücher mit Zeichenketten-Schlüsseln; `Anfrage`, `Zustimmungsprofil` und `Datentabelle` haben keinen öffentlichen Konstruktor.
+- **AC-06 [Logic/EditMode]** **GIVEN** die Assembly des Zustimmungsmodells, **WHEN** ihre Referenzen gelesen werden, **THEN** verweist sie weder auf Gotteskraft, Gotteshand noch auf die Innereien von Menschen & Bevölkerung, nur auf die Assembly des Zustimmungsprofils; ein zusätzlicher Verweis lässt den Test scheitern. Geprüft wird die `.asmdef`-Datei selbst (auch Verweise per GUID), nicht `GetReferencedAssemblies`: Modell und Profil haben `noEngineReferences: true`, alle Aufrufer `allowUnsafeCode: false`.
+- **AC-25 Durchsetzung [Logic/EditMode]** **GIVEN** das Handlungsregister und Stub-Handlungsarten (jetzt, nicht erst wenn Begehren & Lust existiert), **WHEN** `Beginne` aufgerufen wird mit (a) `default(Zustimmungsergebnis)`, (b) einem Ergebnis aus einem früheren Schritt, (c) einem Ergebnis für eine andere Handlungsart (Zärtlichkeit statt Sex), (d) einem Ergebnis für andere Beteiligte (A–B statt A–C), (e) einem `Halteergebnis`, **THEN** lehnt es in allen fünf Fällen ab und beginnt nichts; nur ein Zustimmungsergebnis aus diesem Schritt für genau diese Handlung beginnt sie; die Typen sind `ref struct` ohne öffentlichen Konstruktor, und das Register hat nach außen nur `Beginne` und `Beende`.
 - **AC-07 [Logic/EditMode]** **GIVEN** das Zustimmungsprofil, **WHEN** es geprüft wird, **THEN** enthält es genau Frömmigkeit, Lust, Treue, Mut, Geselligkeit, Geschlecht, Freiheit, Gesundheit, im Kampf und Stammes-ID (Menschen & Bevölkerung, Core Rule 18), nie Hingabe.
 
 ### Reinheit
 - **AC-08 [Logic/EditMode]** **GIVEN** 10.000 Anfragen, **WHEN** sie in drei Reihenfolgen (vorwärts, rückwärts, gemischt) je zweimal geprüft werden, mit anderen Aufrufen dazwischen, **THEN** ist jedes Ergebnis bitgleich, einschließlich der Gründe und der Reihenfolge der Ablehnenden.
-- **AC-09 [Logic/EditMode]** **GIVEN** die Assembly, **WHEN** sie per Reflection durchsucht wird, **THEN** gibt es keine statischen Felder außer Konstanten und unveränderlichen `static readonly`, und `Prüfe` sowie `Bereitschaft` verweisen nicht auf `System.Random`, `UnityEngine.Random`, `DateTime`, `Time`, `Application`, Dateizugriffe oder `Debug`.
+- **AC-09 [Logic/EditMode]** **GIVEN** die Assembly, **WHEN** sie per Reflection durchsucht wird, **THEN** gibt es keine statischen Felder außer Konstanten und `static readonly` von einfachen Typen, Zeichenketten und Aufzählungen (vom Compiler erzeugte Typen ausgenommen), und eine IL-Prüfung aller Methoden der Assembly (auch Hilfsmethoden und `PrüfeSperren`) findet keinen Aufruf von `System.Random`, `UnityEngine.Random`, `DateTime`, `Time`, `Application`, Dateizugriffen oder `Debug`.
 
 ### Monotonie und Einstimmigkeit
 - **AC-10 [Logic/EditMode]** **GIVEN** 100.000 zufällige Anfragen ohne Sperre, **WHEN** Begehren, Lust, Norm, Geselligkeit oder Frömmigkeit eines Beteiligten erhöht wird und alles andere gleich bleibt, **THEN** wird eine Zustimmung nie zur Ablehnung und w sinkt nie (Toleranz 1e-9); höhere Treue bei Bindung nach außen (k = 1) oder ein öffentlicherer Ort erhöhen w nie.
@@ -570,15 +695,20 @@ die Defaults aus den Formeln 1 bis 3.
 - **AC-24 Formel 1, Beispiel 2 [Logic/EditMode]** **GIVEN** Sex zu zweit, privat, b = 0,1, L = 1, n = 1, k = 0, b_ref = 0,3, **WHEN** `Bereitschaft` und `Prüfe` laufen, **THEN** ist w = 0,198 ± 1e-3 (Rohwert 0,595, g = 0,333), die Anfrage wird abgelehnt, der Hauptgrund ist „kein Begehren“ mit s_D = 0,802 ± 1e-3; dieselbe Anfrage mit b = 0,3 hat g = 1, w = 0,685 und wird angenommen.
 
 ### Datentabelle
-- **AC-19 [Logic/EditMode]** **GIVEN** je eine ungültige Tabelle (Gewichte ≠ 1 bei Toleranz 1e-6, Ritual mit W_D = 0, b_ref außerhalb 0,2–0,5, θ unter 0,10 oder über 0,90, θ_Zärtlichkeit > θ_Sex oder θ_Sex > θ_Gruppe, θ − Δ_hold < 0,20, Δ_hold > 0,15, c über 0,6), **WHEN** sie geladen wird und 1.000 Anfragen folgen, **THEN** wird jede mit „ungültige Eingabe“ abgelehnt, der Ladevorgang meldet den Fehler genau einmal, `Prüfe` meldet nichts, und die Standardtabelle wird akzeptiert.
+- **AC-19 [Logic/EditMode]** **GIVEN** je eine ungültige Tabelle (Gewichte ≠ 1 bei Toleranz 1e-6, Ritual mit W_D = 0, b_ref außerhalb 0,2–0,5, θ unter 0,10 oder über 0,90, θ_Zärtlichkeit > θ_Sex oder θ_Sex > θ_Gruppe, θ − Δ_hold < 0,20, Δ_hold > 0,15, c über 0,6), sowie negative Gewichte mit Summe 1, W_D + W_L < 0,40, W_N > 0,40, (θ − Δ_hold) · b_ref < 0,09, N_gruppe_max außerhalb 3–6, μ oder π außerhalb 0–1, Δ_hold < 0, NaN, eine fehlende Zeile, F_min außerhalb des Bereichs und `default(Datentabelle)` direkt an `Prüfe`, **WHEN** sie geladen wird und 1.000 Anfragen folgen, **THEN** wird jede mit „ungültige Eingabe“ abgelehnt, der Ladevorgang meldet den Fehler genau einmal, `Prüfe` meldet nichts, und die Standardtabelle wird akzeptiert.
 
 ### Pillar 3 (Monte Carlo)
-- **AC-20 [Logic/EditMode]** **GIVEN** 20.000 zufällige Paare (fester Startwert; Eigenschaften wie Menschen & Bevölkerung Formel 5; Begehren normalverteilt mit 0,5 und 0,2, auf 0–1 geklemmt; privat; keine Bindung), **WHEN** Sex zu zweit bei Norm 0,9, 0,15 und 0,5 geprüft wird, **THEN** liegt der Anteil der Zustimmungen (mit b_ref = 0,3) bei 69 % ± 10 Punkte, 6,6 % ± 4 Punkte und 33 % ± 8 Punkte; dieselbe Prüfung ergibt für Zärtlichkeit 81 / 23 / 66 % (± 10), für Harem beitreten 59 / 0,1 / 7,4 % (± 10, ± 3, ± 5), für ein Ritual mit 2 Beteiligten 80 / 5,4 / 50 % (± 10, ± 4, ± 10) und für eine Gruppe mit 3 Beteiligten 32 / 0 / 2,2 % (± 8, unter 1 %, ± 3), je bei Norm 0,9 / 0,15 / 0,5.
+- **AC-20 [Logic/EditMode]** **GIVEN** 20.000 zufällige Paare (fester Startwert; Eigenschaften wie Menschen & Bevölkerung Formel 5; Begehren normalverteilt mit 0,5 und 0,2, auf 0–1 geklemmt; privat; keine Bindung), **WHEN** Sex zu zweit bei Norm 0,9, 0,15 und 0,5 geprüft wird, **THEN** liegt der Anteil der Zustimmungen (mit b_ref = 0,3) bei 69 % ± 3 Punkte, 6,6 % ± 1 Punkt und 33 % ± 3 Punkte; dieselbe Prüfung ergibt für Zärtlichkeit 81 / 23 / 66 % (je ± 3), für Harem beitreten 59 / 0,1 / 7,4 % (± 3, höchstens 0,5 %, ± 1), für die Teilnahme an einem Ritual mit 2 Beteiligten und F_min = 0,30 63 / 5,3 / 45 % (± 3, ± 1, ± 3) und für eine Gruppe mit 3 Beteiligten 32 / unter 0,1 % / 2,2 % (± 3, höchstens 0,5 %, ± 1), je bei Norm 0,9 / 0,15 / 0,5; derselbe Lauf ohne Begehrens-Faktor ergibt für Sex zu zweit in der Lust-Sekte deutlich mehr (etwa 78 %), sodass ein fehlender Faktor auffällt.
 
 ### Gotteshand in einer Szene (nicht verhandelbar)
-- **AC-21 [Integration/PlayMode]** **GIVEN** eine laufende Szene, **WHEN** die Gotteshand einen Beteiligten packt, **THEN** beendet die Ansicht die Darstellung der Szene im selben Bild vor dem ersten Ragdoll-Bild, die Simulation beendet die Handlung mit „unterbrochen“ beim Ereignis „Beginn in Gottes Hand“, und in keinem Bild sind Szene und Ragdoll zugleich zu sehen.
-- **AC-22 [Manual]** **GIVEN** dieselbe Situation im Build, **WHEN** gepackt wird, **THEN** liegen Screenshots der Bilder davor, dabei und danach in `production/qa/evidence/` mit Freigabe des Leads, und Szene und Ragdoll sind nie gleichzeitig sichtbar.
-- **AC-26 Sperren in jedem Schritt [Logic/EditMode]** **GIVEN** eine laufende Handlung (Stub) mit 2 Beteiligten, **WHEN** in Schritt t ein Auftrag „verletzt“, „gefangen“ oder „im Kampf“ oder das Ereignis „Beginn in Gottes Hand“ für einen von ihnen angewendet wird, **THEN** ist die Handlung nach Schritt t beendet (nicht erst nach t + 1 oder dem nächsten Personentakt, für gerade und ungerade IDs), der Grund ist die Sperre, und `PrüfeSperren` liefert für den Zustand nach Schritt t „gesperrt“, sodass die Ansicht die Szene nicht zeigt; **GIVEN** ein Stub von Stämme & Diplomatie, **THEN** wählt er niemanden aus einer laufenden Handlung für Kampf oder Gefangenschaft (Regel 21).
+- **AC-21 [Integration/PlayMode]** **GIVEN** eine laufende Szene, **WHEN** die Gotteshand einen Beteiligten packt, **THEN** setzt der Griff zuerst die Sperre der Ansicht und blendet die Szene aus, bevor die Physik startet, die Simulation beendet die Handlung mit dem Grund „in Gottes Hand“ in dem Schritt, in dem der Kern den Griff anwendet, und ein Aufzeichner, der je gezeichnetem Bild „Szene sichtbar“ und „Ragdoll aktiv“ protokolliert, findet über 200 Griffe und 50 Blitze zu zufälligen Zeitpunkten (auch genau auf einer Schrittgrenze), bei 30, 60 und 144 fps und bei 1× und 4× kein Bild mit beidem.
+- **AC-22 [Manual]** **GIVEN** dieselbe Situation im Build, **WHEN** gepackt wird, **THEN** liegt eine Bildfolge (60 fps, je ± 10 Bilder um 10 Griffe und 5 Blitze) in `production/qa/evidence/` mit Freigabe des Leads, und Szene und Ragdoll sind in keinem Bild gleichzeitig sichtbar.
+- **AC-26 Sperren in jedem Schritt [Integration/EditMode, mit dem Simulationskern]** **GIVEN** eine laufende Handlung (Stub) mit 2 Beteiligten, **WHEN** in Schritt t eine Sperre aus jedem möglichen Platz der Reihenfolge entsteht (Eingriff, Menschen, Stämme, Begehren, Harem, Gotteskraft: verletzt, gefangen, im Kampf, in Gottes Hand, tot), **THEN** ist die Handlung nach Schritt t beendet (für gerade und ungerade IDs), der Grund ist die Sperre nach der Rangfolge aus Regel 13, und `PrüfeSperren` liefert für den Zustand nach Schritt t „gesperrt“. (Die Pflicht von Stämme & Diplomatie aus Regel 21 prüft deren GDD gegen den echten Auswahlweg.)
+- **AC-28 Einseitiges Begehren [Logic/EditMode]** **GIVEN** Sex zu zweit, privat, alle anderen Werte 1, b_AB = 1 und b_BA = 0, **WHEN** geprüft wird, **THEN** stimmt A zu, B lehnt mit „kein Begehren“ ab, die Anfrage ist abgelehnt, und mit vertauschter Reihenfolge spiegelt sich das Ergebnis; Property-Test über 100.000 Fälle: eine Änderung von b_ji, n_j oder dem Profil von j (j ≠ i) lässt w_i bitgleich.
+- **AC-29 Hauptgrund und „kulturell“ [Logic/EditMode]** **GIVEN** 100.000 zufällige abgelehnte Anfragen mit Strafen (öffentlich, Bindung), **WHEN** der Hauptgrund bestimmt wird, **THEN** ist er bei g_i < θ (Halten: θ − Δ_hold) immer „kein Begehren“, sonst der erste Term in Listenreihenfolge mit s ≥ max(s) − 1e-9 (gegen eine Referenzrechnung im Test); „kulturell“ ist genau dann gesetzt, wenn dieselbe Anfrage mit n = 1 zugestimmt hätte (Beispiel: Sex zu zweit, privat, b = 0,6, L = 0,4, n = 0,15 → w = 0,4275, abgelehnt; mit n = 1 wäre w = 0,64, also „kulturell“).
+- **AC-30 Ritual [Logic/EditMode]** **GIVEN** b = 0,3, n = 0,9, F = 0,9, L = 0,5, **WHEN** die Teilnahme am Ritual und ein Kontakt zu zweit im Ritual geprüft werden, **THEN** wird die Teilnahme mit der Ritual-Zeile und der Kontakt als Sex zu zweit mit W_F = 0 und dessen Schwelle geprüft (w = 0,51 gegen 0,48 an einem privaten Ort, bei Zuschauern als öffentlich mit Strafe); eine Person mit F < F_min nimmt nie teil; der Ort „Ritual“ ist für jede andere Handlungsart „ungültige Eingabe“.
+- **AC-31 Gewalt öffnet keine Zustimmung [Logic/EditMode, mit Stubs für Begehren & Lust und Menschen]** **GIVEN** ein Beteiligter lehnt mit „treu gebunden“ ab, **WHEN** sein Partner durch einen Blitz stirbt oder gefangen wird, **THEN** steigt seine Bereitschaft innerhalb von T_trauer nicht; **GIVEN** ein Mensch wechselt durch Eroberung den Stamm, **THEN** ist seine Norm T_akkult lang min(alte, neue), und ein Tabu einer der beiden sperrt; **GIVEN** ein Harem-Mitglied wird gefangen, **THEN** endet die Mitgliedschaft im selben Schritt, und nach der Befreiung entsteht sie nur durch eine neue Beitrittsanfrage.
+- **AC-32 Erschüttert, Laden, Halten [Logic/EditMode]** **GIVEN** ein Mensch wird aufs Fest geworfen und unverletzt zurückgegeben, **WHEN** in den nächsten T_erschüttert Schritten eine Anfrage kommt, **THEN** wird sie mit „erschüttert“ abgelehnt, danach normal geprüft; **GIVEN** ein Spielstand mit einer laufenden Handlung, deren Bereitschaft unter der neuen Tabelle unter der Einwilligungslinie liegt, **WHEN** er geladen wird, **THEN** endet die Handlung im ersten Schritt; die Halteprüfung läuft im Personentakt jedes Beteiligten.
 - **AC-27 Pflichten der Aufrufer [Logic/EditMode]** (Vorgabe; die GDDs von Begehren & Lust, Harem & Rituale und Kultur & Erinnerung übernehmen sie als eigene Kriterien) **GIVEN** 100.000 Zustände, **WHEN** Hingabe, Rolle, Rang, Gotteskraft, Eingriffe oder Kräfte beliebig geändert werden, **THEN** sind b_ij und k_i bitgleich, keine Norm ändert sich um mehr als die Höchständerung pro Geschichtsjahr, und kein einzelner Eingriff setzt eine Norm.
 
 ## Open Questions
@@ -591,3 +721,9 @@ die Defaults aus den Formeln 1 bis 3.
 | Stimmen die geschätzten Anteile aus Formel 5 nach der Umsetzung? | Monte-Carlo-Test AC-20 | erste Umsetzung im MVP-0 |
 | Wie viele Beteiligte hat ein Ritual mit Kontakt, und was geschieht dabei? Vorerst 2 bis N_gruppe_max, paarweise geprüft | GDD Harem & Rituale | mit dem GDD |
 | Wie schnell dürfen sich Normen ändern (Höchständerung pro Geschichtsjahr), damit kein Eingriff Zustimmung im Moment erzwingt? | GDD Kultur & Erinnerung | mit dem GDD |
+| Passen die Vorschläge der Nachtarbeit: F_min 0,30, T_trauer 5 Lebensjahre, T_akkult 60 Geschichtsjahre, T_erschüttert 1 Lebensjahr? | Entwickler | nächste Sitzung |
+| Soll ein Blitz auf ein Mitglied die Offenheit seines Stamms senken, damit Auslese durch Töten („Keusche wegblitzen, Neue erschaffen“) nicht wirkt? | GDD Kultur & Erinnerung | mit dem GDD |
+| Zählt im Harem die Bindung an das Haremshaupt als k? Ohne Klärung kommt entweder der Status des Haupts durch die Hintertür, oder jeder Harem hebt sich selbst auf | GDD Harem & Rituale | mit dem GDD |
+| Braucht Freiheit schon jetzt einen dritten Wert „unfrei“ (Sklaverei) im Zustimmungsprofil, oder reicht die Regel „alles außer frei sperrt“, bis eine solche Gesellschaft kommt? | Entwickler, GDD Menschen & Bevölkerung | vor der Alpha (Weitere Gesellschaftsformen) |
+| Soll die Anzeige „kein Begehren“ (g < 1) und „zu wenig Begehren“ unterscheiden? Darf jemand mit Lust 0 bei vollem Begehren zustimmen (heute ja)? | Entwickler | vor dem UX-Spec |
+| Die Umschreibungen des `qa-lead` für AC-03, AC-13, AC-14, AC-16, AC-18 und AC-27 sowie ein IL2CPP-Test der Schwellen im fertigen Build | qa-lead | vor `/create-stories` |

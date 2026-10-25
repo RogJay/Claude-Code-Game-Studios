@@ -56,6 +56,45 @@ Roadmap; Status bleibt **In Review**.
   „Masse / Lebend / Tot plus vier Merkmale“; AC-05 sinnvoll gemacht; double und Promille
   statt float; Tuning-Knobs-Tabelle; Wert d_t und R / P_person korrigiert; AC-33 neu.
 
+### 3. Zustimmungsmodell, Review-Runde 2 (full, mit Spezialisten)
+
+Gelaufen sind `game-designer`, `systems-designer`, `qa-lead`, `unity-specialist`,
+`security-engineer` und als Senior `creative-director`. Urteil: **NEEDS REVISION** (nicht
+MAJOR: der Kern trägt). Es gab 16 Blocker; ich habe die 16 Korrekturen des Creative
+Directors eingearbeitet. Was er ausdrücklich dir überlässt, steht jetzt als offene Frage
+im GDD. Status bleibt **In Review**; der Creative Director empfiehlt, dass du das GDD
+selbst noch einmal ansiehst, bevor es freigegeben wird.
+
+Die wichtigsten Funde und was jetzt im GDD steht:
+- **Fälschbares Ergebnis:** In C# lässt sich jede Struktur leer erzeugen (`default`), das
+  hätte als Zustimmung gelten können. Jetzt: Wert 0 heißt immer „ungültig“, das Ergebnis
+  trägt einen Stempel (Schritt, Anfrage, Tabelle) und gilt nur für genau diese Handlung in
+  diesem Schritt; eigene Typen für Beginn und Halten; ein **Handlungsregister** ist der
+  einzige Weg in eine Handlung (Regel 18, AC-25).
+- **Anfragen baut das Modell selbst** aus IDs, kein Aufrufer kann Werte einsetzen
+  (Regel 19).
+- **Sperren:** „in Gottes Hand“, „tot“ und „erschüttert“ sind jetzt Sperren, die
+  Sperrenprüfung läuft nach Gotteskraft (vorher an der falschen Stelle), die Ansicht
+  sperrt vor jeder Gewalt-Darstellung selbst und Ragdolls kollidieren nicht mit einer
+  Szene (Regeln 8, 14, 20; Kern Formel 5; AC-21, AC-26).
+- **Gewalt als Hebel geschlossen:** Partner töten hebt „treu gebunden“ nicht auf
+  (Trauerzeit), Eroberung macht niemanden über Nacht offener (strengere Norm für eine
+  Zeit), gefangene Harem-Mitglieder fallen sofort heraus, Sklaverei wäre immer
+  „nicht frei“ (Regeln 4, 8, 16, 19; AC-31).
+- **Ritual:** Die Ritual-Zeile prüft nur noch die Teilnahme (mit Frömmigkeits-Tor), jeder
+  Kontakt im Ritual wird als die Handlung geprüft, die er ist. Frömmigkeit ersetzt nie
+  Begehren (Regel 7, AC-30).
+- **Mathematik und Datentabelle:** „kein Begehren“ ist jetzt garantiert der Grund, wenn
+  das Begehren fehlt; neues Merkmal „kulturell“ zeigt, wo die Kultur entschieden hat;
+  strengere Ladeprüfung der Tabelle (Formeln 2 und 4, AC-19, AC-29).
+- **Tests:** strengere Grenzen für den Monte-Carlo-Test, Bildaufzeichnung statt
+  3 Screenshots, Fälle für leere Werte, einseitiges Begehren und Blitz (AC-02, AC-20,
+  AC-22, AC-28).
+
+Mitgezogen: Simulationskern (Sperrenprüfung nach Gotteskraft, Sperrmerkmale) und Menschen &
+Bevölkerung (Opferwahl zieht keine Beteiligten einer Handlung; Stammeswechsel wird
+gemerkt; nur „frei“ lässt zu).
+
 ## Entscheidungen ohne Freigabe
 
 | # | GDD | Entscheidung | Warum | Zurücknehmen |
@@ -72,3 +111,10 @@ Roadmap; Status bleibt **In Review**.
 | 10 | Menschen | Gefangene wandern im Gebiet des Stamms, der sie hält, und bekommen kein Fest- oder Ritualziel | Sie sind ohnehin von allem Sexuellen ausgeschlossen | Regel 19 |
 | 11 | Menschen | Wer „in Gottes Hand“ ist, wechselt bei einer Abspaltung nie den Stamm; beim Packen wird „im Kampf“ gelöscht | Gleiche Logik wie bei der Opferwahl | Regel 20, 23 |
 | 12 | Menschen | Ein gepackter Statist tritt mit der Zelle hervor, in der die Ansicht ihn gepackt hat | Er hatte vorher keinen Ort in der Simulation | Regel 10 |
+| 13 | Zustimmung | Ritual = nur Teilnahme (mit Frömmigkeits-Tor F_min); jeder Kontakt wird als Zärtlichkeit, Sex zu zweit oder Gruppe geprüft | Deine Entscheidung „Ritual kann Kontakt enthalten, paarweise prüfen“ bleibt; so ersetzt Frömmigkeit nie Begehren | Regel 7 |
+| 14 | Zustimmung | **Vorschlagswerte:** F_min 0,30, T_trauer 5 Lebensjahre, T_akkult 60 Geschichtsjahre, T_erschüttert 1 Lebensjahr | Niemand hat sie festgelegt; sie sind als Vorschlag markiert | Tuning Knobs, Open Questions |
+| 15 | Zustimmung | Bei einem Stammeswechsel gilt T_akkult lang min(alte, neue Norm), statt dass die Norm langsam wandert | Kein neuer Zustand pro Person nötig (keine Lebenssimulation), leicht testbar | Regel 4 |
+| 16 | Zustimmung | „in Gottes Hand“, „lebt“, „erschüttert“ sind Sperrmerkmale beim Beteiligten, nicht im Zustimmungsprofil | Das Profil bleibt bei genau 10 Feldern; Sperren können nur ablehnen | Regel 4, 8 |
+| 17 | Zustimmung | Neues Handlungsregister als einziger Weg in eine Handlung; wie es in Assemblies geschnitten wird, entscheidet die Architektur | Ohne einen Besitzer der laufenden Handlungen lässt sich „kein anderer Weg“ nicht prüfen | Regel 18 |
+| 18 | Zustimmung | Ladeprüfung: θ 0,30–0,90, W_D + W_L ≥ 0,40, W_N ≤ 0,40, (θ − Δ) · b_ref ≥ 0,09 | Alle Default-Zeilen bestehen; eine Mod-Tabelle kann die Kultur nicht mehr allein entscheiden lassen | Formel 2 |
+| 19 | Kern, Menschen | Sperrenprüfung als eigener Eintrag nach Gotteskraft; Opferwahl zieht keine Beteiligten einer Handlung | Gegenstücke zum Zustimmungsmodell; der Creative Director hätte sie dir überlassen, ich habe sie mitgezogen, damit die GDDs sich nicht widersprechen | Kern Formel 5, Menschen Regel 13 |
