@@ -581,12 +581,11 @@ Prototype-first (beide Teile der Kernmechanik sind einzeln bewiesen):
 
 - [x] Engine wählen und konfigurieren (`/setup-engine`): Unity 6.3 LTS
 - [x] Prototyp 1 (Simulation ohne Grafik): PROCEED, siehe `prototypes/weltengott-concept/REPORT.md`
-- [x] Konzept prüfen (`/design-review design/gdd/game-concept.md`): drei Reviews, jeweils NEEDS REVISION und danach überarbeitet (zuletzt: Krieg in MVP-0 abstrakt, Kräftezahl im Vertical Slice)
+- [x] Konzept prüfen (`/design-review design/gdd/game-concept.md`): vier Reviews, jeweils NEEDS REVISION und danach überarbeitet (zuletzt: Hand-Aktionen als Eingriffe im MVP-0)
 - [x] Prototyp 2 (Gotteshand und Ragdoll in Unity): PROCEED, siehe `prototypes/gotteshand-concept/REPORT.md`
-- [ ] Konzept erneut prüfen (`/design-review design/gdd/game-concept.md`), seit dem dritten Review überarbeitet
-- [ ] Art Bible (`/art-bible`)
-- [ ] Phasen-Check (`/gate-check`)
+- [x] Phasen-Check (`/gate-check`): CONCERNS, Risiken akzeptiert, Phase Systems Design (Bericht in `production/gate-checks/2026-10-25-concept-to-systems-design.md`)
 - [ ] Konzept in Systeme zerlegen (`/map-systems`)
+- [ ] Art Bible (`/art-bible`), vor der Architektur (URP oder HDRP)
 - [ ] Jedes System entwerfen (`/design-system [system-name]`), das Zustimmungs- und Lust-System früh
 - [ ] Architektur (`/create-architecture`), dann die kritischen ADRs: Simulation ist die Autorität, Zustimmungsmodell als reine Funktion
 - [ ] Vertical Slice in der Pre-Production bauen (`/vertical-slice`)

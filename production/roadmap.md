@@ -16,8 +16,8 @@ rechnet die Vollzeit-Werte einfach hoch. Echte Werte kommen aus den ersten Sprin
 
 | Phase | Inhalt | Dauer (Vollzeit) | Ende ca. Vollzeit | Ende ca. bei 10–20 h/Woche |
 |---|---|---|---|---|
-| **0. Konzept** (jetzt) | Prototyp 1 ✓ und 2 ✓, letztes `/design-review`, `/gate-check` | Tage | – | – |
-| **1. Pre-Production** | `/art-bible`, `/map-systems`, GDDs pro System (Zustimmungs- und Lust-System früh), `/create-architecture` und die kritischen ADRs, MVP-0 neu schätzen | einige Wochen (ungeschätzt) | – | – |
+| **0. Konzept** ✓ | Prototyp 1 ✓ und 2 ✓, letztes `/design-review`, `/gate-check` | Tage | – | – |
+| **1. Systemplanung und Pre-Production** (jetzt) | `/map-systems`, GDDs pro System, `/art-bible` (Zustimmungs- und Lust-System früh), `/create-architecture` und die kritischen ADRs, MVP-0 neu schätzen | einige Wochen (ungeschätzt) | – | – |
 | **2. MVP-0 „Gott-Spielzeug“** | Simulation mit abstraktem Krieg, Kulturwandel auf einer Achse (Lust-Sekte ↔ Gottesstaat) mit Erinnerung, Zustimmungsmodell als reine Funktion mit Tests, Grundkörper ohne Morphs, Gotteshand und Ragdoll, 4 Kräfte und passive Gnade, eine Zoomstufe, Speichern, Zeitsteuerung, Chronik | 3–4 Monate (neu schätzen) | Monat 4 | Monat 8–16 |
 | **3. MVP-1** | Weitere Kräfte, zweite Zoomstufe, Morphs und Look B, volles System für Kulturwandel und Erinnerung | +2–3 Monate | Monat 6–7 | Monat 12–28 |
 | **4. Vertical Slice (v1)** | In dieser Reihenfolge: sichtbarer Krieg → Harem und Rituale → Haut in Detailstufen → Besessen-Sein. 1–3 Stämme, 30–80 Menschen, 2–3 Zoomstufen | +6–10 Monate | Monat 12–17 | Monat 24–68 |
@@ -45,12 +45,27 @@ Die Reihenfolge in v1 (Krieg vor Harem und Ritualen) ist eine Umfangsentscheidun
 des Konzepts und kann dort geändert werden. Die nicht verhandelbaren Grenzen aus den
 Anti-Pillars gelten in jeder Stufe.
 
+## Regeln für die Systemplanung
+
+Festgelegt vom Entwickler am 2026-10-25 beim Gate-Check (Bericht in
+`production/gate-checks/2026-10-25-concept-to-systems-design.md`):
+
+- GDDs nur für Systeme von MVP-0. MVP-1 und v1 warten.
+- Höchstens 2 `/design-review`-Runden pro GDD. Was danach offen ist, wandert ins
+  nächste GDD oder in die Stories.
+- Kleine Wegwerf-Tests in Unity nebenher sind erlaubt (unter `prototypes/`), damit es
+  in der Designphase etwas zu spielen gibt.
+- Reihenfolge der GDDs (Empfehlung des Producers): Grundlagen zuerst (Simulationstakt,
+  Stämme, Kulturzustand, Speichern), dann Zustimmung und Lust, dann Kräfte und
+  Gotteshand, dann Chronik.
+
 ## Nächste Schritte
 
-1. `/design-review design/gdd/game-concept.md` (letzter Durchgang vor dem Gate)
-2. `/gate-check` (Konzept → Systemplanung)
-3. `/art-bible`
-4. `/map-systems`
+1. ~~`/design-review design/gdd/game-concept.md`~~ (4 Durchgänge, erledigt)
+2. ~~`/gate-check` (Konzept → Systemplanung)~~ (CONCERNS, Risiken akzeptiert, Phase
+   ist jetzt Systems Design)
+3. `/map-systems`
+4. `/art-bible` (vor der Architektur, für URP oder HDRP; die GDDs brauchen sie noch nicht)
 5. `/design-system [system]` für jedes MVP-0-System, das Zustimmungs- und
    Lust-System früh
 6. `/create-architecture`, dann die kritischen ADRs (Simulation ist die Autorität,
