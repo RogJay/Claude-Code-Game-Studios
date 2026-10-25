@@ -124,6 +124,24 @@ items: []
 # Optional: expression (the actual formula), notes
 
 formulas:
+  - name: bereitschaft
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    variables:
+      - D_i
+      - L_i
+      - n_i
+      - G_i
+      - F_i
+      - k_i
+      - T_i
+    output_range: [0, 1]
+    expression: "w_i = max(0, W_D*D_i + W_L*L_i + W_N*n_i + W_G*G_i + W_F*F_i - c_pub*pi*(1-G_i) - c_bind*k_i*T_i)"
+    notes: "Gewichte je Handlungsart summieren sich zu 1; nie Hingabe, Rang oder Eingriffe als Eingabe"
+    added: 2026-10-25
+    revised: ""
   - name: gnade
     status: active
     source: design/gdd/menschen-und-bevoelkerung.md
@@ -202,6 +220,76 @@ formulas:
 # Required fields: name, status, source, referenced_by, value, unit, added
 
 constants:
+  - name: schwelle_zaertlichkeit
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.40
+    unit: Bereitschaft 0–1
+    notes: "Zustimmungsschwelle; Reihenfolge Zärtlichkeit ≤ Sex ≤ Gruppe"
+    added: 2026-10-25
+    revised: ""
+  - name: schwelle_sex_zu_zweit
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.48
+    unit: Bereitschaft 0–1
+    notes: "Zustimmungsschwelle"
+    added: 2026-10-25
+    revised: ""
+  - name: schwelle_gruppe
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.52
+    unit: Bereitschaft 0–1
+    notes: "Zustimmungsschwelle"
+    added: 2026-10-25
+    revised: ""
+  - name: schwelle_harem_beitreten
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.55
+    unit: Bereitschaft 0–1
+    notes: "Zustimmungsschwelle"
+    added: 2026-10-25
+    revised: ""
+  - name: schwelle_ritual
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.45
+    unit: Bereitschaft 0–1
+    notes: "Zustimmungsschwelle"
+    added: 2026-10-25
+    revised: ""
+  - name: haltemarge
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.08
+    unit: Bereitschaft 0–1
+    notes: "Laufende Handlung endet unter Schwelle minus Haltemarge"
+    added: 2026-10-25
+    revised: ""
+  - name: n_gruppe_max
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 4
+    unit: Beteiligte
+    notes: "Größte Gruppe, mindestens 3"
+    added: 2026-10-25
+    revised: ""
   - name: start_volk_per_tribe
     status: active
     source: design/gdd/menschen-und-bevoelkerung.md

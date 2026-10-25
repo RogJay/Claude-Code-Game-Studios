@@ -80,7 +80,7 @@ GDD.
 | 1 | Simulationskern | Core | MVP | Designed | design/gdd/simulationskern.md | — |
 | 2 | Welt & Insel (inferred) | Core | MVP | Not Started | — | Simulationskern |
 | 3 | Menschen & Bevölkerung | Core | MVP | Designed | design/gdd/menschen-und-bevoelkerung.md | Simulationskern, Welt & Insel, Kultur & Erinnerung (nur Stammeshingabe, lesend) |
-| 4 | Zustimmungsmodell | Gameplay | MVP | Not Started | — | Menschen & Bevölkerung, Kultur & Erinnerung (Normen als Eingabe) |
+| 4 | Zustimmungsmodell | Gameplay | MVP | Designed | design/gdd/zustimmungsmodell.md | Menschen & Bevölkerung, Kultur & Erinnerung (Normen als Eingabe) |
 | 5 | Stämme & Diplomatie | Gameplay | MVP | Not Started | — | Menschen & Bevölkerung, Welt & Insel |
 | 6 | Kultur & Erinnerung | Gameplay | MVP | Not Started | — | Stämme & Diplomatie, Menschen & Bevölkerung |
 | 7 | Begehren & Lust | Gameplay | MVP | Not Started | — | Zustimmungsmodell, Kultur & Erinnerung, Menschen & Bevölkerung, Körper & Animation |
@@ -255,10 +255,10 @@ Effort estimates: S = 1 session, M = 2-3 sessions, L = 4+ sessions.
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 33 |
-| Design docs started | 2 |
+| Design docs started | 3 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
-| MVP systems designed | 2/16 |
+| MVP systems designed | 3/16 |
 | Vertical Slice systems designed | 0/9 |
 
 ---
