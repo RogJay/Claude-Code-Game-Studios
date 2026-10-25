@@ -42,6 +42,20 @@ mit dem Urteil APPROVED oder du.
 - Registry: `menschen_system_id` und `menschen_year_offset` neu (beide Wert 2).
 - Konzept: die alte Angabe „Stammeslogik mit etwa 1 Hz“ auf „2 Hz bei 1×“ angeglichen.
 
+### 2. Menschen & Bevölkerung, Review-Runde 2 (lean)
+
+Urteil: **NEEDS REVISION** mit 1 neuem Blocker, behoben. Die 4 Blocker aus Runde 1
+waren gelöst. Dazu sind die 11 empfohlenen Punkte eingearbeitet. Letzte Runde laut
+Roadmap; Status bleibt **In Review**.
+
+- Blocker: Der überarbeitete Kern gibt das Packen eines Statisten und die Rückgabe aus
+  Gottes Hand als Auftrag an Menschen weiter, Regel 23 kannte beides nicht. Jetzt ist
+  der Ablauf festgelegt (Regel 10, 23, neues AC-32).
+- Empfohlen und erledigt: Namen eindeutig über alle Stämme; Gefangene wandern im Gebiet
+  des Stamms, der sie hält; Gehaltene wechseln bei einer Abspaltung nie; Zustand als
+  „Masse / Lebend / Tot plus vier Merkmale“; AC-05 sinnvoll gemacht; double und Promille
+  statt float; Tuning-Knobs-Tabelle; Wert d_t und R / P_person korrigiert; AC-33 neu.
+
 ## Entscheidungen ohne Freigabe
 
 | # | GDD | Entscheidung | Warum | Zurücknehmen |
@@ -53,3 +67,8 @@ mit dem Urteil APPROVED oder du.
 | 5 | Simulationskern | Ein fliegender Mensch wird beim Speichern an seiner eigenen Zelle abgesetzt, nicht an der Hand | Er ist nicht mehr in der Hand | Edge Case Speichern |
 | 6 | Simulationskern | Zufall: xoshiro256**, `NextInt` ohne Verzerrung nach Lemire, `NextDouble` mit 53 Bit | Gängiger, gut getesteter Standard; sonst würden zwei GDDs verschiedene `NextInt` annehmen | Formel 6 |
 | 7 | Simulationskern | Pause sperrt Kräfte und Gotteshand weiterhin | Das war deine Fassung; ob das so bleibt, steht jetzt als offene Frage im GDD | Open Questions |
+| 8 | Menschen | **Persönliche Hingabe klingt langsamer ab:** λ_h 0,94 → 0,98851, Halbwertszeit 5 Lebensjahre (30 s bei 1×) statt 6 s | Mit 6 s war ein Segen auf einen Einzelnen kaum zu sehen (Pillar 2). Das ist die größte inhaltliche Änderung der Nacht | Formel 8, AC-21 |
+| 9 | Menschen | Namen sind über alle Stämme eindeutig; bei erschöpfter Liste ein Wurf über die ganze Liste plus die kleinste freie römische Ziffer | Wechsler hätten sonst Doppelnamen erzeugt | Formel 5, Edge Case |
+| 10 | Menschen | Gefangene wandern im Gebiet des Stamms, der sie hält, und bekommen kein Fest- oder Ritualziel | Sie sind ohnehin von allem Sexuellen ausgeschlossen | Regel 19 |
+| 11 | Menschen | Wer „in Gottes Hand“ ist, wechselt bei einer Abspaltung nie den Stamm; beim Packen wird „im Kampf“ gelöscht | Gleiche Logik wie bei der Opferwahl | Regel 20, 23 |
+| 12 | Menschen | Ein gepackter Statist tritt mit der Zelle hervor, in der die Ansicht ihn gepackt hat | Er hatte vorher keinen Ort in der Simulation | Regel 10 |

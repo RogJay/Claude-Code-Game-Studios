@@ -56,20 +56,22 @@ zeigen.
 4. Jeder Einzelne hat:
    - eine **ID**, die steigt und nie wiederverwendet wird
    - einen **Namen** aus der Namensliste seines Stamms (Datendatei), eindeutig unter
-     den Lebenden
+     allen Lebenden aller Stämme (Formel 5)
    - ein **Geschlecht**: Frau oder Mann (Entscheidung vom 2026-10-25)
    - fünf **Eigenschaften** zwischen 0 und 1, beim Hervortreten gewürfelt und danach
      unveränderlich: **Frömmigkeit, Lust, Treue, Mut, Geselligkeit**
    - wechselnde **Zustände**:
      - **Hingabe** an den Gott (0–1)
-     - **Gesundheit** (gesund, verletzt mit Verletzungsklasse, tot)
+     - **Gesundheit** (gesund, verletzt mit Verletzungsklasse und dem Schritt der
+       Heilung, tot)
      - **Freiheit** (frei oder gefangen)
      - **im Kampf** (ja oder nein): gesetzt und gelöscht durch Aufträge (Regel 23) von Stämme &
        Diplomatie, wenn ein Einzelner an einem Kampf teilnimmt
      - **„in Gottes Hand“** (vom Simulationskern)
    - einen **Ort**, eine Zelle der Insel
-   - den Schritt des Hervortretens t_birth und die Schritte in Gottes Hand held_steps
-     für das Alter (Formel `lebensjahr` im Simulationskern)
+   - den Schritt des Hervortretens t_birth sowie held_closed und t_hold_start für die
+     Zeit in Gottes Hand (Formel `lebensjahr` im Simulationskern; gesetzt, wenn der Kern
+     Beginn und Ende anwendet)
    - eine persönliche **Lebensdauer** LD_i in Lebensjahren (Formulas)
 5. **Rollen** wie Harem-Mitglied, Priesterin oder Anführer gehören den Systemen, die
    sie vergeben. Sie verweisen auf die ID des Einzelnen. Dieses System speichert sie
@@ -100,14 +102,18 @@ zeigen.
 
 **Aufstieg aus der Masse**
 
-9. Liegt die Zahl der Einzelnen unter N_target, tritt pro Geschichtsjahr höchstens ein
+9. Liegt die Zahl der Einzelnen unter N_target_eff, tritt pro Geschichtsjahr höchstens ein
    Mensch aus der Masse hervor. Er kommt aus dem Stamm, dessen Anteil an Einzelnen am
    stärksten unter seinem Anteil am Volk liegt (Formulas). Er bekommt Geschlecht,
    Eigenschaften, Namen und Lebensdauer gewürfelt und einen Ort (eine Zelle im Gebiet seines
    Stamms, als letzter Wurf).
 10. Packt die Gotteshand einen Statisten, tritt dieser sofort hervor, auch über
     N_target hinaus, aber nie über N_max. Ist N_max erreicht, lässt sich kein Statist
-    packen, nur Einzelne (Edge Cases).
+    packen, nur Einzelne (Edge Cases). Ein Statist hat in der Simulation keine ID: Die
+    Ansicht meldet den Griff mit Stamm und Zelle, der Kern gibt ihn als Auftrag weiter
+    (Regel 23), und der Statist tritt mit dieser Zelle als Ort hervor, bevor der Kern
+    ihn „in Gottes Hand“ setzt. Seine ID meldet das Ereignis „Hervortreten“ mit dem
+    Eingriff als Ursache.
 11. Die Kraft „Erwachsene erschaffen“ erhöht das Volk und erzeugt dieselbe Zahl neuer
     Einzelner, bis N_max. Darüber hinaus wächst nur die Masse. Wie viele, legt das GDD
     Gotteskraft & Götterkräfte fest.
@@ -160,15 +166,18 @@ zeigen.
 
 19. Ein Einzelner ist **frei** oder **gefangen**. Wer gefangen genommen und wer
     befreit wird, entscheidet Stämme & Diplomatie. Dieses System hält nur den
-    Zustand. Gefangene zählen zum Volk des Stamms, der sie hält. Für alles Sexuelle
-    sind sie ausgeschlossen (über das Zustimmungsprofil).
+    Zustand. Gefangene zählen zum Volk des Stamms, der sie hält, wandern im Gebiet
+    dieses Stamms und bekommen von Begehren & Lust und Harem & Rituale kein Ziel. Für
+    alles Sexuelle sind sie ausgeschlossen (über das Zustimmungsprofil). Sie heilen wie
+    alle anderen.
 
 **Abspaltung und Eroberung**
 
 20. Spaltet sich ein Stamm ab oder geht in einem Sieger auf, legt Stämme & Diplomatie
     fest, wie viele Köpfe wechseln. Die Einzelnen werden nach dem Verfahren des
     größten Rests im Verhältnis der neuen Volkszahlen verteilt (Edge Cases). Wer
-    wechselt, wird mit dem Zufallsstrom dieses Systems gezogen.
+    wechselt, wird mit dem Zufallsstrom dieses Systems gezogen; Einzelne „in Gottes
+    Hand“ werden dabei nie gezogen und bleiben in ihrem Stamm.
 
 **Ort und Bewegung**
 
@@ -185,7 +194,10 @@ zeigen.
 **Aufträge anderer Systeme**
 
 23. Verlust, Abspaltung, Eroberung, Gefangennahme, Befreiung, Verletzung, das Merkmal
-    „im Kampf“ und „Erwachsene erschaffen“ kommen als **Aufträge**: synchrone Aufrufe,
+    „im Kampf“, „Erwachsene erschaffen“ und vom Simulationskern das Hervortreten eines
+    gepackten Statisten (Stamm, Zelle) sowie die Rückgabe aus Gottes Hand (Ort,
+    Ergebnis, Verletzungsklasse; beim Beginn wird „im Kampf“ gelöscht) kommen als
+    **Aufträge**: synchrone Aufrufe,
     die Menschen sofort ausführt, im Schritt des Auftraggebers, bevor dieser
     weiterrechnet (Entscheidung des Entwicklers vom 2026-10-25). Der Auftraggeber
     liest danach den neuen Zustand (V_t, E_t) noch im selben Schritt; so bleibt die
@@ -211,11 +223,15 @@ Zustände eines Einzelnen:
 | **In Gottes Hand** | gehalten oder im Flug; keine Entscheidungen, kein Altern, kein Tod (Simulationskern) |
 | **Tot** | entfernt, ID gesperrt |
 
-Verletzt, gefangen und im Kampf können gleichzeitig gelten.
+Masse, Frei und Tot schließen sich aus. Verletzt, Gefangen, Im Kampf und In Gottes Hand
+sind **Merkmale** eines lebenden Einzelnen und können gleichzeitig gelten; der Zustand
+eines Einzelnen ist also genau einer von Masse, Lebend oder Tot plus diese vier
+Merkmale.
 
 | Von | Nach | Auslöser |
 |---|---|---|
-| Masse | Frei | Aufstieg (Ziel unterschritten), Gotteshand packt einen Statisten, „Erwachsene erschaffen“ |
+| Masse | Frei | Aufstieg (Ziel unterschritten), „Erwachsene erschaffen“ |
+| Masse | In Gottes Hand | Gotteshand packt einen Statisten: er tritt hervor und wird im selben Eingriff gehalten (Regel 10) |
 | Frei | Verletzt | Ereignis mit Verletzungsklasse (Wurf, Blitz, Kampf) |
 | Verletzt | Frei | Heilung nach der Dauer der Verletzungsklasse (GDD Gotteshand & Ragdoll) |
 | Frei, Verletzt | Gefangen | Gefangennahme (Stämme & Diplomatie) |
@@ -228,19 +244,19 @@ Verletzt, gefangen und im Kampf können gleichzeitig gelten.
 
 | System | Was hineingeht | Was herauskommt | Wer besitzt die Schnittstelle |
 |---|---|---|---|
-| Simulationskern | Personentakt, Jahrestakt, Zufallsstrom (system_id 2), Status „in Gottes Hand“, Umrechnung Lebensjahr | Ereignisse: Hervortreten, Tod, Verletzung, Gefangennahme, Befreiung | Kern |
+| Simulationskern | Personentakt, Jahrestakt, Zufallsstrom (system_id 2), Status „in Gottes Hand“, Umrechnung Lebensjahr; Aufträge: Hervortreten eines gepackten Statisten, Rückgabe aus Gottes Hand | Ereignisse: Hervortreten, Tod | Kern |
 | Welt & Insel | Zellen, Gebiet jedes Stamms, Nahrung und Tragfähigkeit pro Stamm | Orte der Einzelnen | Welt & Insel (vorläufig, GDD fehlt) |
 | Kultur & Erinnerung | Stammeshingabe D_t | – | Kultur & Erinnerung (vorläufig) |
 | Stämme & Diplomatie | Aufträge (Regel 23): Verluste als Zahl, Abspaltung, Eroberung, Gefangennahme, Befreiung, Kampf-Merkmal | V_t, Einzelne pro Stamm | Stämme & Diplomatie gibt die Zahlen vor, Menschen wählt die Personen |
 | Zustimmungsmodell | – | Zustimmungsprofil (Regel 18) | Menschen (Profilinhalt ist eine Grenze und darf nicht erweitert werden) |
 | Begehren & Lust | Ziele (Fest), Vorlieben | Einzelne mit Eigenschaften, Geschlecht, Ort | Menschen |
 | Harem & Rituale | Ziele (Ritual), Rollen per ID | Einzelne, Rituale zählen über D_t und V_t | Menschen |
-| Gotteskraft & Götterkräfte | „Erwachsene erschaffen“ (Anzahl, Stamm), Blitz auf Person | neue Einzelne, Tod | Gotteskraft |
-| Gotteshand & Ragdoll | Packen eines Statisten (Aufstieg), Ergebnis mit Verletzungsklasse | ID des gepackten Einzelnen | Gotteshand |
+| Gotteskraft & Götterkräfte | „Erwachsene erschaffen“ (Anzahl, Stamm), Blitz auf Person | neue Einzelne, Tod, persönliche Hingabe h_i lesend (Zufluss aus Hingabe) | Gotteskraft |
+| Gotteshand & Ragdoll | Packen eines Statisten (Stamm, Zelle), Ergebnis mit Verletzungsklasse, beides über den Kern | ID des gepackten Einzelnen (Ereignis „Hervortreten“) | Gotteshand |
 | Körper & Animation | – | Geschlecht, Eigenschaften (für Körperwahl), Alter für die Darstellung (immer erwachsen) | Menschen |
 | Weltansicht & Kamera | – | Einzelne mit Ort, V_t pro Stamm für Statisten | Menschen |
 | Chronik | – | Ereignisse Tod, Hervortreten, Gefangennahme mit Ursache | Kern-Ereignisformat |
-| Speichern & Laden | kompletter Zustand | V_t, alle Einzelnen mit allen Feldern, Gnade-Akkumulatoren, nächste freie ID | Speichern & Laden |
+| Speichern & Laden | kompletter Zustand | V_t, alle Einzelnen mit allen Feldern, Gnade-Akkumulatoren, Posteingang, nächste freie ID | Speichern & Laden |
 
 ## Formulas
 
@@ -274,9 +290,9 @@ als ganzzahliges Verhältnis, in double gerechnet). Sonst bleibt acc_t unveränd
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
 | V_t | int | ≥ 0 | calculated | Volk des Stamms (Einzelne mitgezählt) |
-| D_t | float | 0,05–1 | calculated | Stammeshingabe (Kultur & Erinnerung) |
-| food_t | float | ≥ 0 (Deckel 3 · V_t) | calculated | Nahrung des Stamms (Welt & Insel) |
-| cap_t | float | ≥ 0 | calculated | Tragfähigkeit mit Dürrefaktor (Welt & Insel) |
+| D_t | double | 0,05–1 | calculated | Stammeshingabe (Kultur & Erinnerung) |
+| food_t | double | ≥ 0 (Deckel 3 · V_t) | calculated | Nahrung des Stamms (Welt & Insel) |
+| cap_t | double | ≥ 0 | calculated | Tragfähigkeit mit Dürrefaktor (Welt & Insel) |
 | g_base | float | 0,01 | constant | Grundrate aus Prototyp 1, nicht ändern |
 | g_dev | float | 0,03 | constant | Anteil der Hingabe aus Prototyp 1, nicht ändern |
 | g_cap | float | 1,05 | constant | Toleranz über der Tragfähigkeit aus Prototyp 1 |
@@ -293,21 +309,21 @@ G = 48 · (0,01 + 0,015) = 1,2. acc 0,3 → 1,5, born = 1, acc = 0,5, V = 49.
 
 The Einzelnenziel formula is defined as:
 
-`N_target_eff = min(N_target, floor(r_E * V_total))` mit `N_target ≤ N_max` und immer `E_total ≤ N_max`
+`N_target_eff = min(N_target, floor(r_E_pm * V_total / 1000))` (ganzzahlig gerechnet) mit `N_target ≤ N_max` und immer `E_total ≤ N_max`
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
 | N_target | int | 30–50, Default 40 | data file | Sollzahl der Einzelnen, fest und nicht mit dem Volk skaliert |
 | N_max | int | N_target bis 80, Default 60 | data file | harte Obergrenze (Gotteshand, „Erwachsene erschaffen“). 20 über dem Ziel, damit man viele Statisten packen kann (Prototyp 2: Werfen ist der Kern des 30-Sekunden-Loops) |
-| r_E | float | 0,1–0,6, Default 0,5 | data file | größter Anteil der Einzelnen am gesamten Volk |
+| r_E_pm | int | 100–600 ‰, Default 500 | data file | größter Anteil der Einzelnen am gesamten Volk, in Promille, damit nichts gerundet werden muss |
 | V_total | int | ≥ 0 | calculated | Summe aller V_t |
 | E_total | int | 0 bis N_max | calculated | lebende Einzelne |
 | N_target_eff | int | 0 bis N_target | calculated | wirksames Ziel |
 
 **Output Range:** 0 bis N_target. Das Ziel ist fest: Bei 96 Köpfen sind 40 Einzelne
 42 %, bei 500 Köpfen 8 %. Es bleiben gleich viele Gesichter, die Masse wird zur
-Kulisse, und die Zahl sichtbarer Figuren bleibt im Budget. r_E schützt kleine Welten,
+Kulisse, und die Zahl sichtbarer Figuren bleibt im Budget. r_E_pm schützt kleine Welten,
 damit Masse übrig bleibt.
 **Example:** V_total = 96 → min(40, 48) = 40. V_total = 30 → min(40, 15) = 15.
 
@@ -325,7 +341,7 @@ die kleinste Stammes-ID.
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
 | E_t | int | 0 bis V_t | calculated | Einzelne des Stamms |
-| d_t | int64 | ± V_t · N_max | calculated | Defizit: Anteil am Volk minus Anteil an den Einzelnen, mit gemeinsamem Nenner, nur Ganzzahlen |
+| d_t | int64 | ± N_max · V_total | calculated | Defizit: Anteil am Volk minus Anteil an den Einzelnen, mit gemeinsamem Nenner, nur Ganzzahlen |
 | Stammes-ID | int | ≥ 0 | calculated | Gleichstand |
 
 **Output Range:** ein Stamm oder keiner (kein Stamm hat Masse, oder das Ziel ist
@@ -368,7 +384,7 @@ The Eigenschaftswurf formula is defined as:
 | R_res | int | 1000 | constant | Auflösung; eine einzige Division am Ende |
 | trait | float | 0–1 | calculated | jeweils Frömmigkeit, Lust, Treue, Mut, Geselligkeit; danach fest |
 | p_frau_pm | int | 100–900 ‰, Default 500 | data file | Wahrscheinlichkeit in Promille, dass ein neuer Einzelner eine Frau ist (ganzzahlig, damit nichts gerundet werden muss) |
-| freie_Namen | Liste | ≥ 0 Einträge | data file / calculated | Namensliste des Stamms in Listenreihenfolge, ohne die Namen lebender Einzelner; ist sie leer, gilt der Edge Case „Namensliste erschöpft“ |
+| freie_Namen | Liste | ≥ 0 Einträge | data file / calculated | Namensliste des Stamms in Listenreihenfolge, ohne die Namen aller lebenden Einzelnen aller Stämme; ist sie leer, gilt der Edge Case „Namensliste erschöpft“ |
 
 **Output Range:** 0–1, ohne Klemmen. Mittelwert 0,5, Standardabweichung 0,167:
 86 % der Werte liegen zwischen 0,25 und 0,75, je etwa 1,5 % unter 0,15 und über 0,85. Die
@@ -433,12 +449,15 @@ The Hingabe formula is defined as:
 | F_i | float | 0–1 | calculated | Frömmigkeit des Einzelnen |
 | k_F | float | 0–1, Default 0,4 | data file | Gewicht der Frömmigkeit (± 0,2) |
 | O_i | float | −1 bis 1 (geklemmt) | calculated | Nachwirkung persönlicher Eingriffe, wird gespeichert |
-| λ_h | float | Default 0,94 | data file | Verfall pro Geschichtsjahr (Halbwertszeit etwa 11 Jahre, also etwa ein Lebensjahr) |
+| λ_h | double | 0,94–0,998, Default 0,98851 | data file | Verfall pro Geschichtsjahr; der Default ergibt eine Halbwertszeit von 60 Geschichtsjahren = 5 Lebensjahren, bei 1× 30 s (vorher 0,94 mit nur 11 Jahren, also 6 s, und damit kaum sichtbar) |
 | Ereignis | float | −1 bis 1 | data file | Beträge legen die GDDs der Eingriffe fest |
 
 **Output Range:** 0–1 (geklemmt). Die Hingabe steht nicht im Zustimmungsprofil.
 **Example:** D 0,6, F 0,9, O 0,1 → 0,6 + 0,16 + 0,1 = 0,86. Ein Segen von +0,3 wirkt
-nach 12 Jahren noch mit 0,3 · 0,94¹² = 0,14.
+nach 12 Jahren (einem Lebensjahr) noch mit 0,3 · 0,98851¹² = 0,261 und nach 60 Jahren
+mit 0,15. Ein persönlicher Eingriff bleibt damit etwa ein Achtel eines Lebens deutlich
+sichtbar (Pillar 2). Gelesen wird h_i von Gotteskraft & Götterkräfte (Zufluss aus
+Hingabe) und von der Anzeige eines Einzelnen.
 
 ### 9. Bewegung (vorläufig, Welt & Insel hat noch kein GDD)
 
@@ -451,7 +470,7 @@ The Bewegung formula is defined as:
 |----------|------|-------|--------|-------------|
 | M_travel | int | ≥ 1, Default 1 | data file | Personentakte je Zelle mit Ziel |
 | M_wander | int | ≥ 1, Default 4 | data file | Personentakte je Zelle ohne Auftrag |
-| R / P_person | int | 5 | constant | Personentakte pro echter Sekunde bei 1× (Simulationskern) |
+| R / P_person | int | 5 beim Default | calculated | Personentakte pro echter Sekunde bei 1×, abgeleitet aus R = 2 · S_year und P_person (Simulationskern) |
 | d | int | 0–39 | calculated | Abstand in Zellen (Karte von Prototyp 1: 40 × 28) |
 
 Ohne Ziel wählt ein Einzelner bei jedem Wanderschritt eine der Nachbarzellen im
@@ -505,7 +524,10 @@ kaum ändern. Gemessen wird sie trotzdem neu mit den Debug- und Balancing-Werkze
   wird nach dem Verfahren des größten Rests. Bei Gleichstand bekommt der Stamm mit der
   kleineren ID den Einzelnen, und wer wechselt, wird mit dem Zufallsstrom gezogen.
 - **If die Namensliste eines Stamms erschöpft ist**: Ein Name wird erneut vergeben,
-  mit römischer Ziffer („Ilsa II“), sodass er unter den Lebenden eindeutig bleibt.
+  mit römischer Ziffer („Ilsa II“), sodass er unter den Lebenden eindeutig bleibt. Der
+  Grundname wird mit einem Wurf `NextInt(0, Länge der ganzen Liste)` gewählt, die Ziffer
+  ist die kleinste ab II, die unter den Lebenden frei ist. Es bleibt also bei genau einem
+  Wurf für den Namen.
 - **If ein Einzelner stirbt, während er ein Ziel hat** (Fest, Ritual) oder eine Rolle
   innehat: Die Systeme, die Ziel oder Rolle vergeben haben, bekommen das Ereignis
   „Tod“ und entfernen ihn selbst.
@@ -544,8 +566,24 @@ nur lesbar bereit, und Menschen schreibt nie in die Kultur.
 **Wird gebraucht von:** Zustimmungsmodell (Zustimmungsprofil), Stämme & Diplomatie,
 Kultur & Erinnerung, Begehren & Lust, Harem & Rituale, Gotteskraft & Götterkräfte,
 Gotteshand & Ragdoll, Körper & Animation, Weltansicht & Kamera, Chronik, Speichern &
-Laden, HUD & Chronik-Ansicht. Keines davon hat schon ein GDD außer dem
-Simulationskern, und der nennt Menschen & Bevölkerung bereits als abhängiges System.
+Laden, HUD & Chronik-Ansicht. Ein GDD haben davon bisher das Zustimmungsmodell
+(`design/gdd/zustimmungsmodell.md`) und der Simulationskern; beide nennen Menschen &
+Bevölkerung als Abhängigkeit.
+
+## Tuning Knobs
+
+| Regler | Default | Sicherer Bereich | Wirkung |
+|---|---|---|---|
+| Startvolk je Stamm | 48 | fest bis zur Messung | wie Prototyp 1; eine Änderung bricht die Kalibrierung |
+| N_target | 40 | 30–50 | Zahl der Gesichter; mehr kostet Figuren in voller Detailstufe |
+| N_max | 60 | N_target bis 80 | wie viele Statisten man packen kann, bevor ein Griff fehlschlägt |
+| r_E_pm | 500 ‰ | 100–600 ‰ | wie viel Masse in kleinen Welten bleibt |
+| w_E = a / b | 1/4 | 0,05–1 | wie oft Einzelne bei Verlusten sterben |
+| p_frau_pm | 500 ‰ | 100–900 ‰ | Geschlechterverhältnis neuer Einzelner |
+| L_Lj, Δ_L | 40, 10 | L_Lj 30–60, Δ_L bis L_Lj − 1 | Lebensdauer und Streuung, etwa 4 Minuten bei 1× |
+| k_F | 0,4 | 0–1 | wie stark die Frömmigkeit die persönliche Hingabe hebt |
+| λ_h | 0,98851 | 0,94–0,998 | wie lange ein persönlicher Eingriff in der Hingabe nachwirkt |
+| M_travel, M_wander | 1, 4 | je ≥ 1 | Tempo mit und ohne Ziel |
 Jedes neue GDD muss Menschen & Bevölkerung nennen und die Verträge aus den
 Interactions übernehmen.
 
@@ -562,7 +600,8 @@ Aufstieg nicht seine Gestalt wechselt.
 Die Welt soll sich voll und lebendig anfühlen, aber mit Gesichtern, die man
 wiedererkennt. Ein Einzelner lebt im Mittel etwa 4 Minuten bei 1×. Das ist lang genug,
 um ihn zu verfolgen, und kurz genug, dass ständig neue Gesichter kommen. Packt man
-einen Statisten, wird er ohne Verzögerung zu einer Person mit Namen. Das ist die
+einen Statisten, wird er spätestens im nächsten Schritt (bei 1× höchstens 0,1 s) zu einer
+Person mit Namen; die Ansicht hält die Figur in der Zwischenzeit schon in der Hand. Das ist die
 Brücke zwischen dem Spielzeug aus Prototyp 2 und der Simulation.
 
 ## UI Requirements
@@ -587,6 +626,7 @@ Brücke zwischen dem Spielzeug aus Prototyp 2 und der Simulation.
 | `design/gdd/game-concept.md` | Nur Erwachsene, Gnade aus Ritualen, „Erwachsene erschaffen“, Hingabe ist keine Zustimmung, Gefangene ausgeschlossen, 30–50 Menschen im MVP |
 | `prototypes/weltengott-concept/prototype.html` | Gnade-Formel und ihre Konstanten, Startvolk 2 × 48, Reihenfolge im Jahresschritt |
 | `prototypes/gotteshand-concept/REPORT.md` | Werfen als Kern des 30-Sekunden-Loops (Grund für N_max = 60) |
+| `design/gdd/zustimmungsmodell.md` | liest das Zustimmungsprofil (Regel 18) mit genau diesen 10 Feldern |
 | `design/gdd/systems-index.md` | Abhängigkeiten |
 
 ## Acceptance Criteria
@@ -595,11 +635,11 @@ Entwurf des `qa-lead` (2026-10-25), mit den eingearbeiteten Korrekturen. Testwur
 `Assets/Tests/EditMode/MenschenUndBevoelkerung/`.
 
 ### Kern, Daten, Grenzen
-- **AC-01 [Logic/EditMode]** **GIVEN** eine neue Welt, **WHEN** 500 Geschichtsjahre mit zufälligen Ereignissen laufen, **THEN** beginnt sie mit 2 Stämmen zu je 48 und 20 Einzelnen je Stamm, und nach jedem Schritt gilt E_t ≤ V_t, E_total ≤ N_max und jeder Einzelne gehört genau einem Stamm (Property-Test).
+- **AC-01 [Logic/EditMode]** **GIVEN** eine neue Welt, **WHEN** 500 Geschichtsjahre mit zufälligen Ereignissen aus einem Testgenerator mit festem Startwert laufen, **THEN** beginnt sie mit 2 Stämmen zu je 48 und 20 Einzelnen je Stamm, und nach jedem Schritt gilt E_t ≤ V_t, E_total ≤ N_max und jeder Einzelne gehört genau einem Stamm (Property-Test).
 - **AC-02 [Logic/EditMode]** **GIVEN** V_t = 0 und acc_t = 0,7, **WHEN** das Jahr läuft, **THEN** bleibt V_t = 0, acc_t wird 0, und es entsteht niemand.
 - **AC-03 [Logic/EditMode]** **GIVEN** 1.000 Tode und neue Einzelne, **WHEN** die IDs verglichen werden, **THEN** steigen sie streng und kommen nie doppelt vor; Namen sind unter den Lebenden eindeutig, eine erschöpfte Liste ergibt „Ilsa II“, und die fünf Eigenschaften sind nach 100 Jahren unverändert.
 - **AC-04 [Logic/EditMode] Grenze „nur Erwachsene“, streng** **GIVEN** die Assembly des Systems, **WHEN** sie per Reflection geprüft wird, **THEN** gibt es genau einen Weg, Einzelne zu erzeugen (intern, mit dem Grund Welterzeugung, Aufstieg oder Erwachsene erschaffen); jeder Anstieg von V_total pro Schritt ist durch die Gnade, die Welterzeugung oder „Erwachsene erschaffen“ erklärt (Property-Test, 1.000 Startwerte, zufällige Eingriffe), und kein Typ, Feld oder Enum-Wert heißt Kind, Child oder Geburt.
-- **AC-05 [Logic/EditMode] Grenze „nur Erwachsene“, streng** **GIVEN** beliebige Einzelne (1.000 Startwerte, je 500 Jahre), **WHEN** das angezeigte Alter berechnet wird, **THEN** gilt jederzeit 18 + age_Lj ≥ 18, und kein Einzelner hat einen Zustand außerhalb der Tabelle in States and Transitions.
+- **AC-05 [Logic/EditMode] Grenze „nur Erwachsene“, streng** **GIVEN** beliebige Einzelne (1.000 Startwerte, je 500 Jahre), **WHEN** das angezeigte Alter berechnet wird, **THEN** gilt jederzeit age_steps ≥ 0, das angezeigte Alter ist genau 18 im Schritt des Hervortretens auf allen vier Wegen, und jeder Einzelne ist genau einer von Masse, Lebend oder Tot und trägt nur die vier Merkmale aus States and Transitions.
 - **AC-06 [Logic/EditMode] Grenze „Hingabe ist keine Zustimmung“, streng** **GIVEN** der Typ `Zustimmungsprofil` (unveränderliche Struktur in eigener Assembly), **WHEN** seine Felder per Reflection gelesen werden, **THEN** sind es genau Frömmigkeit, Lust, Treue, Mut, Geselligkeit, Geschlecht, Freiheit, Gesundheit, im Kampf und Stammes-ID; jedes weitere Feld, jeder Verweis auf einen Einzelnen und jeder Name wie Hingabe, Rolle, Rang, Kraft oder Eingriff lässt den Test scheitern, und die Assembly des Zustimmungsmodells referenziert nur die Profil-Assembly, nicht die Menschen-Assembly.
 - **AC-07 [Logic/EditMode] Grenze, streng** **GIVEN** 1.000 Einzelne, **WHEN** Hingabe, Nachwirkung O_i, Rolle oder Rang beliebig geändert werden, **THEN** ist ihr Zustimmungsprofil bitgleich (Property-Test), und die Masse liefert kein Profil.
 - **AC-08 [Logic/EditMode]** **GIVEN** ein gefangener und verletzter Einzelner, **WHEN** er heilt, **THEN** bleibt er gefangen, sein Profil zeigt Freiheit = gefangen, und er zählt zum Volk des Stamms, der ihn hält.
@@ -619,17 +659,19 @@ Entwurf des `qa-lead` (2026-10-25), mit den eingearbeiteten Korrekturen. Testwur
 - **AC-18 Formel 5, statistisch [Logic/EditMode]** **GIVEN** ein fester Startwert, **WHEN** 10.000 Eigenschaften gewürfelt werden, **THEN** ist der Mittelwert 0,50 ± 0,005, die Standardabweichung 0,167 ± 0,005, der Anteil in [0,25; 0,75] 86 % ± 1,5 Punkte und der Anteil unter 0,15 1,5 % ± 0,5 Punkte; r = 700, 400, 850 ergibt 0,65, die Wurfreihenfolge ist Geschlecht, 15 Eigenschaften, Lebensdauer, (Startalter), Name, Ort, und bei p_frau_pm = 500 sind 50 % ± 1,5 Punkte Frauen.
 - **AC-19 Formel 6 [Logic/EditMode]** **GIVEN** 10.000 Würfe, **WHEN** LD_i gezogen wird, **THEN** liegt jeder Wert in 30–50, alle 21 Werte kommen vor, und der Mittelwert ist 40 ± 0,3; **GIVEN** LD_i = 37, **THEN** stirbt der Einzelne im ersten Personentakt mit age_steps ≥ 2.220, Zeit in Gottes Hand verschiebt das, und in der Hand stirbt niemand.
 - **AC-20 Formel 7 [Logic/EditMode]** **GIVEN** LD_i = 44 und a_0 = 30, **WHEN** die Welt erzeugt wird, **THEN** ist t_birth = −1.800 und der Tod kommt in Schritt 840 (gerade ID) bzw. 841 (ungerade ID); für alle Start-Einzelnen gilt 0 ≤ a_0 < LD_i, und bei t = 0 stirbt niemand.
-- **AC-21 Formel 8 [Logic/EditMode]** **GIVEN** D = 0,6, F = 0,9 und O = 0,1, **WHEN** h_i berechnet wird, **THEN** ist es 0,86 ± 1e-6; ein Segen von +0,3 ergibt nach 12 Jahren O = 0,143 ± 0,001, |O| < 0,001 wird 0, O bleibt in [−1; 1] und h in [0; 1].
+- **AC-21 Formel 8 [Logic/EditMode]** **GIVEN** D = 0,6, F = 0,9 und O = 0,1, **WHEN** h_i berechnet wird, **THEN** ist es 0,86 ± 1e-6; ein Segen von +0,3 ergibt nach 12 Jahren O = 0,261 ± 0,001, |O| < 0,001 wird 0, O bleibt in [−1; 1] und h in [0; 1].
 - **AC-22 Formel 9 [Logic/EditMode]** **GIVEN** ein Ziel 12 Zellen entfernt (Chebyshev) und M_travel = 1, **WHEN** der Einzelne geht, **THEN** kommt er nach genau 12 eigenen Personentakten an; ohne Ziel geht er 1 Zelle je 4 Takte, bleibt immer im Gebiet seines Stamms und wählt bei gleichem Startwert dieselben Zellen; d = 0 ergibt keine Bewegung.
 - **AC-30 Wechsel ins fremde Gebiet [Logic/EditMode]** **GIVEN** ein Einzelner wechselt per Abspaltung in einen Stamm, dessen gesamtes Gebiet nicht an seine Zelle grenzt (Abstand d zur nächsten Zelle), **WHEN** d Personentakte laufen, **THEN** steht er in einer Zelle seines neuen Gebiets und wandert danach nur dort; er bleibt in keinem Fall außerhalb stehen, und bei gleichem Startwert sind die Wege gleich.
 
 ### Stamm, Takt, Speichern, Determinismus
 - **AC-23 Abspaltung und Eroberung [Logic/EditMode]** **GIVEN** ein Wechsel von m Köpfen, **WHEN** verteilt wird, **THEN** bleiben V_total und E_total bis auf die Toten erhalten, die Einzelnen folgen dem größten Rest, bei Gleichstand bekommt die kleinere Stammes-ID, und wer wechselt, behält alles außer dem Stamm.
-- **AC-24 Jahrestakt [Integration/PlayMode]** **GIVEN** S_year = 5, **WHEN** t mod 5 = 2 ist, **THEN** laufen Gnade, Aufstieg und Hingabe genau einmal, vor Stämme & Diplomatie, und sehen Nahrung (Versatz 0) und D_t (Versatz 1) desselben Jahres.
+- **AC-24 Jahrestakt [Integration/EditMode, mit Stubs]** **GIVEN** S_year = 5, **WHEN** t mod 5 = 2 ist, **THEN** laufen Gnade, Aufstieg und Hingabe genau einmal, vor Stämme & Diplomatie, und sehen Nahrung (Versatz 0) und D_t (Versatz 1) desselben Jahres.
 - **AC-31 Aufträge [Logic/EditMode]** **GIVEN** ein Stub von Stämme & Diplomatie fordert in Schritt t einen Verlust von k = 5 für Stamm A und liest danach im selben Schritt V_A, **WHEN** der Schritt läuft, **THEN** ist V_A schon um 5 gesunken, die Opferwahl hat ihre Würfe beim Aufruf aus Strom 2 gezogen, und ein zweiter Lauf ergibt denselben Hash; dasselbe gilt für Abspaltung (die Einzelne sind sofort verteilt), Gefangennahme (Freiheit = gefangen sofort sichtbar) und das Merkmal „im Kampf“ (im selben Schritt im Zustimmungsprofil).
 - **AC-25 Speichern und Laden [Logic/EditMode]** **GIVEN** ein Zustand nach 100 Jahren, **WHEN** gespeichert und geladen wird, **THEN** ist der Zustands-Hash gleich (alle Felder, acc_t, O_i, nächste freie ID).
 - **AC-26 Determinismus [Logic/EditMode]** **GIVEN** gleicher Startwert und gleiche Ereignisfolge, **WHEN** zweimal 500 Geschichtsjahre laufen, **THEN** sind die Hashes (V_t, alle Einzelnen, acc_t, O_i, nächste ID) identisch, und ein anderer Startwert ergibt einen anderen Hash.
 - **AC-27 [Manual]** **GIVEN** Einzelne im Spiel, **WHEN** ihre Anzeige geprüft wird, **THEN** zeigt jede Figur ein Alter ≥ 18; Screenshots liegen in `production/qa/evidence/`.
+- **AC-32 Aufträge des Kerns [Logic/EditMode]** **GIVEN** E_total = 59, N_max = 60 und ein Griff auf einen Statisten aus Stamm A in Zelle c, **WHEN** der Kern den Beginn anwendet, **THEN** tritt der Statist mit Ort c hervor (E_total = 60), das Ereignis „Hervortreten“ nennt den Eingriff als Ursache, er ist „in Gottes Hand“, und ein „im Kampf“ ist gelöscht; bei E_total = 60 wird der Griff ein Eingriff ins Leere und niemand tritt hervor; **WHEN** das Ende mit Ort c', Ergebnis „verletzt“ und Verletzungsklasse k angewendet wird, **THEN** steht er in c', ist verletzt mit k und dem Schritt der Heilung, und held_closed ist gewachsen.
+- **AC-33 Namen und Gefangene [Logic/EditMode]** **GIVEN** zwei Stämme mit derselben Namensliste, **WHEN** 200 Einzelne hervortreten und Einzelne zwischen den Stämmen wechseln, **THEN** ist jeder Name unter allen Lebenden eindeutig, und für jeden Namen fällt genau ein Wurf; **GIVEN** ein Gefangener, **THEN** wandert er nur im Gebiet des Stamms, der ihn hält, und ein Einzelner „in Gottes Hand“ wird bei einer Abspaltung nie zum Wechsel gezogen.
 
 ## Open Questions
 
