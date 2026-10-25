@@ -365,7 +365,7 @@ Spielertyp: vor allem Creator und Explorer, mit Achiever-Anteil.
 
 | Consideration | Assessment |
 | ---- | ---- |
-| **Recommended Engine** | **Unity 6.3 LTS (C#)**, entschieden in `/setup-engine` am 2026-10-25: größtes 3D-Umfeld für ein erstes Spiel, Android später am einfachsten; Haut und Charaktere brauchen mehr Eigenarbeit als in Unreal, und URP gegen HDRP fällt per ADR nach Prototyp 2. Kriterien vom Technical Director: Reife des Haut- und Charakter-Renderings, ein datenorientierter Pfad für viele Agenten, Stabilität der Ragdolls, Leistung beim Skinning vieler Meshes mit Blend Shapes, der Android-Renderer und die Lernkurve für ein erstes Spiel. Die Engine, die halbrealistische Haut am besten kann, passt am schlechtesten zu Android und zu einem Einsteiger, und umgekehrt |
+| **Recommended Engine** | **Unity 6.3 LTS (C#)**, entschieden in `/setup-engine` am 2026-10-25: größtes 3D-Umfeld für ein erstes Spiel, Android später am einfachsten; Haut und Charaktere brauchen mehr Eigenarbeit als in Unreal, und URP gegen HDRP fällt per ADR in der Architekturphase (nach der Art Bible). Prototyp 2 lief nur in URP mit Grundkörpern und belegt für HDRP nichts. Kriterien vom Technical Director: Reife des Haut- und Charakter-Renderings, ein datenorientierter Pfad für viele Agenten, Stabilität der Ragdolls, Leistung beim Skinning vieler Meshes mit Blend Shapes, der Android-Renderer und die Lernkurve für ein erstes Spiel. Die Engine, die halbrealistische Haut am besten kann, passt am schlechtesten zu Android und zu einem Einsteiger, und umgekehrt |
 | **Key Technical Challenges** | Die Simulation ist die Autorität und abstrakt, 3D ist nur eine Ansicht (Figuren werden nur nahe der Kamera als 3D-Körper erzeugt). Dazu Ragdolls für viele Figuren, die Zivilisations-KI, das Zustimmungsmodell, Haut und Wunden in Detailstufen, Speichern und Laden einer emergenten Welt |
 | **Art Style** | 3D halbrealistisch („Fleisch und Folgen“), mit Detailstufen |
 | **Art Pipeline Complexity** | High (eigene 3D-Arbeit). Gesenkt durch einen offenen Grundkörper (z. B. MakeHuman/MPFB, CC0) und vorhandene Animationen; die Lizenz wird jeweils geprüft |
@@ -383,9 +383,11 @@ Startbudgets: PC 60 fps, höchstens 8–16 aktive Ragdolls,
 etwa 20–30 Figuren in voller Detailstufe. *Prototyp 2:* 49 aktive Ragdolls aus
 Grundkörpern liefen im Editor mit Ø 3,8 ms und 5,0 ms im 99. Perzentil. Das Budget
 für Ragdolls ist also mit einfachen Körpern kein Engpass. Mit Skinned Meshes, Blend
-Shapes und Haut ist es neu zu messen, bevor es angehoben wird. Android 30 fps, 2–4 aktive Ragdolls.
-Entscheidungen pro Agent mit 5–10 Hz, Logik für Stämme und Zivilisationen mit
-etwa 1 Hz.
+Shapes und Haut ist es neu zu messen, bevor es angehoben wird (mit dem offenen
+Grundkörper im MVP-0, sobald er mit Ragdoll steht).
+
+Android: 30 fps, 2–4 aktive Ragdolls. Entscheidungen pro Agent mit 5–10 Hz, Logik
+für Stämme und Zivilisationen mit etwa 1 Hz.
 
 ---
 
@@ -406,8 +408,9 @@ etwa 1 Hz.
   Ereignisarten brauchen Vielfalt, und Kulturwandel darf nicht im Krieg untergehen.
 - **Die Chronik kann bei hoher Ereignisdichte überfordern**: Bei 120 Jahren pro
   Minute kommt im Prototyp etwa alle 3 Sekunden ein großes Ereignis. Die Chronik
-  braucht Filter (im Prototyp „nur wichtige“) und Gewichtung; die Lesbarkeit ist in
-  Prototyp 2 zu prüfen.
+  braucht Filter (im Prototyp „nur wichtige“) und Gewichtung; die Lesbarkeit ist im
+  MVP-0 zu prüfen (Prototyp 2 hatte keine Chronik) und gehört in den UX-Spec zur
+  Chronik.
 - **Ein Segen kann den Stamm zur Zielscheibe machen**, weil Nachbarn ihn als
   Frevel sehen (im Playtest starb ein gesegneter Stamm plötzlich aus, ohne dass
   der Grund sichtbar war). Als Geschichtenquelle erwünscht, aber die Chronik muss
@@ -442,8 +445,9 @@ etwa 1 Hz.
 - **PR-SCOPE: OPTIMISTIC.** Die ursprüngliche MVP-Schätzung von 2–3 Monaten war
   etwa 2,5-mal zu niedrig. Reaktion: das MVP in MVP-0 und MVP-1 geteilt,
   Rigor auf `standard` gesenkt.
-- Erstes Spiel, allein, unter 10 Stunden pro Woche: Alle Vollzeit-Schätzungen
-  verlängern sich etwa um den Faktor 4 bis 5.
+- Erstes Spiel, allein, bei 10–20 Stunden pro Woche (Angabe des Entwicklers,
+  2026-10-25): Alle Vollzeit-Schätzungen verlängern sich etwa um den Faktor 2 bis 4,
+  bei unter 10 Stunden um 4 bis 5. Die Umrechnung steht in `production/roadmap.md`.
 - Das wahrscheinlichste Scheitern ist Steckenbleiben im MVP, weil die 3D-Ansicht
   sich zieht und die Motivation sinkt. Gegenmittel: die 3D-Ansicht und die
   Gotteshand mit einfachen Körpern früh bauen, damit es bei jedem Schritt etwas
@@ -463,6 +467,7 @@ etwa 1 Hz.
 - Welches Android-Gerät ist das Zielgerät? Das wird erst festgelegt, wenn die
   Android-Stufe beginnt.
 - Engine: **Unity 6.3 LTS** (C#), entschieden in `/setup-engine` am 2026-10-25.
+- URP oder HDRP? Das klärt eine ADR in der Architekturphase, nach der Art Bible.
 - Was ist die vierte Kraft neben Blitz, Fest-Segen und Erwachsene erschaffen?
   Das klärt das GDD zum Kräfte-System.
 
@@ -525,7 +530,12 @@ MVP-0.*
    Erinnerung an Eingriffe
 3. Das Zustimmungsmodell als reine Funktion mit Tests, von Anfang an
 4. Ein offener Grundkörper ohne Morphs, mit vorhandenen Animationen
-5. Gotteshand mit Ragdoll für gehaltene oder geworfene Figuren
+5. Gotteshand mit Ragdoll für gehaltene oder geworfene Figuren. Hand-Aktionen
+   (Packen, Werfen, Ablegen, Verletzung) zählen als Eingriffe: Sie gehen ins
+   Ereignisprotokoll der betroffenen Kultur und ihre Wirkung ist in der Chronik
+   nachvollziehbar. Nur so tragen sie über die ersten Minuten hinaus (Prototyp 2:
+   Werfen allein trägt 5–10 Minuten). Die Gewichtung klärt das GDD zur Gotteshand
+   und zum Kulturwandel.
 6. Vier Kräfte: Blitz, Fest-Segen, Erwachsene erschaffen (gespeist aus Ritualen)
    und eine vierte (offen), dazu die passive Gnade für die Bevölkerung
 7. Eine Zoomstufe
@@ -547,8 +557,8 @@ das volle System für Kulturwandel und Erinnerung.
 
 ### Scope Tiers (if budget/time shrinks)
 
-Alle Zeiten sind **Vollzeit-Monate, solo**. Bei unter 10 h/Woche ist mit dem
-Faktor 4 bis 5 zu rechnen. Jede Stufe steht für sich als spielbares Spiel.
+Alle Zeiten sind **Vollzeit-Monate, solo**. Bei 10–20 h/Woche ist mit dem
+Faktor 2 bis 4 zu rechnen, bei unter 10 h/Woche mit 4 bis 5. Jede Stufe steht für sich als spielbares Spiel.
 
 | Tier | Content | Features | Timeline |
 | ---- | ---- | ---- | ---- |
