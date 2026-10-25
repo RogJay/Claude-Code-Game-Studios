@@ -371,7 +371,7 @@ Spielertyp: vor allem Creator und Explorer, mit Achiever-Anteil.
 | **Art Pipeline Complexity** | High (eigene 3D-Arbeit). Gesenkt durch einen offenen Grundkörper (z. B. MakeHuman/MPFB, CC0) und vorhandene Animationen; die Lizenz wird jeweils geprüft |
 | **Audio Needs** | Moderate (Umgebung, Reaktionen der Menschen, Feedback zu den Kräften) |
 | **Networking** | None |
-| **Content Volume** | MVP: eine Insel, 2 Stämme, 30–50 Menschen, 4 Kräfte, 2 Kulturrichtungen. Volle Vision: viele Zivilisationen, 5+ Gesellschaftsformen, Ären, Dutzende Kräfte |
+| **Content Volume** | MVP: eine Insel, 2 Stämme, 30–50 Menschen, 4 Kräfte, 2 Kulturrichtungen, Harem und Rituale, einfache Szenen. Volle Vision: viele Zivilisationen, 5+ Gesellschaftsformen, Ären, Dutzende Kräfte |
 | **Procedural Systems** | Zivilisations-Simulation, Kulturwandel, Körpervariation über Morphs; Inseln vorerst von Hand oder einfach generiert |
 
 Geplante kritische Architekturentscheidungen (ADRs), unabhängig von der Engine:
@@ -529,17 +529,21 @@ MVP-0.*
 2. Einfacher Kulturwandel auf einer Achse (Lust-Sekte oder Gottesstaat) mit
    Erinnerung an Eingriffe
 3. Das Zustimmungsmodell als reine Funktion mit Tests, von Anfang an
-4. Ein offener Grundkörper ohne Morphs, mit vorhandenen Animationen
-5. Gotteshand mit Ragdoll für gehaltene oder geworfene Figuren. Hand-Aktionen
+4. Begehren und Lust mit einfachen, sichtbaren Szenen auf dem Grundkörper
+   (Ausblende oder einfache Animation, keine Paar-Animationen), dazu Harem und
+   Rituale als spielbare Systeme. Vom Entwickler am 2026-10-25 aus v1 vorgezogen;
+   die nicht verhandelbaren Grenzen gelten unverändert
+5. Ein offener Grundkörper ohne Morphs, mit vorhandenen Animationen
+6. Gotteshand mit Ragdoll für gehaltene oder geworfene Figuren. Hand-Aktionen
    (Packen, Werfen, Ablegen, Verletzung) zählen als Eingriffe: Sie gehen ins
    Ereignisprotokoll der betroffenen Kultur und ihre Wirkung ist in der Chronik
    nachvollziehbar. Nur so tragen sie über die ersten Minuten hinaus (Prototyp 2:
    Werfen allein trägt 5–10 Minuten). Die Gewichtung klärt das GDD zur Gotteshand
    und zum Kulturwandel.
-6. Vier Kräfte: Blitz, Fest-Segen, Erwachsene erschaffen (gespeist aus Ritualen)
+7. Vier Kräfte: Blitz, Fest-Segen, Erwachsene erschaffen (gespeist aus Ritualen)
    und eine vierte (offen), dazu die passive Gnade für die Bevölkerung
-7. Eine Zoomstufe
-8. Speichern und Laden, Zeitsteuerung (Pause, Schnellvorlauf) und eine Chronik
+8. Eine Zoomstufe
+9. Speichern und Laden, Zeitsteuerung (Pause, Schnellvorlauf) und eine Chronik
 
 **MVP-1** (danach): weitere Kräfte, eine zweite Zoomstufe, Morphs und Look B,
 das volle System für Kulturwandel und Erinnerung.
@@ -549,7 +553,7 @@ das volle System für Kulturwandel und Erinnerung.
 - Sichtbarer Krieg: Schlachten und Kampfszenen in 3D (kommt in v1). Abstrakter
   Krieg in der Simulation ist Teil von MVP-0, weil der Beleg aus Prototyp 1 und
   der Prüfmaßstab von Pillar 1 daran hängen
-- Paar-Animationen und detaillierte sexuelle Szenen (im MVP nur angedeutet)
+- Paar-Animationen und detaillierte sexuelle Szenen (im MVP nur einfache Szenen auf dem Grundkörper)
 - Android
 - Nahtloser Zoom
 - Weitere Gesellschaftsformen (Demokratie, Monarchie mit Harem, Sklavenstaat)
@@ -562,16 +566,16 @@ Faktor 2 bis 4 zu rechnen, bei unter 10 h/Woche mit 4 bis 5. Jede Stufe steht f�
 
 | Tier | Content | Features | Timeline |
 | ---- | ---- | ---- | ---- |
-| **MVP-0 („Gott-Spielzeug“)** | Eine Insel, 2 Stämme, 30–50 Menschen | Simulation, einfacher Kulturwandel, Zustimmungsmodell, Gotteshand und Ragdoll, 4 Kräfte, 1 Zoomstufe, Speichern, Zeitsteuerung, Chronik | 3–4 Monate (Schätzung galt für 1 Kraft, neu schätzen) |
+| **MVP-0 („Gott-Spielzeug“)** | Eine Insel, 2 Stämme, 30–50 Menschen | Simulation, einfacher Kulturwandel, Zustimmungsmodell, Begehren und Lust mit einfachen Szenen, Harem und Rituale, Gotteshand und Ragdoll, 4 Kräfte, 1 Zoomstufe, Speichern, Zeitsteuerung, Chronik | 3–4 Monate (Schätzung galt für 1 Kraft, neu schätzen) |
 | **MVP-1** | Wie MVP-0 | Weitere Kräfte, zweite Zoomstufe, Morphs und Look B, volles System für Kulturwandel und Erinnerung | +2–3 Monate |
-| **Vertical Slice (v1)** | 1–3 Stämme, 30–80 Menschen | In dieser Reihenfolge: sichtbarer Krieg, Harem und Rituale, Haut in Detailstufen, Besessen-Sein. Die Kräfte aus MVP-1, 2–3 Zoomstufen | +6–10 Monate |
+| **Vertical Slice (v1)** | 1–3 Stämme, 30–80 Menschen | In dieser Reihenfolge: sichtbarer Krieg, Haut in Detailstufen, Besessen-Sein (Harem und Rituale sind seit 2026-10-25 im MVP-0). Die Kräfte aus MVP-1, 2–3 Zoomstufen | +6–10 Monate |
 | **Alpha (Ausbau)** | Weitere Gesellschaftsformen, Zeitalter mit Inhalten | Mehr Kräfte, Paar-Animationen (mit eigener Entscheidung, ob man sie baut), mehr Animationen | +6–12 Monate |
 | **Android (optional)** | Gleiche Simulation | Draufsicht, Touch-Gotteshand, einfacher Look; Einstieg erst nach dem Haut-Test auf dem Gerät | eigene Stufe |
 | **Full Vision** | Viele Zivilisationen, Fantasy- und Tiervölker | Nahtloser Zoom, detaillierte Szenen, tiefe Verletzungssimulation | 30–48 Monate insgesamt |
 
 **Wahrscheinlichster Abbruchpunkt:** in v1. Wird v1 in der Reihenfolge oben
-gebaut, bleibt nach Krieg sowie Harem und Rituale schon ein gutes Gottspiel
-übrig.
+gebaut, bleibt nach dem sichtbaren Krieg schon ein gutes Gottspiel übrig, denn
+Harem und Rituale sind dann bereits seit MVP-0 drin.
 
 ---
 
@@ -584,7 +588,8 @@ Prototype-first (beide Teile der Kernmechanik sind einzeln bewiesen):
 - [x] Konzept prüfen (`/design-review design/gdd/game-concept.md`): vier Reviews, jeweils NEEDS REVISION und danach überarbeitet (zuletzt: Hand-Aktionen als Eingriffe im MVP-0)
 - [x] Prototyp 2 (Gotteshand und Ragdoll in Unity): PROCEED, siehe `prototypes/gotteshand-concept/REPORT.md`
 - [x] Phasen-Check (`/gate-check`): CONCERNS, Risiken akzeptiert, Phase Systems Design (Bericht in `production/gate-checks/2026-10-25-concept-to-systems-design.md`)
-- [ ] Konzept in Systeme zerlegen (`/map-systems`)
+- [x] Konzept in Systeme zerlegen (`/map-systems`): 33 Systeme, 16 im MVP, siehe `design/gdd/systems-index.md`
+- [ ] MVP-0 neu schätzen (`/estimate`)
 - [ ] Art Bible (`/art-bible`), vor der Architektur (URP oder HDRP)
 - [ ] Jedes System entwerfen (`/design-system [system-name]`), das Zustimmungs- und Lust-System früh
 - [ ] Architektur (`/create-architecture`), dann die kritischen ADRs: Simulation ist die Autorität, Zustimmungsmodell als reine Funktion
