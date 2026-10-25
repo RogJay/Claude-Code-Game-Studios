@@ -32,3 +32,34 @@ project:
 modes:
   rigor: standard
   automation: guided
+
+engine:
+  name: "Unity"
+  version: "6.3 LTS"
+  language: "C#"
+  rendering: "URP"
+  physics: "PhysX"
+
+specialists:
+  code: "unity-specialist"
+  shader: "unity-shader-specialist"
+  ui: "unity-ui-specialist"
+  additional: ["unity-dots-specialist", "unity-addressables-specialist"]
+
+naming:
+  classes: PascalCase
+  variables: camelCase
+  constants: SCREAMING_SNAKE   # UNVERIFIED — not sourceable from
+                               # docs/engine-reference/unity/; confirm before relying on it
+  signals: PascalCase On<Event>
+  files: PascalCase
+  scenes: PascalCase
+
+commands:
+  # TODO: Unity editor is not installed yet. Replace <UNITY_VERSION> with the
+  # installed Hub folder name (e.g. 6000.3.x) via /settings. build/test/smoke
+  # will not run until then; run does not need the editor.
+  build: '"C:/Program Files/Unity/Hub/Editor/<UNITY_VERSION>/Editor/Unity.exe" -batchmode -quit -projectPath . -buildTarget StandaloneWindows64 -buildWindows64Player Builds/Win64/Allmacht.exe'
+  test: '"C:/Program Files/Unity/Hub/Editor/<UNITY_VERSION>/Editor/Unity.exe" -batchmode -runTests -projectPath . -testPlatform EditMode -testResults test-results/editmode.xml'
+  run: "Builds/Win64/Allmacht.exe -screen-width 1280 -screen-height 720 -screen-fullscreen 0"
+  smoke: '"C:/Program Files/Unity/Hub/Editor/<UNITY_VERSION>/Editor/Unity.exe" -batchmode -quit -projectPath . -logFile -'
