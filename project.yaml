@@ -39,7 +39,7 @@ engine:
   language: "C#"
   rendering: "URP"
   physics: "PhysX"
-  path: "C:/Program Files/Unity/Hub/Editor/6000.3.26f1/Editor/Unity.exe"
+  path: "C:/Program Files/Unity/Hub/Editor/6000.3.27f1/Editor/Unity.exe"
 
 specialists:
   code: "unity-specialist"
@@ -57,7 +57,7 @@ naming:
   scenes: PascalCase
 
 commands:
-  build: '"C:/Program Files/Unity/Hub/Editor/6000.3.26f1/Editor/Unity.exe" -batchmode -quit -projectPath . -buildTarget StandaloneWindows64 -buildWindows64Player Builds/Win64/Allmacht.exe'
-  test: '"C:/Program Files/Unity/Hub/Editor/6000.3.26f1/Editor/Unity.exe" -batchmode -runTests -projectPath . -testPlatform EditMode -testResults test-results/editmode.xml'
+  build: '"C:/Program Files/Unity/Hub/Editor/6000.3.27f1/Editor/Unity.exe" -batchmode -quit -projectPath . -buildTarget StandaloneWindows64 -buildWindows64Player Builds/Win64/Allmacht.exe'
+  test: '"C:/Program Files/Unity/Hub/Editor/6000.3.27f1/Editor/Unity.exe" -batchmode -runTests -projectPath . -testPlatform EditMode -testResults test-results/editmode.xml'
   run: "Builds/Win64/Allmacht.exe -screen-width 1280 -screen-height 720 -screen-fullscreen 0"
-  smoke: '"C:/Program Files/Unity/Hub/Editor/6000.3.26f1/Editor/Unity.exe" -batchmode -quit -projectPath . -logFile -'
+  smoke: '"C:/Program Files/Unity/Hub/Editor/6000.3.27f1/Editor/Unity.exe" -batchmode -quit -projectPath . -logFile -'

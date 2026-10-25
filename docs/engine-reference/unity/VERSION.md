@@ -3,7 +3,7 @@
 | Field | Value |
 |-------|-------|
 | **Engine Version** | Unity 6.3 LTS |
-| **Installed at pin time** | 6000.6.7f1 (Unity 6.6) installed at C:/Program Files/Unity/Hub/Editor/ (stated by the user, 2026-10-25); the pinned 6.3 LTS editor (6000.3.26f1) is not installed yet, and the user will install it alongside. Latest editor on the pinned line per this file: 6000.3.26f1 (Oct 8, 2026). |
+| **Installed at pin time** | 6000.6.7f1 (Unity 6.6) installed at C:/Program Files/Unity/Hub/Editor/ (stated by the user, 2026-10-25). The user is installing the pinned 6.3 LTS line as 6000.3.27f1 alongside it (stated by the user, 2026-10-25). 6000.3.27f1 is newer than the latest editor recorded below and is NOT verified against Unity's release API in this file. |
 | **Release Date** | December 2025 |
 | **Latest editor on the pinned line** | 6000.3.26f1 (Oct 8, 2026) |
 | **Project Pinned** | 2026-02-13 |
