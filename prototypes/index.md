@@ -9,3 +9,4 @@
 | Concept | Date | Path | Verdict | Report |
 |---|---|---|---|---|
 | Weltengott (Allmacht, prototype 1: unattended tribe simulation) | 2026-10-25 | HTML | PROCEED | [REPORT.md](weltengott-concept/REPORT.md) |
+| Gotteshand (Allmacht, prototype 2: god hand and ragdoll, 50 people) | 2026-10-25 | Engine (Unity) | PROCEED | [REPORT.md](gotteshand-concept/REPORT.md) |

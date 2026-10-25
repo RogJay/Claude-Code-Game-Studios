@@ -4,7 +4,7 @@
 
 # Prototyp 2: Gotteshand und Ragdoll (Allmacht)
 
-**Status:** in Arbeit. Code geschrieben, im Editor noch nicht gestartet.
+**Status:** abgeschlossen am 2026-10-25, Urteil **PROCEED** (siehe `REPORT.md`).
 
 Das ist **kein zweites Spiel**. Es ist ein Wegwerf-Test für ein Stück von Allmacht:
 die Gotteshand mit Ragdoll-Physik. Er läuft im Allmacht-Unity-Projekt. Nach dem
@@ -78,4 +78,11 @@ Wenn der Test fertig ist, kommt die Zeile `com.allmacht.prototype.gotteshand` au
 
 ## Ergebnisse
 
-*(nach dem Playtest)*
+Playtest mit 1 Spieler am 2026-10-25, alle 4 Kriterien erfüllt (Details in `REPORT.md`):
+
+- Greifen und Werfen „sehr intuitiv“. Erster Wurf nach ca. 20 s, alle Würfe im
+  Zielring (beides nach Angabe des Spielers).
+- Stresstest: Ø 3,8 ms, 99 % 5,0 ms, max 6,0 ms bei bis zu 49 Ragdolls und 50 Menschen.
+- Bester Moment: jemanden extrem weit wegschleudern.
+- Grenze: Werfen allein trägt 5–10 Minuten. Ein Wurf muss im Spiel Folgen in der
+  Simulation haben.
