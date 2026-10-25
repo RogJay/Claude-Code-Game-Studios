@@ -54,7 +54,7 @@
 #   in any other shape is reported as unsupported layout, with its number.
 
 version: 1
-last_updated: ""
+last_updated: "2026-10-25"
 
 # ─── ENTITIES ────────────────────────────────────────────────────────────────
 # Named game-world objects: enemies, NPCs, characters, factions, bosses.
@@ -123,7 +123,36 @@ items: []
 #   output_range[min, max], added
 # Optional: expression (the actual formula), notes
 
-formulas: []
+formulas:
+  - name: geschichtszeit
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    variables:
+      - t
+      - S_year
+      - E_len
+    output_range: [0, 9223372036854775807]
+    expression: "Y = floor(t / S_year); Era = floor(Y / E_len)"
+    notes: "Era wird ab I angezeigt; Ereignis Neue Ära bei t mod S_era = 0 und t > 0"
+    added: 2026-10-25
+    revised: ""
+  - name: lebensjahr
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    variables:
+      - t
+      - t_birth
+      - held_steps
+      - S_Lj
+    output_range: [0, 1000]
+    expression: "age_Lj = floor(((t - t_birth) - held_steps) / S_Lj)"
+    notes: "Zeit in Gottes Hand zählt nicht als Alter"
+    added: 2026-10-25
+    revised: ""
 
 # Example:
 #
@@ -156,7 +185,62 @@ formulas: []
 #
 # Required fields: name, status, source, referenced_by, value, unit, added
 
-constants: []
+constants:
+  - name: history_years_per_second
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    value: 2
+    unit: Geschichtsjahre pro echter Sekunde bei 1×
+    added: 2026-10-25
+    revised: ""
+  - name: years_per_era
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    value: 25
+    unit: Geschichtsjahre
+    added: 2026-10-25
+    revised: ""
+  - name: steps_per_history_year
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    value: 5
+    unit: Schritte
+    added: 2026-10-25
+    revised: ""
+  - name: base_step_rate
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    value: 10
+    unit: Schritte pro echter Sekunde bei 1×
+    added: 2026-10-25
+    revised: ""
+  - name: steps_per_lebensjahr
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    value: 60
+    unit: Schritte
+    notes: "Vorläufig; die Lebensdauer in Lebensjahren gehört Menschen & Bevölkerung"
+    added: 2026-10-25
+    revised: ""
+  - name: person_tick_period
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    value: 2
+    unit: Schritte
+    added: 2026-10-25
+    revised: ""
 
 # Example:
 #

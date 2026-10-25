@@ -77,7 +77,7 @@ GDD.
 
 | # | System Name | Category | Priority | Status | Design Doc | Depends On |
 |---|-------------|----------|----------|--------|------------|------------|
-| 1 | Simulationskern | Core | MVP | Not Started | — | — |
+| 1 | Simulationskern | Core | MVP | Designed | design/gdd/simulationskern.md | — |
 | 2 | Welt & Insel (inferred) | Core | MVP | Not Started | — | Simulationskern |
 | 3 | Menschen & Bevölkerung | Core | MVP | Not Started | — | Simulationskern, Welt & Insel |
 | 4 | Zustimmungsmodell | Gameplay | MVP | Not Started | — | Menschen & Bevölkerung, Kultur & Erinnerung (Normen als Eingabe) |
@@ -251,10 +251,10 @@ Effort estimates: S = 1 session, M = 2-3 sessions, L = 4+ sessions.
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 33 |
-| Design docs started | 0 |
+| Design docs started | 1 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
-| MVP systems designed | 0/16 |
+| MVP systems designed | 1/16 |
 | Vertical Slice systems designed | 0/9 |
 
 ---
