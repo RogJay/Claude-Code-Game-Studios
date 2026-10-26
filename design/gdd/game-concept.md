@@ -380,7 +380,8 @@ Geplante kritische Architekturentscheidungen (ADRs), unabhängig von der Engine:
 im Zweifel ablehnt, und wird mit Property-Tests geprüft.
 
 Startbudgets: PC 60 fps, höchstens 8–16 aktive Ragdolls,
-etwa 20–30 Figuren in voller Detailstufe. *Prototyp 2:* 49 aktive Ragdolls aus
+etwa 20–30 Figuren in voller Körperstufe (Stufe Mittel, `design/art/art-bible.md`
+Abschnitt 5; volle Haut- und Wunddetails nur für die 1–3 Figuren der Stufe Nah). *Prototyp 2:* 49 aktive Ragdolls aus
 Grundkörpern liefen im Editor mit Ø 3,8 ms und 5,0 ms im 99. Perzentil. Das Budget
 für Ragdolls ist also mit einfachen Körpern kein Engpass. Mit Skinned Meshes, Blend
 Shapes und Haut ist es neu zu messen, bevor es angehoben wird (mit dem offenen
