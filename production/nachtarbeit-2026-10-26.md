@@ -171,6 +171,11 @@ Regel 10 angepasst); 22 Akzeptanzkriterien mit festen Zahlen und Testhilfen. Sta
 aus Eingriffen langsamer verblassen soll; leere Kriege kleiner Stämme ohne Tote; eine
 Vorschau „Wer nimmt Anstoß?“ vor einem Eingriff (neue Funktion, deine Entscheidung).
 
+**Review Runde 2 (lean, nur die Verträge, letzte Runde): NEEDS REVISION, 1 Punkt, behoben.**
+Menschen kannte den neuen Auftrag „Stamm erloschen“ noch nicht, und es war offen, wann ein
+Mensch nach dem Ende einer Handlung zum Nachfolger wechselt (jetzt: im nächsten
+Personentakt). Status bleibt **In Review**.
+
 ## Entscheidungen ohne Freigabe
 
 | # | GDD | Entscheidung | Warum | Zurücknehmen |

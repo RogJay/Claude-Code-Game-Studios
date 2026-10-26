@@ -51,3 +51,21 @@ Reviewed-Content-Hash: design/gdd/systems-index.md fc1d7909675793842eb99e55815a1
 ### Revisions after round 1 — 2026-10-26 (night run, no developer sign-off)
 
 All 11 blocking items and all recommended items within the creative director's "fix tonight" list were applied: Gott grounds aggregated with counterfactual cause and full grounds list plus text templates (Rule 8, Formula 2, AC-04); Kriegsnähe with blockers and the incoming list (UI, AC-20); stored successor with order wechsel → Verlust → erloschen, Tod events, held people and act participants follow the successor (Rules 10, 17, 18, Menschen Rules 2 and 20, AC-13); split cancelled on a living tribe's centre before the Teil draw, order Menschen → Kultur → Welt, territory order immediate (Rules 15, 16, 19, Welt Rule 10); r_t for all V, wealth 0 at V = 0, at-war V < 3 conquered as in the prototype (Edge Cases, AC-12); test doubles and every AC rewritten with exact values (AC-01 to AC-22); knobs and safe ranges with cross-constraints; deviations 5 to 7 listed. Calibration-changing items are Open Questions with metrics.
+
+## Review — 2026-10-26 — Verdict: NEEDS REVISION
+Review mode: lean · Workflow: standard
+Scope signal: L
+Specialists: none (lean; contract-focused re-review as the creative director asked); night run, no developer sign-off
+Blocking items: 1 | Recommended: 0
+Summary: All 11 round-1 blockers are resolved. The contract re-check against Menschen, Welt, Kern and Zustimmungsmodell found one gap: Menschen Rule 23 did not list the new order "Stamm erloschen", and the moment a freed person passes to the successor was undefined for the end of an intimate act. Fixed after the review (Menschen Rules 2 and 23, Stämme Rule 18). This is the last round under the roadmap cap; status In Review, approval is the developer's call.
+Prior verdict resolved: Yes
+Findings:
+- [BLOCKING] Dependencies / Menschen Rule 23: order "Stamm erloschen" missing from the order list; release timing to the successor undefined after an act ends
+Note: staemme-und-diplomatie.md and menschen-und-bevoelkerung.md are stamped AS REVIEWED (before the fix above).
+Reviewed-Content-Hash: design/gdd/staemme-und-diplomatie.md 545fcd5c2a332f01b31f0f98e1b8217cc362cf69
+Reviewed-Content-Hash: design/gdd/menschen-und-bevoelkerung.md 48f4600b6e512ba4d28ff3924e10e5dfabb8c245
+Reviewed-Content-Hash: design/registry/entities.yaml abcf6d7a8f6bfcc9dc8023aee906f2deb233559a
+Reviewed-Content-Hash: .claude/skills/design-review/SKILL.md a63d8fba9b7142eeb43791f061e2e1533c429b43
+Reviewed-Content-Hash: design/gdd/welt-und-insel.md da2005a1567aca421bf623578a3cdab17d3e41f5
+Reviewed-Content-Hash: design/gdd/simulationskern.md 9c82d078d414a4ec566b8d2f9ca3182a416b594b
+Reviewed-Content-Hash: design/gdd/zustimmungsmodell.md 99cf8fc6ad97b7233bc2940a8ddfb09065b3cf3d

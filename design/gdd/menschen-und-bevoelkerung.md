@@ -49,8 +49,9 @@ zeigen.
    nur die Zahl. Auf den Auftrag „Stamm erloschen“ verschwindet die Masse, und jeder
    Einzelne des Stamms stirbt mit dem Ereignis „Tod“ (Ursache: der Untergang). Wer in
    Gottes Hand ist oder an einer laufenden Handlung teilnimmt, stirbt nicht, sondern
-   gehört, sobald er frei ist, dem Nachfolger (Stämme & Diplomatie Regeln 17 und 18);
-   bis dahin zählt V_t nur diese.
+   gehört, sobald er frei ist, dem Nachfolger (Stämme & Diplomatie Regeln 17 und 18):
+   bei der Rückgabe aus Gottes Hand sofort, nach dem Ende einer Handlung in seinem
+   nächsten Personentakt. Bis dahin zählt V_t nur diese.
 3. Die **Einzelnen** sind benannte Menschen, insgesamt zwischen 0 und N_max. Ziel ist
    N_target (Formulas). Jeder Einzelne gehört zu genau einem Stamm. Der Rest des Volks
    (V_t minus die Einzelnen des Stamms) ist die **Masse**: Sie hat keine Eigenschaften,
@@ -204,8 +205,9 @@ zeigen.
 
 **Aufträge anderer Systeme**
 
-23. Verlust, Abspaltung, Eroberung, Gefangennahme, Befreiung, Verletzung, das Merkmal
-    „im Kampf“, „Erwachsene erschaffen“ und vom Simulationskern das Hervortreten eines
+23. Verlust, Abspaltung, Eroberung, „Stamm erloschen“ (Regel 2), Gefangennahme,
+    Befreiung, Verletzung, das Merkmal „im Kampf“, „Erwachsene erschaffen“ und vom
+    Simulationskern das Hervortreten eines
     gepackten Statisten (Stamm, Zelle) sowie die Rückgabe aus Gottes Hand (Ort,
     Ergebnis, Verletzungsklasse; beim Beginn wird „im Kampf“ gelöscht) kommen als
     **Aufträge**: synchrone Aufrufe,

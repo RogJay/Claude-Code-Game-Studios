@@ -170,7 +170,9 @@ Abweichungen stehen unter „Kalibrierung gegen Prototyp 1“.*
     der Mitte des Untergegangenen am nächsten liegt (kleinster quadrierter Abstand in
     ganzen Zellen, bei Gleichstand die kleinere ID); lebt keiner, gibt es keinen. Wer bei
     einer Eroberung oder einem Untergang nicht gezogen werden darf (in Gottes Hand,
-    Beteiligter einer laufenden Handlung), gehört, sobald er frei ist, dem Nachfolger;
+    Beteiligter einer laufenden Handlung), gehört, sobald er frei ist, dem Nachfolger
+    (bei der Rückgabe aus Gottes Hand sofort, nach dem Ende einer Handlung in seinem
+    nächsten Personentakt; Menschen Regel 2);
     ist der auch untergegangen, dessen Nachfolger und so fort bis zu einem lebenden
     Stamm. Gibt es keinen, stirbt er dann. Das gilt als Stammeswechsel (Menschen
     Regel 20, Zustimmungsmodell Regel 4). Menschen liest den Nachfolger direkt.
