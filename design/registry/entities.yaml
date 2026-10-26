@@ -205,9 +205,9 @@ formulas:
       - delta
     output_range: [0, 616]
     expression: "cap_t = delta * sum over Gebiet(t) of f_c * 0.55 * (1 - 0.5 * verbrannt_c)"
-    notes: "delta = 1 oder 0,55 bei Dürre; Startstamm etwa 77; Obergrenze 1120 Zellen * 0,55"
+    notes: "delta = 1 oder 0,55 bei Dürre (folgt aus der Restdauer); Startstamm etwa 77; Obergrenze 1120 Zellen * 0,55; f_eff = f_c * Modifikatoren; jedes Geschichtsjahr neu"
     added: 2026-10-25
-    revised: ""
+    revised: 2026-10-25
   - name: nahrung
     status: active
     source: design/gdd/welt-und-insel.md
@@ -219,10 +219,10 @@ formulas:
       - cap_t
       - V_t
     output_range: [0, 3]
-    expression: "food_t = min(food_t + min(cap_t, 1.25 * V_t) * (0.85 im Krieg) - V_t, 3 * V_t); Hunger bei food_t < 0 mit k = max(1, round(0.06 * V_t + 0.25 * (-food_t)))"
-    notes: "output_range als Vielfaches von V_t; beim Erzeugen food_t = V_t"
+    expression: "food_t = min(food_t + min(cap_t, 1.25 * V_t) * (0.85 im Krieg) - V_t, 3 * V_t); Hunger bei food_t < 0 mit k = max(1, floor(0.06 * V_t + 0.25 * (-food_t) + 0.5))"
+    notes: "output_range als Vielfaches von V_t; Startstämme food_t = V_t, abgespaltener Stamm 0,5 * Teil (der alte behält seinen Vorrat), Fest-Segen + 0,6 * V_t; Runden wie Math.round im Prototyp"
     added: 2026-10-25
-    revised: ""
+    revised: 2026-10-25
 
 # Example:
 #
@@ -343,6 +343,7 @@ constants:
     source: design/gdd/menschen-und-bevoelkerung.md
     referenced_by:
       - design/gdd/menschen-und-bevoelkerung.md
+      - design/gdd/welt-und-insel.md
     value: 48
     unit: Köpfe
     notes: "Startvolk je Stamm, 2 Stämme, wie Prototyp 1"

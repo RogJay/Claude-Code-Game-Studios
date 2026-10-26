@@ -111,6 +111,22 @@ Verträge erfüllt, die Kern und Menschen schon festlegen. Nachgerechnet mit ein
 Python-Nachbau: etwa 61 % Land, ein Startstamm hat etwa 154 Zellen und eine
 Tragfähigkeit von etwa 77 bei 48 Köpfen, Dürre in etwa 13 % der Jahre.
 
+**Review Runde 1 (full: Systems Designer, Game Designer, QA Lead, World Builder, Creative
+Director): NEEDS REVISION, 11 blockierende und 18 empfohlene Punkte, alle eingearbeitet.**
+Die wichtigsten: Beim Abgleich mit `prototype.html` hatte mein Entwurf vier Übertragungsfehler
+(Gebiet jedes Jahr statt nur bei Änderungen, Platzsuche bei Abspaltungen, Vorrat für
+abgespaltene Stämme und Fest-Segen, Aussterben unter 3 Köpfen); die sind korrigiert, damit
+die Kalibrierung wirklich gilt. Neu sind dauerhafte Brandnarben (Jahr und Ursache je Zelle),
+ein Hauptgrund für jede Hungersnot (Dürre, Brand, Krieg oder Gedränge), eine Liste benannter
+Orte (Siedlung, Ritualplatz, Festplatz, Brandstelle, Ruine) und 18 Akzeptanzkriterien mit
+festen Zahlen. Status bleibt **Designed** (Runde 2 steht aus).
+
+**Was auf dich wartet:** Der Game Designer hält einen Blitz für zu schwach (rund 3 %
+Tragfähigkeit) und Ära I für zu ruhig. Seine Vorschläge (verbrannte Erde trägt 0 und gibt
+danach einen Aschebonus, 3 Startstämme; später regionale Dürren, gewichtete Gebiete) ändern
+die Simulation. Der Creative Director hat entschieden: Das entscheidest du, und erst nach
+der ersten Kalibrierungsmessung (AC-16). Beides steht mit Kennzahlen in den Open Questions.
+
 ## Entscheidungen ohne Freigabe
 
 | # | GDD | Entscheidung | Warum | Zurücknehmen |
@@ -135,6 +151,15 @@ Tragfähigkeit von etwa 77 bei 48 Köpfen, Dürre in etwa 13 % der Jahre.
 | 18 | Zustimmung | Ladeprüfung: θ 0,30–0,90, W_D + W_L ≥ 0,40, W_N ≤ 0,40, (θ − Δ) · b_ref ≥ 0,09 | Alle Default-Zeilen bestehen; eine Mod-Tabelle kann die Kultur nicht mehr allein entscheiden lassen | Formel 2 |
 | 19 | Kern, Menschen | Sperrenprüfung als eigener Eintrag nach Gotteskraft; Opferwahl zieht keine Beteiligten einer Handlung | Gegenstücke zum Zustimmungsmodell; der Creative Director hätte sie dir überlassen, ich habe sie mitgezogen, damit die GDDs sich nicht widersprechen | Kern Formel 5, Menschen Regel 13 |
 | 20 | Welt & Insel | Ganzes GDD als Entwurf geschrieben, Regeln 1:1 aus Prototyp 1 | Kalibrierung bleibt gültig; jede Abweichung ist im GDD genannt | ganzes GDD |
-| 21 | Welt & Insel | Welt & Insel legt beim Erzeugen die zwei Startplätze und die Stammes-IDs 0 und 1 fest, Stämme & Diplomatie übernimmt sie | Welt wird zuerst erzeugt, Menschen braucht die Gebiete vor Stämme & Diplomatie | Regel 4 |
-| 22 | Welt & Insel | Hunger ist ein Auftrag „Verlust“ von Welt & Insel an Menschen; die Ernte gehört zur Welt, nicht zu den Stämmen | Menschen hatte food_t und cap_t schon Welt & Insel zugeordnet | Regel 9 |
-| 23 | Welt & Insel | Keine von Hand gebauten Inseln im MVP-0 (offene Frage) | Das Konzept lässt beides zu; erzeugt reicht für die Kalibrierung | Regel 5 |
+| 21 | Welt & Insel | Welt & Insel legt beim Erzeugen die zwei Startplätze und die Stammes-IDs 0 und 1 fest, Stämme & Diplomatie übernimmt sie | Welt wird zuerst erzeugt, Menschen braucht die Gebiete vor Stämme & Diplomatie | Regel 5 |
+| 22 | Welt & Insel | Hunger ist ein Auftrag „Verlust“ von Welt & Insel an Menschen; die Ernte gehört zur Welt, nicht zu den Stämmen | Menschen hatte food_t und cap_t schon Welt & Insel zugeordnet | Regel 12 |
+| 23 | Welt & Insel | Keine von Hand gebauten Inseln im MVP-0 (offene Frage) | Das Konzept lässt beides zu; erzeugt reicht für die Kalibrierung | Regel 6 |
+| 24 | Welt & Insel | Gebiet wird jedes Geschichtsjahr neu berechnet und zusätzlich sofort bei Entstehen, Abspaltung, Eroberung, Aussterben | So macht es Prototyp 1; mein Entwurf hatte es falsch übertragen | Regel 9 |
+| 25 | Welt & Insel | Eine Platzsuche für Start und Abspaltung (120 Versuche, beide Würfe je Versuch); kein Platz, fremde Mitte oder null Zellen = keine Abspaltung | Prototyp 1; verhindert einen Stamm ohne Land | Formel 2, Regel 10 |
+| 26 | Welt & Insel | Aussterben unter 3 Köpfen (Prototyp 1); Menschen Regel 2 sagt noch V = 0, **nicht angeglichen**, als offene Frage für Stämme & Diplomatie | Wer die letzten 1–2 Menschen bekommt, ist eine Spielregel | Regel 8, Open Questions |
+| 27 | Welt & Insel | Randzellen sind immer Wasser (dritte Abweichung vom Prototyp, ändert keinen Wurf) | In 222 von 500 Probeinseln lag sonst Land am Rand | Regel 2, Formel 1 |
+| 28 | Welt & Insel | Brandnarben bleiben für immer gespeichert (Jahr, Ursache); die Ernte-Wirkung bleibt bei 39 Ernten wie im Prototyp | Pillar 2 („Spur“) ohne die Kalibrierung zu ändern | Regel 16, Formel 7 |
+| 29 | Welt & Insel | Hungersnot nennt einen Hauptgrund; in der Chronik nur, wenn die letzte desselben Stamms mehr als 6 Jahre her ist | Prototyp 1 hat den 6-Jahre-Abstand; der Grund ändert nichts an der Simulation | Formel 5, Regel 12 |
+| 30 | Welt & Insel | Liste benannter Orte mit fünf Arten | Das Systemverzeichnis verspricht Orte; Rituale, Feste und Chronik brauchen Anker | Regel 17 |
+| 31 | Welt & Insel | Runden = floor(x + 0,5) wie im Prototyp, nicht C#-Standard | Sonst weichen Hungertote bei x,5 ab | Formeln, AC-07 |
+| 32 | Welt & Insel | Vorschläge, die die Simulation verändern, bleiben offen (zwei Runden, mit Kennzahlen) | Entscheid des Creative Director: erst du, dann AC-16 | Open Questions |
