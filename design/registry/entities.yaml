@@ -54,7 +54,7 @@
 #   in any other shape is reported as unsupported layout, with its number.
 
 version: 1
-last_updated: ""
+last_updated: "2026-10-25"
 
 # ─── ENTITIES ────────────────────────────────────────────────────────────────
 # Named game-world objects: enemies, NPCs, characters, factions, bosses.
@@ -123,7 +123,125 @@ items: []
 #   output_range[min, max], added
 # Optional: expression (the actual formula), notes
 
-formulas: []
+formulas:
+  - name: bereitschaft
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    variables:
+      - D_i
+      - L_i
+      - n_i
+      - G_i
+      - F_i
+      - k_i
+      - T_i
+      - g_i
+    output_range: [0, 1]
+    # revised 2026-10-25 (zustimmungsmodell review): added the desire factor g_i.
+    # Old expression: w_i = max(0, W_D*D_i + ... - c_bind*k_i*T_i)
+    expression: "w_i = g_i * max(0, W_D*D_i + W_L*L_i + W_N*n_i + W_G*G_i + W_F*F_i - c_pub*pi*(1-G_i) - c_bind*k_i*T_i); g_i = min(1, min_j b_ij / b_ref)"
+    notes: "Gewichte je Handlungsart summieren sich zu 1 (1 +- 1e-6); nie Hingabe, Rang oder Eingriffe als Eingabe; ohne Begehren ist w = 0; D_i = Begehren (nicht Hingabe), L_i = Lust"
+    added: 2026-10-25
+    revised: 2026-10-25
+  - name: gnade
+    status: active
+    source: design/gdd/menschen-und-bevoelkerung.md
+    referenced_by:
+      - design/gdd/menschen-und-bevoelkerung.md
+    variables:
+      - V_t
+      - D_t
+      - food_t
+      - cap_t
+    output_range: [0, 0.04]
+    expression: "G_t = V_t * (0.01 + 0.03 * D_t) * clamp(food_t / max(1, V_t), 0, 1), nur wenn food_t > 0 und V_t * 100 < cap_t * 105"
+    notes: "Unverändert aus Prototyp 1; output_range als Anteil von V_t pro Geschichtsjahr; erzeugt nur Masse"
+    added: 2026-10-25
+    revised: ""
+  - name: geschichtszeit
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    variables:
+      - t
+      - S_year
+      - E_len
+    output_range: [0, 9223372036854775807]
+    expression: "Y = floor(t / S_year); Era = floor(Y / E_len)"
+    notes: "Era wird ab I angezeigt; Ereignis Neue Ära bei t mod S_era = 0 und t > 0"
+    added: 2026-10-25
+    revised: ""
+  - name: lebensjahr
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/menschen-und-bevoelkerung.md
+      - design/gdd/begehren-und-lust.md
+    variables:
+      - t
+      - t_birth
+      - held_steps
+      - held_closed
+      - t_hold_start
+      - fest_steps
+      - f_slow
+      - S_Lj
+    output_range: [0, 1000]
+    expression: "age_Lj = floor(((t - t_birth) - held_steps - f_slow * fest_steps) / S_Lj)"
+    # was: "age_Lj = floor(((t - t_birth) - held_steps) / S_Lj)" before 2026-10-26
+    # was: notes "Zeit in Gottes Hand zählt nicht als Alter", variables without held_closed/t_hold_start, before 2026-10-25
+    notes: "Zeit in Gottes Hand zählt nicht als Alter; held_steps = held_closed + (t - t_hold_start), solange der Mensch gehalten wird, schließt also eine laufende Haltezeit ein"
+    added: 2026-10-25
+    revised: 2026-10-26
+  - name: begehren
+    status: active
+    source: design/gdd/begehren-und-lust.md
+    referenced_by:
+      - design/gdd/begehren-und-lust.md
+      - design/gdd/zustimmungsmodell.md
+    variables:
+      - o_i
+      - sigma_b
+      - z_ij
+    output_range: [0, 1]
+    expression: "b_ij = o_i(g_j) * clamp(0.5 + 0.2 * z_ij, 0, 1); z_ij = sum of 12 NextDouble of a pair stream seeded with SplitMix64(seed_sys5 xor (ID_i * 2^32 + ID_j)) - 6"
+    notes: "Reine Funktion, einseitig, nie durch Eingriffe veränderbar; Mittel 0,5, Streuung 0,2 (Annahme des Zustimmungsmodells); im MVP-0 o_i = 1 für alle"
+    added: 2026-10-26
+    revised: ""
+  - name: tragfaehigkeit
+    status: active
+    source: design/gdd/welt-und-insel.md
+    referenced_by:
+      - design/gdd/welt-und-insel.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    variables:
+      - f_c
+      - verbrannt_c
+      - delta
+    output_range: [0, 616]
+    expression: "cap_t = delta * sum over Gebiet(t) of f_c * 0.55 * (1 - 0.5 * verbrannt_c)"
+    notes: "delta = 1 oder 0,55 bei Dürre (folgt aus der Restdauer); Startstamm etwa 77; Obergrenze 1120 Zellen * 0,55; f_eff = f_c * Modifikatoren; jedes Geschichtsjahr neu"
+    added: 2026-10-25
+    revised: 2026-10-25
+  - name: nahrung
+    status: active
+    source: design/gdd/welt-und-insel.md
+    referenced_by:
+      - design/gdd/welt-und-insel.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    variables:
+      - food_t
+      - cap_t
+      - V_t
+    output_range: [0, 3]
+    expression: "food_t = min(food_t + min(cap_t, 1.25 * V_t) * (0.85 im Krieg) - V_t, 3 * V_t); Hunger bei food_t < 0 mit k = max(1, floor(0.06 * V_t + 0.25 * (-food_t) + 0.5))"
+    notes: "output_range als Vielfaches von V_t; Startstämme food_t = V_t, abgespaltener Stamm 0,5 * Teil (der alte behält seinen Vorrat), Fest-Segen + 0,6 * V_t; Runden wie Math.round im Prototyp"
+    added: 2026-10-25
+    revised: 2026-10-25
 
 # Example:
 #
@@ -156,7 +274,322 @@ formulas: []
 #
 # Required fields: name, status, source, referenced_by, value, unit, added
 
-constants: []
+constants:
+  - name: schwelle_zaertlichkeit
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.40
+    unit: Bereitschaft 0–1
+    notes: "Zustimmungsschwelle; Reihenfolge Zärtlichkeit ≤ Sex ≤ Gruppe"
+    added: 2026-10-25
+    revised: ""
+  - name: schwelle_sex_zu_zweit
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.48
+    unit: Bereitschaft 0–1
+    notes: "Zustimmungsschwelle"
+    added: 2026-10-25
+    revised: ""
+  - name: schwelle_gruppe
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.52
+    unit: Bereitschaft 0–1
+    notes: "Zustimmungsschwelle"
+    added: 2026-10-25
+    revised: ""
+  - name: schwelle_harem_beitreten
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.55
+    unit: Bereitschaft 0–1
+    notes: "Zustimmungsschwelle"
+    added: 2026-10-25
+    revised: ""
+  - name: schwelle_ritual
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.45
+    unit: Bereitschaft 0–1
+    # was: notes "Zustimmungsschwelle" before 2026-10-25
+    notes: "Schwelle für die Teilnahme an einem Ritual; Kontakt im Ritual nutzt die Schwelle seiner eigenen Handlungsart"
+    added: 2026-10-25
+    revised: 2026-10-25
+  - name: haltemarge
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.08
+    unit: Bereitschaft 0–1
+    notes: "Laufende Handlung endet unter Schwelle minus Haltemarge"
+    added: 2026-10-25
+    revised: ""
+  - name: n_gruppe_max
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+      - design/gdd/begehren-und-lust.md
+    value: 4
+    unit: Beteiligte
+    # was: notes "Größte Gruppe, mindestens 3" before 2026-10-25
+    notes: "Größte Gruppe, mindestens 3; gilt auch für das Ritual (2 bis N_gruppe_max Beteiligte)"
+    added: 2026-10-25
+    revised: 2026-10-25
+  - name: begehren_ref
+    status: active
+    source: design/gdd/zustimmungsmodell.md
+    referenced_by:
+      - design/gdd/zustimmungsmodell.md
+    value: 0.3
+    unit: Begehren 0-1
+    notes: "b_ref: ab diesem Begehren bremst der Begehrens-Faktor nicht mehr; darunter sinkt w linear auf 0; sicherer Bereich 0,2-0,5; Begehren & Lust muss b_ij auf derselben 0-1-Skala liefern"
+    added: 2026-10-25
+    revised: ""
+  - name: start_volk_per_tribe
+    status: active
+    source: design/gdd/menschen-und-bevoelkerung.md
+    referenced_by:
+      - design/gdd/menschen-und-bevoelkerung.md
+      - design/gdd/welt-und-insel.md
+    value: 48
+    unit: Köpfe
+    notes: "Startvolk je Stamm, 2 Stämme, wie Prototyp 1"
+    added: 2026-10-25
+    revised: ""
+  - name: n_target_einzelne
+    status: active
+    source: design/gdd/menschen-und-bevoelkerung.md
+    referenced_by:
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 40
+    unit: Einzelne
+    # was: notes "... wirksam min(40, floor(0,5 * V_total))" before 2026-10-25 (same value, now per mille)
+    notes: "Sollzahl benannter Einzelner, wirksam min(40, floor(r_E_pm * V_total / 1000)) mit r_E_pm = 500"
+    added: 2026-10-25
+    revised: ""
+  - name: n_max_einzelne
+    status: active
+    source: design/gdd/menschen-und-bevoelkerung.md
+    referenced_by:
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 60
+    unit: Einzelne
+    notes: "Harte Obergrenze; Gotteshand kann bei Erreichen keine Statisten mehr packen"
+    added: 2026-10-25
+    revised: ""
+  - name: lebensdauer_lebensjahre
+    status: active
+    source: design/gdd/menschen-und-bevoelkerung.md
+    referenced_by:
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 40
+    unit: Lebensjahre
+    notes: "Mittel, persönlich 30–50; bei 60 Schritten pro Lebensjahr etwa 4 Minuten bei 1×"
+    added: 2026-10-25
+    revised: ""
+  - name: opfergewicht_einzelne
+    status: active
+    source: design/gdd/menschen-und-bevoelkerung.md
+    referenced_by:
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 0.25
+    unit: Gewicht relativ zu einem Kopf der Masse
+    notes: "Als Bruch 1/4 gerechnet"
+    added: 2026-10-25
+    revised: ""
+  - name: history_years_per_second
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    value: 2
+    unit: Geschichtsjahre pro echter Sekunde bei 1×
+    added: 2026-10-25
+    revised: ""
+  - name: years_per_era
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    value: 25
+    unit: Geschichtsjahre
+    added: 2026-10-25
+    revised: ""
+  - name: steps_per_history_year
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    value: 5
+    unit: Schritte
+    added: 2026-10-25
+    revised: ""
+  - name: base_step_rate
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+    value: 10
+    unit: Schritte pro echter Sekunde bei 1×
+    added: 2026-10-25
+    revised: ""
+  - name: steps_per_lebensjahr
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 60
+    unit: Schritte
+    notes: "Vorläufig; die Lebensdauer in Lebensjahren gehört Menschen & Bevölkerung"
+    added: 2026-10-25
+    revised: ""
+  - name: person_tick_period
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 2
+    unit: Schritte
+    added: 2026-10-25
+    revised: ""
+  - name: menschen_system_id
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 2
+    unit: system_id
+    notes: "Kennung des Zufallsstroms von Menschen & Bevölkerung; wird nie umnummeriert"
+    added: 2026-10-25
+    revised: ""
+  - name: staemme_system_id
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/staemme-und-diplomatie.md
+      - design/gdd/welt-und-insel.md
+    value: 4
+    unit: system_id
+    notes: "Kennung des Zufallsstroms von Stämme & Diplomatie (auch für die Platzsuche bei Abspaltungen); wird nie umnummeriert"
+    added: 2026-10-26
+    revised: ""
+  - name: norm_max_aenderung
+    status: active
+    source: design/gdd/kultur-und-erinnerung.md
+    referenced_by:
+      - design/gdd/kultur-und-erinnerung.md
+      - design/gdd/zustimmungsmodell.md
+    value: 0.02
+    unit: Offenheit pro Geschichtsjahr
+    notes: "Höchste Änderung einer Norm pro Geschichtsjahr; Tabus entstehen und fallen nur über die Normen (Kultur Regeln 15, 16)"
+    added: 2026-10-26
+    revised: ""
+  - name: kultur_system_id
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/kultur-und-erinnerung.md
+    value: 3
+    unit: system_id
+    notes: "Kennung des Zufallsstroms von Kultur & Erinnerung; wird nie umnummeriert"
+    added: 2026-10-26
+    revised: ""
+  - name: fest_alterung_faktor
+    status: active
+    source: design/gdd/begehren-und-lust.md
+    referenced_by:
+      - design/gdd/begehren-und-lust.md
+      - design/gdd/simulationskern.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 0.5
+    unit: Anteil der Festzeit, der nicht altert
+    notes: "f_slow in der Formel lebensjahr; ein Fest von 300 Schritten kostet 2,5 statt 5 Lebensjahre"
+    added: 2026-10-26
+    revised: ""
+  - name: fest_dauer
+    status: active
+    source: design/gdd/begehren-und-lust.md
+    referenced_by:
+      - design/gdd/begehren-und-lust.md
+      - design/gdd/simulationskern.md
+    value: 300
+    unit: Schritte (30 s bei 1x)
+    notes: "T_Fest; ein Fest-Segen bei laufendem Fest verlängert um 150 Schritte, ohne Obergrenze (Entscheidung des Entwicklers vom 2026-10-26)"
+    added: 2026-10-26
+    revised: ""
+  - name: begehren_system_id
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/begehren-und-lust.md
+    value: 5
+    unit: system_id
+    notes: "Kennung des Zufallsstroms von Begehren & Lust; Formel begehren nutzt seinen Startwert ohne den Strom zu verbrauchen"
+    added: 2026-10-26
+    revised: ""
+  - name: aussterben_grenze
+    status: active
+    source: design/gdd/staemme-und-diplomatie.md
+    referenced_by:
+      - design/gdd/staemme-und-diplomatie.md
+      - design/gdd/welt-und-insel.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 3
+    unit: Köpfe
+    notes: "Ein Stamm mit weniger als 3 Köpfen ist untergegangen (Prototyp 1); die letzten 1-2 verschwinden vorerst (V = 0)"
+    added: 2026-10-26
+    revised: ""
+  - name: menschen_year_offset
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 2
+    unit: Schritte (O_year)
+    notes: "Versatz der Jahresregeln von Menschen & Bevölkerung, geteilt mit Stämme & Diplomatie; Menschen rechnet zuerst"
+    added: 2026-10-25
+    revised: ""
+  - name: welt_raster_breite
+    status: active
+    source: design/gdd/welt-und-insel.md
+    referenced_by:
+      - design/gdd/welt-und-insel.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 40
+    unit: Zellen
+    notes: "Zellen-ID = y * 40 + x; Karte von Prototyp 1"
+    added: 2026-10-25
+    revised: ""
+  - name: welt_raster_hoehe
+    status: active
+    source: design/gdd/welt-und-insel.md
+    referenced_by:
+      - design/gdd/welt-und-insel.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 28
+    unit: Zellen
+    added: 2026-10-25
+    revised: ""
 
 # Example:
 #

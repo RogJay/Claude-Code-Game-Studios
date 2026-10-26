@@ -1,0 +1,10 @@
+{
+  "name": "com.allmacht.prototype.gotteshand",
+  "version": "0.1.0",
+  "displayName": "Allmacht Prototyp 2 - Gotteshand (Wegwerf-Test)",
+  "description": "PROTOTYPE - NOT FOR PRODUCTION. Testet, ob Greifen, Hochheben und Werfen mit der Gotteshand bei 50 Menschen nach 30 Sekunden Spass macht und die Bildzeit haelt.",
+  "unity": "6000.3",
+  "dependencies": {
+    "com.unity.inputsystem": "1.20.1"
+  }
+}
