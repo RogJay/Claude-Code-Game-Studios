@@ -524,6 +524,17 @@ constants:
     notes: "f_slow in der Formel lebensjahr; ein Fest von 300 Schritten kostet 2,5 statt 5 Lebensjahre"
     added: 2026-10-26
     revised: ""
+  - name: fest_dauer
+    status: active
+    source: design/gdd/begehren-und-lust.md
+    referenced_by:
+      - design/gdd/begehren-und-lust.md
+      - design/gdd/simulationskern.md
+    value: 300
+    unit: Schritte (30 s bei 1x)
+    notes: "T_Fest; ein Fest-Segen bei laufendem Fest verlängert um 150 Schritte, ohne Obergrenze (Entscheidung des Entwicklers vom 2026-10-26)"
+    added: 2026-10-26
+    revised: ""
   - name: begehren_system_id
     status: active
     source: design/gdd/simulationskern.md

@@ -218,6 +218,7 @@ Abweichungen stehen unter „Kalibrierung gegen Prototyp 1“.*
 | Kultur & Erinnerung | Kulturachse x_t, Gesellschaftsform (lesend, Stand nach dem Lauf von Kultur in diesem Jahr) | Aufträge „Kultur anlegen (x, Hingabe)“, „Achse verschieben (Wert, Krieg, Veranlasser)“, „Achsen mischen (x_S, V_S, j, x_L)“ | Kultur & Erinnerung |
 | Gotteskraft & Götterkräfte | Auftrag „Groll (von o gegen t, Wert, Eingriffs-ID)“ | Liste der Stämme mit Mitte und Achse, damit Gotteskraft festlegt, wer einen Eingriff als Frevel sieht | Gotteskraft (vorläufig, GDD fehlt) |
 | Zustimmungsmodell | – | Vertrag Regel 21 erfüllt (Regel 13 hier) | Zustimmungsmodell |
+| Begehren & Lust | Zufriedenheit Z_t je Stamm (lesend) und Auftrag „Groll mindern (t gegen o, Wert)“, beide vorerst mit Gewicht 0 (Begehren & Lust Regeln 18, 19, Formel 8); ob und wie dieses System sie nutzt, ist offen (Open Questions) | – | Begehren & Lust (Zufriedenheit), dieses System (Groll) |
 | Chronik | – | Ereignisse mit Grund, Gründen und Ursache, Namen der Stämme, Textvorlagen (Formel 2) | Kern-Ereignisformat |
 | Weltansicht & Kamera, HUD | – | Mitten, Namen, Kriege, Friedensfristen, Kriegsnähe je gerichtetem Paar mit Hindernis, eingehender Groll | dieses System |
 | Speichern & Laden | kompletter Zustand | alle Felder aus Regel 1, Grund und Wert jedes Grolls in fester Reihenfolge, Kriege mit Beginn und Verlustanteilen, Friedensfristen, ID-Zähler | Speichern & Laden |

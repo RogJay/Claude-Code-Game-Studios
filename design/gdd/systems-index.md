@@ -83,7 +83,7 @@ GDD.
 | 4 | Zustimmungsmodell | Gameplay | MVP | Approved | design/gdd/zustimmungsmodell.md | Menschen & Bevölkerung, Kultur & Erinnerung (Normen als Eingabe) |
 | 5 | Stämme & Diplomatie | Gameplay | MVP | Approved | design/gdd/staemme-und-diplomatie.md | Menschen & Bevölkerung, Welt & Insel |
 | 6 | Kultur & Erinnerung | Gameplay | MVP | Approved | design/gdd/kultur-und-erinnerung.md | Stämme & Diplomatie, Menschen & Bevölkerung |
-| 7 | Begehren & Lust | Gameplay | MVP | Designed | design/gdd/begehren-und-lust.md | Zustimmungsmodell, Kultur & Erinnerung, Menschen & Bevölkerung, Körper & Animation |
+| 7 | Begehren & Lust | Gameplay | MVP | In Review | design/gdd/begehren-und-lust.md | Zustimmungsmodell, Kultur & Erinnerung, Menschen & Bevölkerung, Körper & Animation |
 | 8 | Harem & Rituale | Gameplay | MVP | Not Started | — | Begehren & Lust, Zustimmungsmodell, Stämme & Diplomatie, Gotteskraft & Götterkräfte |
 | 9 | Gotteskraft & Götterkräfte | Economy | MVP | Not Started | — | Stämme & Diplomatie, Kultur & Erinnerung, Menschen & Bevölkerung |
 | 10 | Körper & Animation | Core | MVP | Not Started | — | Menschen & Bevölkerung |
