@@ -51,3 +51,27 @@ integer targets in AC-03, scars stored permanently (brand_jahr_c, brand_ursache_
 Formula 4 example matched to the output range, floor(x + 0.5) rounding with a midpoint AC, place list {ort_id, zelle, art, stamm, jahr, ursache} (Rule 17, AC-17),
 Player Fantasy "green highland, barren coasts", main landmass rule, fertility word thresholds, f_eff extension point, drought fade in the view contract, AC rewrites with exact values and stubs.
 Calibration-breaking proposals stay in Open Questions as two batches with metrics. Round 2 is the last round under the roadmap cap.
+
+## Review — 2026-10-26 — Verdict: NEEDS REVISION
+Review mode: lean · Workflow: standard
+Scope signal: L
+Specialists: none (lean); night run, no developer sign-off
+Blocking items: 3 | Recommended: 5
+Summary: All 11 round-1 blockers are resolved and verified against prototype.html (lines 116–437). Round 2 found an AC-09 premise that the generator does not guarantee ((1, 1) is interior), an open order for the Fest blessing that changes outcomes, and the remaining cross-GDD extinction threshold. All were fixed after the review; this is the last round under the roadmap cap, so the status is In Review and Approved is the developer's call.
+Prior verdict resolved: Yes
+Findings:
+- [BLOCKING] Formula 7 / AC-09: Blitz on (0, 0) claims (1, 1) is border water; it is interior and only usually water
+- [BLOCKING] Rule 14: Fest blessing food must use V_t after the gift (prototype order)
+- [BLOCKING] Cross-GDD: Menschen Rule 2 extinction at V_t = 0 vs below 3 heads
+- [RECOMMENDED] Calibration: list split-on-foreign-centre cancel and start-fallback land check as deviations
+- [RECOMMENDED] AC-15: famine gap wording ambiguous
+- [RECOMMENDED] AC-12: golden hash valid only on the same build and machine (Kern Rule 7)
+- [RECOMMENDED] Formula 5: food range can exceed 3 · V_t after a Fest blessing
+- [RECOMMENDED] Tuning Knobs: defaults stay at prototype values until AC-16
+Note: welt-und-insel.md and menschen-und-bevoelkerung.md are stamped AS REVIEWED (before the revisions above), so the next review reads them as CHANGED.
+Reviewed-Content-Hash: design/gdd/welt-und-insel.md da94ec30ef7066542ef74c6f46aac0fc2ff86ea0
+Reviewed-Content-Hash: design/gdd/menschen-und-bevoelkerung.md beab51b5faca71934fa3ddd44ed4d7f8db4e5248
+Reviewed-Content-Hash: design/registry/entities.yaml a86bb96a7ff5b0fa9264bd128620b29f469e1617
+Reviewed-Content-Hash: .claude/skills/design-review/SKILL.md a63d8fba9b7142eeb43791f061e2e1533c429b43
+Reviewed-Content-Hash: design/gdd/simulationskern.md b63fb4dcce167d4bcaa019e46ad21d4991d8babe
+Reviewed-Content-Hash: prototypes/weltengott-concept/prototype.html e3c8aa99b445fc83ff5a9ce4fde8919dd9ab26eb

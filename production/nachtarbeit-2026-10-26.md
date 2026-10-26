@@ -127,6 +127,14 @@ danach einen Aschebonus, 3 Startstämme; später regionale Dürren, gewichtete G
 die Simulation. Der Creative Director hat entschieden: Das entscheidest du, und erst nach
 der ersten Kalibrierungsmessung (AC-16). Beides steht mit Kennzahlen in den Open Questions.
 
+**Review Runde 2 (lean, letzte Runde): NEEDS REVISION, 3 blockierende Punkte, behoben.**
+Ein Testfall nahm an, eine Zelle sei immer Wasser, obwohl die Inselformel das nicht
+garantiert (jetzt mit eingespielter Insel); beim Fest-Segen war offen, ob der Vorrat mit dem
+Volk vor oder nach dem Geschenk rechnet (jetzt danach, wie im Prototyp); und das Aussterben
+unter 3 Köpfen ist jetzt auch in Menschen & Bevölkerung Regel 2 so festgelegt (offen bleibt nur,
+was mit den letzten 1–2 Menschen geschieht; bis dahin verschwinden sie wie im Prototyp).
+Status jetzt **In Review** wie die anderen drei; „Approved“ entscheidest du.
+
 ## Entscheidungen ohne Freigabe
 
 | # | GDD | Entscheidung | Warum | Zurücknehmen |
@@ -163,3 +171,6 @@ der ersten Kalibrierungsmessung (AC-16). Beides steht mit Kennzahlen in den Open
 | 30 | Welt & Insel | Liste benannter Orte mit fünf Arten | Das Systemverzeichnis verspricht Orte; Rituale, Feste und Chronik brauchen Anker | Regel 17 |
 | 31 | Welt & Insel | Runden = floor(x + 0,5) wie im Prototyp, nicht C#-Standard | Sonst weichen Hungertote bei x,5 ab | Formeln, AC-07 |
 | 32 | Welt & Insel | Vorschläge, die die Simulation verändern, bleiben offen (zwei Runden, mit Kennzahlen) | Entscheid des Creative Director: erst du, dann AC-16 | Open Questions |
+| 33 | Welt, Menschen | Aussterben unter 3 Köpfen jetzt auch in Menschen Regel 2; die letzten 1–2 Menschen verschwinden vorerst wie im Prototyp | Widerspruch zwischen zwei GDDs entfernt, Kalibrierung bleibt gültig; ihr Schicksal bleibt offen | Menschen Regel 2, Welt Regel 8 |
+| 34 | Welt & Insel | Fest-Segen: Vorrat + 0,6 · Volk nach dem Geschenk, Gotteskraft erteilt zuerst den Auftrag an Menschen | Reihenfolge wie im Prototyp | Regel 14 |
+| 35 | Welt & Insel | Zwei weitere Abweichungen vom Prototyp offen benannt (Abspaltung auf fremde Mitte fällt aus, Ersatz-Startplatz an Land) | Beide selten; sonst entstünde ein Stamm ohne Land | Kalibrierung |

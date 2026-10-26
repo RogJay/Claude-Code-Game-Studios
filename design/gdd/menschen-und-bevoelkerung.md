@@ -44,8 +44,10 @@ zeigen.
 1. Jeder lebende Stamm hat ein **Volk** V_t, eine ganze Zahl ≥ 0. Die Einzelnen dieses
    Stamms sind darin mitgezählt. Eine neue Welt beginnt mit 2 Stämmen zu je 48 Köpfen
    wie Prototyp 1.
-2. Ein Stamm mit V_t = 0 ist ausgestorben. Das Aussterben meldet Stämme & Diplomatie,
-   dieses System setzt nur die Zahl.
+2. Ein Stamm mit weniger als 3 Köpfen ist ausgestorben (wie Prototyp 1 und Welt & Insel
+   Regel 8). Das Aussterben erklärt und meldet Stämme & Diplomatie, dieses System setzt
+   nur die Zahl. Bis das GDD Stämme & Diplomatie anderes festlegt, verschwinden die
+   letzten 1–2 Menschen wie im Prototyp (V_t = 0); offen in Welt & Insel, Open Questions.
 3. Die **Einzelnen** sind benannte Menschen, insgesamt zwischen 0 und N_max. Ziel ist
    N_target (Formulas). Jeder Einzelne gehört zu genau einem Stamm. Der Rest des Volks
    (V_t minus die Einzelnen des Stamms) ist die **Masse**: Sie hat keine Eigenschaften,

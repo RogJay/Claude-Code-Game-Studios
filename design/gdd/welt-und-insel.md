@@ -1,6 +1,6 @@
 # Welt & Insel
 
-> **Status**: Draft, Review-Runde 1 überarbeitet (Nachtarbeit 2026-10-25/26, ohne Freigabe des Entwicklers; jede Entscheidung steht in `production/nachtarbeit-2026-10-26.md`)
+> **Status**: In Review, Review-Runde 2 überarbeitet (Nachtarbeit 2026-10-25/26, ohne Freigabe des Entwicklers; jede Entscheidung steht in `production/nachtarbeit-2026-10-26.md`)
 > **Author**: Claude (autonom, mit Erlaubnis des Entwicklers)
 > **Last Updated**: 2026-10-25
 > **Last Verified**: 2026-10-25
@@ -78,9 +78,9 @@ ein Stamm hungert, ohne eine Tabelle zu öffnen.
 7. Jeder lebende Stamm hat eine **Mitte** (eine Landzelle, Eigentum von Stämme &
    Diplomatie) und ein **Gebiet**: die Landzellen, die ihm nach Formel 3 gehören. Seine
    Mitte gehört immer ihm. Eine Zelle gehört höchstens einem Stamm.
-8. Ein Stamm mit weniger als 3 Köpfen gilt als ausgestorben (wie Prototyp 1) und
-   beansprucht kein Land mehr. Das Aussterben erklärt Stämme & Diplomatie; Menschen &
-   Bevölkerung nennt heute V_t = 0 als Grenze (Widerspruch, siehe Open Questions).
+8. Ein Stamm mit weniger als 3 Köpfen gilt als ausgestorben (wie Prototyp 1, Menschen &
+   Bevölkerung Regel 2) und beansprucht kein Land mehr. Das Aussterben erklärt Stämme &
+   Diplomatie. Was mit den letzten 1–2 Menschen geschieht, ist offen (Open Questions).
 9. Das Gebiet wird in jedem Geschichtsjahr neu berechnet, wenn Welt & Insel rechnet (wie
    in Prototyp 1, wo es am Ende jedes Jahres geschieht), und sofort als **Auftrag** von
    Stämme & Diplomatie, wenn ein Stamm entsteht, abgespalten, erobert wird oder ausstirbt
@@ -109,7 +109,9 @@ ein Stamm hungert, ohne eine Tabelle zu öffnen.
 13. Krieg senkt die Ernte. Ob ein Stamm im Krieg ist, liest Welt & Insel bei Stämme &
     Diplomatie (Stand nach dem vorigen Schritt, Simulationskern Regel 4.2).
 14. Der Fest-Segen (Gotteskraft & Götterkräfte) erhöht den Vorrat eines Stamms als
-    Auftrag um `0,6 · V_t` (Prototyp 1).
+    Auftrag um `0,6 · V_t`, gerechnet mit dem Volk **nach** dem Geschenk an Menschen
+    desselben Segens (Prototyp 1: erst `pop += gift`, dann `food += pop · 0,6`).
+    Gotteskraft erteilt darum zuerst den Auftrag an Menschen & Bevölkerung, dann diesen.
 
 **Dürre und verbrannte Erde**
 
@@ -282,7 +284,7 @@ The Nahrung formula is defined as:
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|
-| food_t | double | 0 bis 3 · V_t nach dem Jahr | calculated | Vorrat; Startstämme 48, ein abgespaltener Stamm 0,5 · Teil, Fest-Segen + 0,6 · V_t |
+| food_t | double | 0 bis 3 · V_t nach der Ernte; ein Fest-Segen kann es bis zur nächsten Ernte darüber heben | calculated | Vorrat; Startstämme 48, ein abgespaltener Stamm 0,5 · Teil, Fest-Segen + 0,6 · V_t |
 | prod | double | ≥ 0 | calculated | Ernte dieses Jahres |
 | k | int | ≥ 1 | calculated | Hungertote; höchstens etwa 0,31 · V_t, was das Volk nicht hergibt (Gehaltene), meldet Menschen als „Verlust nicht vollständig“ |
 | Hauptgrund | Aufzählung | Dürre, Brand, Krieg, Gedränge | calculated | wird nur berechnet und gemeldet, ändert kein Ergebnis; „Brand“ nennt die Ursache des jüngsten Brands im Gebiet |
@@ -330,19 +332,28 @@ Ernten (bei 1× rund 20 s). Ein Blitz verbrennt bis zu 9 Landzellen und kostet e
 bis zu 9 · f · 0,275 Tragfähigkeit (etwa 2,3 im Startgebiet, rund 3 %). Die Narbe selbst
 bleibt als Datum und Ursache dauerhaft.
 **Example:** Blitz auf eine Küstenzelle mit 5 Landzellen im 3 × 3-Feld: Diese 5 werden
-verbrannt, die 4 Wasserzellen bleiben Wasser; ein Blitz auf (0, 0) betrifft nur die
-Zellen (1, 1), (0, 1) und (1, 0), die am Rand liegen und darum Wasser sind.
+verbrannt, die 4 Wasserzellen bleiben Wasser. Ein Blitz auf (0, 0) betrifft nur die
+Zellen im Raster: (0, 1) und (1, 0) liegen am Rand und sind Wasser, (1, 1) liegt innen und
+ist nur in der Regel Wasser (base ≈ −0,62), nicht immer.
 
 ### Kalibrierung gegen Prototyp 1
 
 Insel, Platzsuche, Gebiet (jedes Jahr), Tragfähigkeit, Ernte, Hunger, Dürre, Brand,
 Vorrat bei Abspaltung und Fest-Segen und Aussterben unter 3 Köpfen folgen dem Prototyp.
-Drei Abweichungen:
+Fünf Abweichungen:
 1. Der Zufall kommt aus dem Kernstrom statt aus dem Prototyp-Generator; die Inseln sind
    andere, ihre Verteilung gleich.
 2. Die Ernte rechnet als eigenes Jahressystem vor Kultur & Erinnerung; im Prototyp lag der
    Verfall der Erinnerung im selben Durchlauf davor, beides hängt nicht voneinander ab.
+   Das Gebiet rechnet am Anfang des Jahres statt am Ende des vorigen; mit demselben Volk
+   ist das Ergebnis gleich, nur ein Eingriff des Spielers zwischen zwei Jahren wirkt hier
+   ein Jahr früher auf die Reichweite.
 3. Der Rand ist immer Wasser; das betrifft wenige Randzellen und ändert keinen Wurf.
+4. Eine Abspaltung auf die Mitte eines anderen Stamms findet nicht statt; im Prototyp
+   entstand dann ein Stamm ohne Land, der verhungerte (selten, nur wenn kein besserer
+   Versuch gelang).
+5. Der Ersatzplatz beim Start wird auf Land geprüft; im Prototyp konnte er im Wasser
+   liegen.
 
 Die Regler gelten als „fest bis zur ersten AC-16-Messung“: Erst wenn der Nachbau die
 Messwerte von Prototyp 1 wiedergibt, gibt es eine verlässliche Grundlage, an der jede
@@ -406,6 +417,9 @@ weich ein und aus, damit eine Dürre von wenigen Sekunden lesbar bleibt, und zei
 Brandnarben verblasst, aber nie gelöscht.
 
 ## Tuning Knobs
+
+Alle Defaults bleiben bis zur ersten AC-16-Messung auf den Werten von Prototyp 1; die
+sicheren Bereiche gelten für Änderungen danach.
 
 | Regler | Default | Sicherer Bereich | Wirkung |
 |---|---|---|---|
@@ -475,13 +489,13 @@ Tests nutzen die Stubs `ITribeSource` (Mitten, Krieg, Aussterben) und `IPopulati
 - **AC-06 Formel 4 [Logic/EditMode]** **GIVEN** 154 Zellen, davon 145 mit f = 0,91 und 9 verbrannte mit f = 0,91, und eine verbrannte Zelle außerhalb des Gebiets, **WHEN** cap_t ohne und mit Dürre berechnet wird, **THEN** ist es 74,82475 und 41,1536125 (Toleranz 1e-9), und die Zelle außerhalb zählt nicht.
 - **AC-07 Formel 5 [Logic/EditMode]** **GIVEN** V = 60, cap = 42, food = 10, kein Krieg, **WHEN** das Jahr läuft, **THEN** erhält Menschen den Auftrag „Verlust 6“ und food ist 0; im Krieg ist prod = 35,7 und k = 7; **GIVEN** V = 25, cap = 21, food = 0, **THEN** ist k = 3 (runden(2,5) = 3, nicht 2); **GIVEN** V = 10, food = 28, cap = 100, **THEN** ist food danach 30.
 - **AC-08 Formel 6 [Logic/EditMode]** **GIVEN** ein fester Startwert, **WHEN** 100.000 Geschichtsjahre laufen, **THEN** liegt der Anteil der Dürrejahre bei 13,3 % ± 0,8 Punkte, jede Dauer von 4 bis 10 kommt vor und 11 nie, die mittlere Dauer ist 7 ± 0,15, und in Dürrejahren wird kein Wurf für den Beginn gezogen.
-- **AC-09 Formel 7 [Logic/EditMode]** **GIVEN** ein Blitz in Jahr B auf eine Zelle mit 5 Landzellen im 3 × 3-Feld, **WHEN** die Jahre laufen, **THEN** sind genau diese 5 in genau 39 Ernten verbrannt, Jahr und Ursache ihres Brands bleiben danach gespeichert, und eine Brandstelle entsteht; ein zweiter Blitz 30 Jahre später setzt die Frist neu, ohne die Wirkung zu verdoppeln; ein Blitz auf (0, 0) oder nur auf Wasser verbrennt nichts, wirft keine Ausnahme und meldet nichts.
+- **AC-09 Formel 7 [Logic/EditMode, eingespielte Insel]** **GIVEN** eine eingespielte Insel und ein Blitz in Jahr B auf eine Zelle mit 5 Landzellen im 3 × 3-Feld, **WHEN** die Jahre laufen, **THEN** sind genau diese 5 in genau 39 Ernten verbrannt, Jahr und Ursache ihres Brands bleiben danach gespeichert, und eine Brandstelle entsteht; ein zweiter Blitz 30 Jahre später setzt die Frist neu, ohne die Wirkung zu verdoppeln; auf derselben Insel, auf der (1, 1) Wasser ist, verbrennt ein Blitz auf (0, 0) oder einer nur auf Wasser nichts, wirft keine Ausnahme und meldet nichts; ist (1, 1) Land, verbrennt der Blitz auf (0, 0) genau diese Zelle.
 - **AC-10 Regel 18 [Logic/EditMode]** **GIVEN** eine eingespielte Insel mit Wasser in (5, 5) und Land in (7, 5) und (5, 7), **WHEN** „nächste Landzelle zu (5, 5)“ abgefragt wird, **THEN** ist die Antwort (7, 5) (Abstand 2, kleinere ID 207); „nächste Zelle“ eines Stamms ohne Zelle ergibt „keine“; der Zustand ist danach bitgleich.
 - **AC-11 Regel 19 [Logic/EditMode, mit Stubs]** **GIVEN** die Stubs, **WHEN** ein Jahr bei O_year = 0 läuft, **THEN** ist die Reihenfolge Dürre → Fristen → Gebiet und Tragfähigkeit → Ernte und Hunger je Stamm in aufsteigender ID; ein Krieg, den der Stub nach dem Lauf in Jahr Y setzt, ändert die Ernte erst in Y + 1.
-- **AC-12 Regel 5 [Logic/EditMode]** **GIVEN** ein Startwert, **WHEN** die Welt erzeugt wird, **THEN** stehen Insel, Startplätze, erstes Gebiet (mit V = 48) und Vorrat 48 je Stamm bereit, bevor Menschen & Bevölkerung erzeugt wird, und der Hash des Zustands gleicht einem beim ersten grünen Lauf festgehaltenen Wert.
+- **AC-12 Regel 5 [Logic/EditMode]** **GIVEN** ein Startwert, **WHEN** die Welt erzeugt wird, **THEN** stehen Insel, Startplätze, erstes Gebiet (mit V = 48) und Vorrat 48 je Stamm bereit, bevor Menschen & Bevölkerung erzeugt wird, und zwei Erzeugungen im selben Lauf ergeben denselben Zustands-Hash. Ein beim ersten grünen Lauf festgehaltener Hash gilt nur auf demselben Build und Rechner (Simulationskern Regel 7) und ist in CI kein Prüfwert.
 - **AC-13 Speichern [Logic/EditMode]** **GIVEN** ein eingespielter Zustand (Dürre mit Rest 3, 5 Zellen mit Frist 17, ein Stamm mit Hunger in diesem Jahr, Jahr der letzten Hungersnot, Orte), **WHEN** gespeichert und geladen wird, **THEN** gleichen die Hashes der Jahre 301 bis 600 denen eines durchgehenden Laufs.
 - **AC-14 Abspaltung [Logic/EditMode, mit Stubs]** **GIVEN** ein Stamm mit V = 64 spaltet 25 Köpfe ab, **WHEN** die Platzsuche läuft, **THEN** sucht sie 9 bis 14 Zellen von seiner Mitte, der neue Stamm bekommt den Vorrat 12,5 und mindestens eine Zelle, der alte behält seinen Vorrat, und Gebiet und Tragfähigkeit sind im selben Schritt neu; **GIVEN** jeder Versuch ergibt s ≤ −1 oder der beste liegt auf einer fremden Mitte, **THEN** findet die Abspaltung nicht statt.
-- **AC-15 Hauptgrund und Chronik [Logic/EditMode]** **GIVEN** das Beispiel aus Formel 5, **WHEN** der Hunger gemeldet wird, **THEN** ist der Hauptgrund „Dürre“; bei einem Fehlbetrag nur durch verbrannte Erde ist er „Brand“ und nennt die Ursache des Brands; ohne Dürre, Brand und Krieg ist er „Gedränge“; eine zweite Hungersnot desselben Stamms nach 4 Jahren wird gemeldet, aber nicht für die Chronik markiert, eine nach 7 Jahren schon. Das Ergebnis der Simulation ist mit und ohne Hauptgrund bitgleich.
+- **AC-15 Hauptgrund und Chronik [Logic/EditMode]** **GIVEN** das Beispiel aus Formel 5, **WHEN** der Hunger gemeldet wird, **THEN** ist der Hauptgrund „Dürre“; bei einem Fehlbetrag nur durch verbrannte Erde ist er „Brand“ und nennt die Ursache des Brands; ohne Dürre, Brand und Krieg ist er „Gedränge“; Hungersnöte desselben Stamms in den Jahren Y, Y + 4 und Y + 11: Y + 4 wird gemeldet, aber nicht für die Chronik markiert (4 Jahre nach der vorigen), Y + 11 schon (7 Jahre nach der vorigen, auch wenn diese nicht markiert war). Das Ergebnis der Simulation ist mit und ohne Hauptgrund bitgleich.
 - **AC-16 Kalibrierung [Integration/EditMode, ADVISORY bis zur ersten Messung]** **GIVEN** die Startwerte 0 bis 99, je 10 Ären ohne Eingriff, mit den Debug-Werkzeugen, **WHEN** sie laufen, **THEN** stirbt keine Welt aus (alle V = 0), der Anteil der Ären ohne großes Ereignis liegt bei 6 % ± 3 Punkte wie in Prototyp 1, und als Kennzahl (keine Hürde) wird gemeldet, in wie vielen Welten der Pillar-1-Test erfüllt ist (Prototyp 1: 56 %).
 - **AC-17 Orte [Logic/EditMode]** **GIVEN** eine neue Welt, eine Abspaltung, ein Blitz auf Land und ein Stamm, der unter 3 Köpfe fällt, **WHEN** das geschieht, **THEN** entstehen je eine Siedlung (zwei beim Start), eine Brandstelle und eine Ruine an der alten Mitte, mit steigenden, nie wiederverwendeten IDs, und sie überstehen Speichern und Laden.
 - **AC-18 Regel 2 [Logic/EditMode]** **GIVEN** 300 Jahre mit 20 Blitzen, **WHEN** f_c und h_c verglichen werden, **THEN** sind sie bitgleich mit dem Erzeugen, und nur f_eff ändert sich.
@@ -492,7 +506,7 @@ Tests nutzen die Stubs `ITribeSource` (Mitten, Krieg, Aussterben) und `IPopulati
 |---|---|---|
 | **Erste Änderungen nach der Kalibrierung** (Empfehlung des Creative Director): verbrannte Erde trägt 0 statt halb und gibt nach dem Heilen eine Zeit lang einen Aschebonus (f · 1,3); 3 statt 2 Startstämme. Ziel: ein Blitz soll spürbar sein (heute rund 3 % Tragfähigkeit) und Ära I soll belebter werden (29 der 60 stillen Ären von Prototyp 1 waren Ära I). Kennzahlen: Tote durch Blitze des Spielers, Pillar-1-Test, Hungersnöte je Stamm und Ära | Entwickler, dann Messung mit AC-16 | nach der ersten AC-16-Messung |
 | **Zweite Runde**: regionale, seltenere und längere Dürren (15–40 Jahre); Gebiet gewichtet nach Fruchtbarkeit und Brand; niedrigere Grenze der Gnade (etwa 0,95 · cap) oder eine stille „Knappheit“ unter 10 % Hungertoten gegen wiederkehrende kleine Hungersnöte; längere Wirkung verbrannter Erde | Entwickler, dann Messung | danach |
-| Aussterben: Prototyp 1 und dieser Entwurf sagen unter 3 Köpfen, Menschen & Bevölkerung Regel 2 sagt V_t = 0. Was geschieht mit den letzten 1–2 Einzelnen? | GDD Stämme & Diplomatie, dann Menschen & Bevölkerung | mit dem GDD Stämme & Diplomatie |
+| Aussterben: Prototyp 1, dieser Entwurf und Menschen & Bevölkerung Regel 2 sagen unter 3 Köpfen (angeglichen 2026-10-25). Offen: Was geschieht mit den letzten 1–2 Menschen (im Prototyp verschwinden sie, V = 0)? | GDD Stämme & Diplomatie, dann Menschen & Bevölkerung | mit dem GDD Stämme & Diplomatie |
 | Soll es im MVP-0 von Hand gebaute Inseln geben (gleiches Datenformat, aus einer Datei)? | Entwickler | vor dem Level-Design |
 | Darf die Mitte eines Stamms wandern (etwa weg von verbrannter Erde, hin zu fruchtbarem Land)? Dieser Entwurf liest sie nur | GDD Stämme & Diplomatie | mit dem GDD |
 | Ist Wasser tödlich (Ertrinken nach einem Wurf ins Meer)? Das wäre ein kostenloser Tötungsknopf; bis dahin setzt der Kern den Menschen an Land | GDD Gotteshand & Ragdoll, zusammen mit den Kosten | mit dem GDD |
