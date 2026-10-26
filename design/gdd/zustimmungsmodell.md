@@ -554,7 +554,7 @@ Ein Mensch mit Treue 0 bekommt keine Bindungsstrafe, das ist gewollt.
 | System | Art | Was gebraucht wird | GDD |
 |---|---|---|---|
 | Menschen & Bevölkerung | hart | Zustimmungsprofil (fester Inhalt) | ✓ `design/gdd/menschen-und-bevoelkerung.md` |
-| Kultur & Erinnerung | hart | Normen: Offenheit 0–1 und Tabu je Handlungsart und Ort | ✗ noch keins (vorläufiger Vertrag) |
+| Kultur & Erinnerung | hart | Normen: Offenheit 0–1 und Tabu je Handlungsart und Ort | ✓ `design/gdd/kultur-und-erinnerung.md` (Draft, Regeln 13–16, Formel 6) |
 | Begehren & Lust | hart, nur als Daten in der Anfrage | Begehren-Werte b_ij, Bindungen | ✗ noch keins |
 | Harem & Rituale | weich, nur als Daten in der Anfrage | Bindungen im Harem | ✗ noch keins |
 | Simulationskern | weich | Aufruf nur innerhalb eines Schritts; kein Zufall, kein Takt | ✓ `design/gdd/simulationskern.md` |

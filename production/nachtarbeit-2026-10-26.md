@@ -176,6 +176,22 @@ Menschen kannte den neuen Auftrag „Stamm erloschen“ noch nicht, und es war o
 Mensch nach dem Ende einer Handlung zum Nachfolger wechselt (jetzt: im nächsten
 Personentakt). Status bleibt **In Review**.
 
+### 8. Kultur & Erinnerung, Entwurf (ohne Review)
+
+Neu: `design/gdd/kultur-und-erinnerung.md` (Status **Designed**, Draft, noch **nicht**
+geprüft). Aus Prototyp 1 übernommen: Kulturachse Gottesstaat ↔ Lust-Sekte, Stammeshingabe,
+Erinnerung an Eingriffe (8 Einträge, verblasst über 78 Jahre), Ursachenbuch, aus dem die
+Chronik „weil du …“ schreibt, und die drei Gesellschaftsformen mit Hysterese. **Neu und nur
+ein Vorschlag** sind die Normen für das Zustimmungsmodell: Offenheit je Handlungsart aus der
+Achse (Lust-Sekte 0,9, Stammesrat 0,5, Gottesstaat 0,1; Ritual für beide ausgeprägten Kulturen
+hoch), höchstens 0,02 Änderung pro Jahr, damit kein Eingriff Zustimmung erzwingt, und Tabus je
+Gesellschaftsform, die beim Wegfall 5 Jahre nachwirken. Das solltest du dir ansehen, bevor
+Begehren & Lust entworfen wird.
+
+**Hinweis:** Die Arbeitsumgebung wurde gegen 00:50 UTC neu gestartet und lief erst um 06:16
+UTC weiter. Darum kam Kultur & Erinnerung nicht mehr in die Review; ich habe den Entwurf
+nur committet.
+
 ## Entscheidungen ohne Freigabe
 
 | # | GDD | Entscheidung | Warum | Zurücknehmen |
@@ -228,3 +244,8 @@ Personentakt). Status bleibt **In Review**.
 | 46 | Stämme, Welt | Abspaltung fällt aus, wenn der Platz auf der Mitte eines lebenden Stamms liegt, geprüft vor dem Würfeln des Teils; Gebiet wird bei jeder Änderung sofort neu berechnet | Sonst war der Vertrag nicht ausführbar; Ergebnis wie im Prototyp | Stämme Regeln 15, 19, Welt Regel 10 |
 | 47 | Stämme | Anzeige „Kriegsnähe“ mit Hindernis und „Wer grollt diesem Stamm“; keine neue Chronik-Zeile bei Stufenwechseln | Spannung vorher sichtbar, ohne die Chronik weiter mit Krieg zu füllen | UI Requirements |
 | 48 | Stämme | Sichere Bereiche eingeengt (Kriegsschwelle ab 0,5, Verblassen bis 0,975), Querbedingungen genannt | Mit 0,4 gäbe es an jeder engen Grenze Dauerkrieg | Tuning Knobs |
+| 49 | Kultur | GDD Kultur & Erinnerung als Entwurf, ganze Datei auf einmal; Achse, Hingabe, Erinnerung, Ursachenbuch, Formen 1:1 aus Prototyp 1 | Vier GDDs warteten auf seine Verträge | ganzes GDD |
+| 50 | Kultur | **Normen (Vorschlag):** n = 0,5 + 0,5 · Achse für alle sexuellen Handlungsarten, Ritual 0,5 + 0,4 · \|Achse\|; der Ort wirkt nur über π im Zustimmungsmodell | Kein doppelter Abzug für Öffentlichkeit; deckt die Spanne, mit der das Zustimmungsmodell rechnet | Regel 13, Formel 6 |
+| 51 | Kultur | Normen ändern sich höchstens 0,02 pro Geschichtsjahr; Tabus kommen sofort, gehen erst nach 5 Jahren | Pflicht aus dem Zustimmungsmodell: kein Eingriff setzt eine Norm direkt; im Zweifel ablehnen | Regeln 14, 15 |
+| 52 | Kultur | Tabus: Gottesstaat Gruppe überall, Sex zu zweit auf Fest und öffentlich; Stammesrat Gruppe öffentlich; Lust-Sekte keine; Harem nirgends tabu | Vorschlag, offene Frage für dich | Formel 6, Open Questions |
+| 53 | Kultur | Kulturen untergegangener Stämme bleiben eingefroren lesbar | Das Zustimmungsmodell braucht ihre Normen noch T_akkult lang für Menschen, die gewechselt haben | Regel 1 |
