@@ -486,7 +486,7 @@ gelten als „fest bis zur ersten Kalibrierungsmessung“ (AC-21). Abweichungen:
 | Menschen & Bevölkerung | hart, nur lesend | V_t | ✓ `design/gdd/menschen-und-bevoelkerung.md` (Approved) |
 | Stämme & Diplomatie | hart | Kriegszustand (lesend); Aufträge Kultur anlegen, Achse verschieben (mit Veranlasser), Achsen mischen | ✓ `design/gdd/staemme-und-diplomatie.md` (Approved) |
 | Gotteskraft & Götterkräfte, Gotteshand & Ragdoll | weich | Auftrag „Eingriff erfassen“ mit p, Δx, ΔD, klein, Text | ✗ noch keins (Vertrag in Regel 7) |
-| Begehren & Lust, Harem & Rituale | weich | Auftrag „Achse verschieben“ mit Grund Lust | ✗ noch keins (Vertrag in Regel 6) |
+| Begehren & Lust, Harem & Rituale | weich | Auftrag „Achse verschieben“ mit Grund Lust | Begehren & Lust ✓ `design/gdd/begehren-und-lust.md` (Regel 17 dort); Harem & Rituale noch keins |
 
 **Wird gebraucht von:** Menschen & Bevölkerung (D_t), Zustimmungsmodell (Normen, Tabus),
 Stämme & Diplomatie (x_t, Form), Begehren & Lust, Harem & Rituale (Normen, Form), Gotteskraft

@@ -555,7 +555,7 @@ Ein Mensch mit Treue 0 bekommt keine Bindungsstrafe, das ist gewollt.
 |---|---|---|---|
 | Menschen & Bevölkerung | hart | Zustimmungsprofil (fester Inhalt) | ✓ `design/gdd/menschen-und-bevoelkerung.md` |
 | Kultur & Erinnerung | hart | Normen: Offenheit 0–1 und Tabu je Handlungsart und Ort | ✓ `design/gdd/kultur-und-erinnerung.md` (Regeln 14–17, Formel 6) |
-| Begehren & Lust | hart, nur als Daten in der Anfrage | Begehren-Werte b_ij, Bindungen | ✗ noch keins |
+| Begehren & Lust | hart, nur als Daten in der Anfrage | Begehren-Werte b_ij, Bindungen | ✓ `design/gdd/begehren-und-lust.md` (Designed; Formel 1, Regel 16) |
 | Harem & Rituale | weich, nur als Daten in der Anfrage | Bindungen im Harem | ✗ noch keins |
 | Simulationskern | weich | Aufruf nur innerhalb eines Schritts; kein Zufall, kein Takt | ✓ `design/gdd/simulationskern.md` |
 
@@ -717,7 +717,7 @@ die Defaults aus den Formeln 1 bis 3.
 | Frage | Wer klärt | Bis wann |
 |---|---|---|
 | Welche Normen (Offenheit, Tabu) hat eine Kultur je Handlungsart und Ort, und wie verändern sie sich? | beantwortet: Kultur & Erinnerung Regeln 14–17, Formel 6 | 2026-10-26 |
-| Wie entsteht der Begehren-Wert b_ij, und welche Vorlieben gibt es? Die Verteilung in Formel 5 ist bis dahin angenommen | GDD Begehren & Lust | mit dem GDD |
+| Wie entsteht der Begehren-Wert b_ij, und welche Vorlieben gibt es? Die Verteilung in Formel 5 ist bis dahin angenommen | beantwortet: Begehren & Lust Formel 1 (Paar-Chemie, Mittel 0,5, Streuung 0,2) | 2026-10-26 |
 | Darf die Gotteshand Beteiligte einer laufenden Szene überhaupt packen, oder sind sie dann nicht greifbar? Vorerst gilt: Packen ist erlaubt und beendet die Szene (Edge Cases) | GDD Gotteshand & Ragdoll | mit dem GDD |
 | Stimmen die geschätzten Anteile aus Formel 5 nach der Umsetzung? | Monte-Carlo-Test AC-20 | erste Umsetzung im MVP-0 |
 | Wie viele Beteiligte hat ein Ritual mit Kontakt, und was geschieht dabei? Vorerst 2 bis N_gruppe_max, paarweise geprüft | GDD Harem & Rituale | mit dem GDD |

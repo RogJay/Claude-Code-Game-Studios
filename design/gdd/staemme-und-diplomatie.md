@@ -627,3 +627,4 @@ Erklärung, die Aggressionswörter (UX-Spec „Stamm ansehen“, mit Screenshot 
 | Darf die Mitte eines Stamms wandern (weg von verbrannter Erde, hin zu fruchtbarem Land)? Heute fest wie im Prototyp | Entwickler | nach der Kalibrierung |
 | Was geschieht mit den letzten 1–2 Menschen eines untergegangenen Stamms (heute sterben sie, Gehaltene gehen an den Nachfolger)? Sie könnten auch zum Nachfolger gehen | Entwickler | mit dem GDD Kultur & Erinnerung |
 | Kampf und Gefangenschaft einzelner Menschen (Merkmal „im Kampf“, Gefangene) | GDD Sichtbarer Krieg | Vertical Slice |
+| Liest dieses System die Zufriedenheit Z_t aus Begehren & Lust (etwa weniger Abspaltung bei hoher Zufriedenheit), und gibt es den Auftrag „Groll mindern (t gegen o, Wert)“ für Begegnungen zwischen Stämmen? Beides heute nur als Vertrag mit Gewicht 0 (Begehren & Lust Regeln 18, 19) | Entwickler, nach der Kalibrierung | nach der ersten Messung |

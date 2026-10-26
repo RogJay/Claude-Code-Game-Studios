@@ -83,7 +83,7 @@ GDD.
 | 4 | Zustimmungsmodell | Gameplay | MVP | Approved | design/gdd/zustimmungsmodell.md | Menschen & Bevölkerung, Kultur & Erinnerung (Normen als Eingabe) |
 | 5 | Stämme & Diplomatie | Gameplay | MVP | Approved | design/gdd/staemme-und-diplomatie.md | Menschen & Bevölkerung, Welt & Insel |
 | 6 | Kultur & Erinnerung | Gameplay | MVP | Approved | design/gdd/kultur-und-erinnerung.md | Stämme & Diplomatie, Menschen & Bevölkerung |
-| 7 | Begehren & Lust | Gameplay | MVP | Not Started | — | Zustimmungsmodell, Kultur & Erinnerung, Menschen & Bevölkerung, Körper & Animation |
+| 7 | Begehren & Lust | Gameplay | MVP | Designed | design/gdd/begehren-und-lust.md | Zustimmungsmodell, Kultur & Erinnerung, Menschen & Bevölkerung, Körper & Animation |
 | 8 | Harem & Rituale | Gameplay | MVP | Not Started | — | Begehren & Lust, Zustimmungsmodell, Stämme & Diplomatie, Gotteskraft & Götterkräfte |
 | 9 | Gotteskraft & Götterkräfte | Economy | MVP | Not Started | — | Stämme & Diplomatie, Kultur & Erinnerung, Menschen & Bevölkerung |
 | 10 | Körper & Animation | Core | MVP | Not Started | — | Menschen & Bevölkerung |
@@ -255,10 +255,10 @@ Effort estimates: S = 1 session, M = 2-3 sessions, L = 4+ sessions.
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 33 |
-| Design docs started | 6 |
+| Design docs started | 7 |
 | Design docs reviewed | 6 |
 | Design docs approved | 6 |
-| MVP systems designed | 6/16 |
+| MVP systems designed | 7/16 |
 | Vertical Slice systems designed | 0/9 |
 
 ---

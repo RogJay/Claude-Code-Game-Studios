@@ -78,7 +78,9 @@ zeigen.
    - einen **Ort**, eine Zelle der Insel
    - den Schritt des Hervortretens t_birth sowie held_closed und t_hold_start für die
      Zeit in Gottes Hand (Formel `lebensjahr` im Simulationskern; gesetzt, wenn der Kern
-     Beginn und Ende anwendet)
+     Beginn und Ende anwendet), ebenso fest_closed und t_fest_start für die Zeit auf einem
+     Fest, die nur halb altert (gesetzt durch die Aufträge „Fest betreten / verlassen“ von
+     Begehren & Lust, Regel 13 dort)
    - eine persönliche **Lebensdauer** LD_i in Lebensjahren (Formulas)
 5. **Rollen** wie Harem-Mitglied, Priesterin oder Anführer gehören den Systemen, die
    sie vergeben. Sie verweisen auf die ID des Einzelnen. Dieses System speichert sie
@@ -205,7 +207,8 @@ zeigen.
 **Aufträge anderer Systeme**
 
 23. Verlust, Abspaltung, Eroberung, „Stamm erloschen“ (Regel 2), Gefangennahme,
-    Befreiung, Verletzung, das Merkmal „im Kampf“, „Erwachsene erschaffen“ und vom
+    Befreiung, Verletzung, das Merkmal „im Kampf“, „Erwachsene erschaffen“, von Begehren &
+    Lust „Ziel Festbereich“ und „Fest betreten / verlassen“ und vom
     Simulationskern das Hervortreten eines
     gepackten Statisten (Stamm, Zelle) sowie die Rückgabe aus Gottes Hand (Ort,
     Ergebnis, Verletzungsklasse; beim Beginn wird „im Kampf“ gelöscht) kommen als

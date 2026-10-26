@@ -180,19 +180,38 @@ formulas:
     referenced_by:
       - design/gdd/simulationskern.md
       - design/gdd/menschen-und-bevoelkerung.md
+      - design/gdd/begehren-und-lust.md
     variables:
       - t
       - t_birth
       - held_steps
       - held_closed
       - t_hold_start
+      - fest_steps
+      - f_slow
       - S_Lj
     output_range: [0, 1000]
-    expression: "age_Lj = floor(((t - t_birth) - held_steps) / S_Lj)"
+    expression: "age_Lj = floor(((t - t_birth) - held_steps - f_slow * fest_steps) / S_Lj)"
+    # was: "age_Lj = floor(((t - t_birth) - held_steps) / S_Lj)" before 2026-10-26
     # was: notes "Zeit in Gottes Hand zählt nicht als Alter", variables without held_closed/t_hold_start, before 2026-10-25
     notes: "Zeit in Gottes Hand zählt nicht als Alter; held_steps = held_closed + (t - t_hold_start), solange der Mensch gehalten wird, schließt also eine laufende Haltezeit ein"
     added: 2026-10-25
-    revised: 2026-10-25
+    revised: 2026-10-26
+  - name: begehren
+    status: active
+    source: design/gdd/begehren-und-lust.md
+    referenced_by:
+      - design/gdd/begehren-und-lust.md
+      - design/gdd/zustimmungsmodell.md
+    variables:
+      - o_i
+      - sigma_b
+      - z_ij
+    output_range: [0, 1]
+    expression: "b_ij = o_i(g_j) * clamp(0.5 + 0.2 * z_ij, 0, 1); z_ij = sum of 12 NextDouble of a pair stream seeded with SplitMix64(seed_sys5 xor (ID_i * 2^32 + ID_j)) - 6"
+    notes: "Reine Funktion, einseitig, nie durch Eingriffe veränderbar; Mittel 0,5, Streuung 0,2 (Annahme des Zustimmungsmodells); im MVP-0 o_i = 1 für alle"
+    added: 2026-10-26
+    revised: ""
   - name: tragfaehigkeit
     status: active
     source: design/gdd/welt-und-insel.md
@@ -322,6 +341,7 @@ constants:
     source: design/gdd/zustimmungsmodell.md
     referenced_by:
       - design/gdd/zustimmungsmodell.md
+      - design/gdd/begehren-und-lust.md
     value: 4
     unit: Beteiligte
     # was: notes "Größte Gruppe, mindestens 3" before 2026-10-25
@@ -490,6 +510,29 @@ constants:
     value: 3
     unit: system_id
     notes: "Kennung des Zufallsstroms von Kultur & Erinnerung; wird nie umnummeriert"
+    added: 2026-10-26
+    revised: ""
+  - name: fest_alterung_faktor
+    status: active
+    source: design/gdd/begehren-und-lust.md
+    referenced_by:
+      - design/gdd/begehren-und-lust.md
+      - design/gdd/simulationskern.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 0.5
+    unit: Anteil der Festzeit, der nicht altert
+    notes: "f_slow in der Formel lebensjahr; ein Fest von 300 Schritten kostet 2,5 statt 5 Lebensjahre"
+    added: 2026-10-26
+    revised: ""
+  - name: begehren_system_id
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/begehren-und-lust.md
+    value: 5
+    unit: system_id
+    notes: "Kennung des Zufallsstroms von Begehren & Lust; Formel begehren nutzt seinen Startwert ohne den Strom zu verbrauchen"
     added: 2026-10-26
     revised: ""
   - name: aussterben_grenze

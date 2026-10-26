@@ -303,7 +303,7 @@ Schritt nach dem Anwenden der Eingriffe und vor Welt & Insel. Bei t = 0 gibt es 
 
 The Lebensjahr formula is defined as:
 
-`age_Lj = floor(age_steps / S_Lj)` mit `age_steps = (t - t_birth) - held_steps`, `held_steps = held_closed + (t - t_hold_start, solange der Mensch gehalten wird, sonst 0)` und `T_life = L_Lj * S_Lj / R`
+`age_Lj = floor(age_steps / S_Lj)` mit `age_steps = (t - t_birth) - held_steps - f_slow · fest_steps`, `held_steps = held_closed + (t - t_hold_start, solange der Mensch gehalten wird, sonst 0)` und `T_life = L_Lj * S_Lj / R`
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
@@ -312,7 +312,9 @@ The Lebensjahr formula is defined as:
 | held_steps | int64 | ≥ 0 | calculated | Summe aller Schritte, die der Mensch „in Gottes Hand“ war, **einschließlich der laufenden Haltezeit** (Altern ist dann angehalten, Core Rule 10) |
 | held_closed | int64 | ≥ 0 | calculated | Summe der abgeschlossenen Haltezeiten; beim Anwenden des Endereignisses in Schritt e wächst sie um e − t_hold_start |
 | t_hold_start | int64 | ≥ 0 | calculated | Schritt, in dem der Beginn „in Gottes Hand“ angewendet wurde; nur gültig, solange der Mensch gehalten wird |
-| age_steps | int64 | ≥ 0 | calculated | gelebte Schritte ohne die Zeit in Gottes Hand |
+| fest_steps | int64 | ≥ 0 | calculated | Schritte im Festbereich während eines laufenden Fests (Menschen & Bevölkerung, aus den Aufträgen von Begehren & Lust), einschließlich einer laufenden Anwesenheit; gebildet wie held_steps aus fest_closed und t_fest_start |
+| f_slow | double | 0–1, Default 0,5 | data file | Anteil der Festzeit, der nicht altert (Begehren & Lust Formel 7, Entscheidung des Entwicklers vom 2026-10-26) |
+| age_steps | double | ≥ 0 | calculated | gelebte Schritte ohne die Zeit in Gottes Hand und mit halber Festzeit |
 | S_Lj | int | 30–120, Default 60, Vielfaches von S_year | data file | Schritte pro Lebensjahr |
 | L_Lj | int | Default 40 | data file | Lebensdauer in Lebensjahren, **Eigentum von Menschen & Bevölkerung** (hier nur zur Umrechnung) |
 | age_Lj | int | ≥ 0 | calculated | Alter in Lebensjahren seit der Erschaffung |
@@ -324,7 +326,7 @@ halbiert sich das auf 60–240 s; für „mehrere Minuten“ braucht es dann S_L
 12 Geschichtsjahre.
 **Example:** 40 × 60 / 10 = 240 s = 4 Minuten. Der Mensch erlebt dabei 480
 Geschichtsjahre, also etwa 19 Ären (gewollt, Core Rule 2). Ein Fest von 30 s bei 1×
-dauert 300 Schritte, also 5 Lebensjahre. Hält die Hand einen Menschen von Schritt
+dauert 300 Schritte; weil Festzeit nur halb zählt, kostet es 2,5 Lebensjahre. Hält die Hand einen Menschen von Schritt
 600 bis 1.200, steht sein age_steps in dieser Zeit still (held_steps = t − 600
 während der Haltezeit, held_closed = 600 ab Schritt 1.200).
 
@@ -549,7 +551,7 @@ pro Bild die fälligen Schritte auslöst, sitzt in der Unity-Bildschleife.
 | Menschen & Bevölkerung | Personentakt, Umrechnung Lebensjahr ↔ Schritte, Zufallsstrom, Status „in Gottes Hand“, Aufträge | ✓ `design/gdd/menschen-und-bevoelkerung.md` |
 | Kultur & Erinnerung | Jahrestakt, Ereignisse mit Ursache-Kette, angewendete Eingriffe | ✓ `design/gdd/kultur-und-erinnerung.md` (Approved) |
 | Stämme & Diplomatie | Jahrestakt, Zufallsstrom, Ereignisse | ✓ `design/gdd/staemme-und-diplomatie.md` (Draft) |
-| Begehren & Lust | Personentakt, Zufallsstrom, Ereignisse | noch keins |
+| Begehren & Lust | Personentakt, Zufallsstrom, Ereignisse | ✓ `design/gdd/begehren-und-lust.md` (Designed) |
 | Harem & Rituale | Personentakt, Zufallsstrom, Ereignisse | noch keins |
 | Gotteskraft & Götterkräfte | Jahrestakt, Eingriffswarteschlange | noch keins |
 | Gotteshand & Ragdoll | Format des Eingriffsereignisses, Status „in Gottes Hand“ | noch keins |
@@ -692,6 +694,6 @@ E_len = 25, P_person = 2, S_Lj = 60, cap = 8, dt_max = 0,1 s. Tests liegen unter
 | Hardware des Entwicklungsrechners und echtes Leistungsbudget für AC-29 | Entwickler, beim ersten Profiling | erste Messung im MVP-0 |
 | Technischer Weg für den Kern (einfache C#-Klassen oder ECS/DOTS). Auflagen für jeden Weg: keine parallelen Gleitkomma-Summen, Burst nur mit deterministischem Gleitkomma-Modus, keine Iteration über Dictionary oder HashSet in Regeln, Hash über Bitmuster mit normalisiertem −0 und NaN | ADR in der Architekturphase | `/create-architecture` |
 | Sollen Kräfte und Gotteshand in der Pause gesperrt bleiben, oder sollen Eingriffe in der Pause eingereiht und beim Fortsetzen angewendet werden? Das GDD sperrt sie (Regel 13); die Warteschlange könnte beides | Entwickler | vor dem UX-Spec der Zeitsteuerung |
-| Ein Fest von 30 s kostet 5 Lebensjahre, also 12,5 % eines Lebens. Gewollt, oder altern Menschen während eines Fests langsamer? | GDD Begehren & Lust, dann Playtest | mit dem GDD Begehren & Lust |
+| Ein Fest von 30 s kostet 5 Lebensjahre, also 12,5 % eines Lebens. Gewollt, oder altern Menschen während eines Fests langsamer? | beantwortet: Festzeit zählt halb (Formel 3, Begehren & Lust Regel 13) | 2026-10-26 |
 | Wird Gotteskraft für einen „Eingriff ins Leere“ zurückerstattet? | GDD Gotteskraft & Götterkräfte | mit dem GDD Gotteskraft & Götterkräfte |
 | Geschichte in Jahren und Leben in Lebensjahren: Versteht der Spieler die zwei Zeitebenen, oder braucht die Chronik eine Erklärung? | Playtest im MVP-0 | erster MVP-0-Playtest |
