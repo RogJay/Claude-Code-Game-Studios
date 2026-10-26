@@ -545,7 +545,7 @@ pro Bild die fälligen Schritte auslöst, sitzt in der Unity-Bildschleife.
 
 | System | Was es vom Kern braucht | GDD |
 |---|---|---|
-| Welt & Insel | Jahrestakt, Zufallsstrom, Ereignisse, Erzeugen als erstes System | ✓ `design/gdd/welt-und-insel.md` (Entwurf) |
+| Welt & Insel | Jahrestakt, Zufallsstrom, Ereignisse, Erzeugen als erstes System | ✓ `design/gdd/welt-und-insel.md` (In Review) |
 | Menschen & Bevölkerung | Personentakt, Umrechnung Lebensjahr ↔ Schritte, Zufallsstrom, Status „in Gottes Hand“, Aufträge | ✓ `design/gdd/menschen-und-bevoelkerung.md` |
 | Kultur & Erinnerung | Jahrestakt, Ereignisse mit Ursache-Kette, angewendete Eingriffe | noch keins |
 | Stämme & Diplomatie | Jahrestakt, Zufallsstrom, Ereignisse | noch keins |

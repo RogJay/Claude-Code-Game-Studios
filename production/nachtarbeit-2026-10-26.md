@@ -135,6 +135,12 @@ unter 3 Köpfen ist jetzt auch in Menschen & Bevölkerung Regel 2 so festgelegt 
 was mit den letzten 1–2 Menschen geschieht; bis dahin verschwinden sie wie im Prototyp).
 Status jetzt **In Review** wie die anderen drei; „Approved“ entscheidest du.
 
+### 6. Zweite Konsistenzprüfung (alle 4 GDDs)
+
+**PASS**: 29 Registry-Einträge über Kern, Menschen, Zustimmung und Welt geprüft, kein
+Widerspruch. Der einzige Widerspruch (Aussterben) war schon in Runde 2 von Welt behoben.
+Nachgezogen: Kern und Menschen nennen Welt & Insel jetzt „In Review“ statt „Entwurf“.
+
 ## Entscheidungen ohne Freigabe
 
 | # | GDD | Entscheidung | Warum | Zurücknehmen |
