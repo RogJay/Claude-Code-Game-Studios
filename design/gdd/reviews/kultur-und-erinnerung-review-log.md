@@ -35,3 +35,27 @@ Reviewed-Content-Hash: design/gdd/welt-und-insel.md 27fa1ec3101eba77c0f7c6326ecb
 Reviewed-Content-Hash: design/gdd/game-concept.md 168cdc5ff8f56635a08ebbb674fe517b93ded4c6
 Reviewed-Content-Hash: prototypes/weltengott-concept/prototype.html e3c8aa99b445fc83ff5a9ce4fde8919dd9ab26eb
 Reviewed-Content-Hash: prototypes/weltengott-concept/REPORT.md e9204c19a61fefb55207be0197cd90bd5576f6e0
+
+## Review — 2026-10-26 — Verdict: NEEDS REVISION
+Review mode: lean · Workflow: standard
+Scope signal: L
+Specialists: none (lean)
+Blocking items: 1 | Recommended: 2
+Summary: All round-1 blockers and the developer's decisions D1–D6 are in. One new blocker: the text source of a veranlasser was undefined (an intervention may never have touched this tribe) and Welt stored an event ID where the ledger needs an intervention ID. Fixed after the review: Welt stores the intervention ID of a burn, the Chronik resolves texts by intervention ID, a notice hysteresis and the merge rule for forgotten memories were added.
+Prior verdict resolved: Yes
+Findings:
+- [BLOCKING] Rule 12 / Welt Rule 16: veranlasser text source and ID type (event vs intervention)
+- [RECOMMENDED] UI Requirements: "Norm kippt" notice may flicker near word thresholds
+- [RECOMMENDED] Rule 8: merge target already forgotten or evicted
+Note: kultur-und-erinnerung.md and welt-und-insel.md are stamped AS REVIEWED (before the fixes).
+Reviewed-Content-Hash: design/gdd/kultur-und-erinnerung.md 0ecc5e8a660212ca544ca0ae6a85b7aae2527f9d
+Reviewed-Content-Hash: design/gdd/welt-und-insel.md 27fa1ec3101eba77c0f7c6326ecb48e08bd86134
+Reviewed-Content-Hash: design/registry/entities.yaml b9dc1c1acfbeaed6174835e89e5352234767400c
+Reviewed-Content-Hash: .claude/skills/design-review/SKILL.md a63d8fba9b7142eeb43791f061e2e1533c429b43
+Reviewed-Content-Hash: design/gdd/zustimmungsmodell.md dbeb7828bf487169193834b305c13617d5676e92
+Reviewed-Content-Hash: design/gdd/staemme-und-diplomatie.md 707c5078bfe38515783f2b6dd1b308fa7e419641
+Reviewed-Content-Hash: design/gdd/menschen-und-bevoelkerung.md 030b628584e299a4c9ddb84eeefee08614329816
+Reviewed-Content-Hash: design/gdd/simulationskern.md adae01d545f0f1c4d3777b0ce561a8c810167d81
+
+## Approval — 2026-10-26 — Status: Approved
+Approved by the developer after 2 review rounds (roadmap cap reached); the blocking finding of round 2 was fixed. Open Questions in the GDD stay open and are not part of the approval.

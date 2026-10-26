@@ -572,7 +572,7 @@ kaum ändern. Gemessen wird sie trotzdem neu mit den Debug- und Balancing-Werkze
 |---|---|---|---|
 | Simulationskern | hart | Personentakt, Jahrestakt beim Versatz 2, Zufallsstrom (system_id 2), Status „in Gottes Hand“, Umrechnung Lebensjahr | ✓ `design/gdd/simulationskern.md` |
 | Welt & Insel | hart | Zellen, Gebiet je Stamm, Nahrung food_t und Tragfähigkeit cap_t je Stamm, Startplätze, Hunger als Auftrag | ✓ `design/gdd/welt-und-insel.md` (Approved) |
-| Kultur & Erinnerung | hart für die Gnade, nur lesend | Stammeshingabe D_t | ✓ `design/gdd/kultur-und-erinnerung.md` (Draft, Formel 1) |
+| Kultur & Erinnerung | hart für die Gnade, nur lesend | Stammeshingabe D_t | ✓ `design/gdd/kultur-und-erinnerung.md` (Approved, Formel 1) |
 
 Kultur & Erinnerung hängt seinerseits von Menschen ab (Systemübersicht). Diese
 Kreisabhängigkeit wird über die Schnittstelle gelöst: Kultur & Erinnerung stellt D_t

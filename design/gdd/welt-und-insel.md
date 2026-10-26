@@ -122,7 +122,7 @@ ein Stamm hungert, ohne eine Tabelle zu öffnen.
     3 × 3-Feld um sein Ziel (nur Zellen im Raster). Verbrannte Erde trägt 39 Ernten lang
     halb so viel (Formel 7). Ein weiterer Blitz setzt die Frist neu, er verstärkt die
     Wirkung nicht. Unabhängig davon speichert jede Zelle für immer das Jahr und die
-    Ursache (Ereignis-ID des Blitzes) ihres letzten Brands, damit die Ansicht eine alte
+    Ursache (Eingriffs-ID des Blitzes, die der Auftrag „Brand“ mitbringt) ihres letzten Brands, damit die Ansicht eine alte
     Narbe zeigen und die Chronik und Kultur & Erinnerung sie nennen können.
 
 **Orte**
@@ -172,7 +172,7 @@ ein Stamm hungert, ohne eine Tabelle zu öffnen.
 | Menschen & Bevölkerung | V_t je Stamm (lesend) | Zellen, Gebiet je Stamm in Zellenreihenfolge, food_t, cap_t, nächste Landzelle, nächste Zelle eines Stamms, Startplätze; Auftrag „Verlust durch Hunger“ | Welt & Insel |
 | Stämme & Diplomatie | Mitten der Stämme, Kriegszustand (lesend); Aufträge „Gebiet neu berechnen“, „Stamm entsteht mit Vorrat x“ | Gebiet, Zellenzahl, cap_t und food_t je Stamm (für Gedränge, Abspaltung, Grenzstreit), Startplätze und IDs der ersten Stämme, Land und Fruchtbarkeit für die Platzsuche | Welt & Insel (Gebiet), Stämme & Diplomatie (Mitten, Aussterben) |
 | Kultur & Erinnerung | – | Hunger in diesem Jahr je Stamm mit Hauptgrund, Dürre aktiv, Wohlstand (food_t / V_t, bei V_t = 0 gleich 0), verbrannte Zellen je Gebiet mit Ursache | Welt & Insel |
-| Gotteskraft & Götterkräfte | Aufträge „Brand“ (Zielzelle) und „Vorrat + 0,6 · V_t“ (Fest-Segen) | Ereignis „Land verbrannt“ mit den betroffenen Stämmen und Zellenzahlen | Gotteskraft (Kraft), Welt & Insel (Wirkung auf Zellen) |
+| Gotteskraft & Götterkräfte | Aufträge „Brand“ (Zielzelle, Eingriffs-ID) und „Vorrat + 0,6 · V_t“ (Fest-Segen) | Ereignis „Land verbrannt“ mit den betroffenen Stämmen und Zellenzahlen | Gotteskraft (Kraft), Welt & Insel (Wirkung auf Zellen) |
 | Begehren & Lust, Harem & Rituale | Aufträge „Ort anlegen“ (Festplatz, Ritualplatz) | Orte mit ID und Zelle | Welt & Insel |
 | Simulationskern (Grenze zur Physik) | – | nächste Landzelle für ein Endereignis auf Wasser (Simulationskern Regel 9) | Welt & Insel |
 | Weltansicht & Kamera | – | Raster, Höhe h_c, Fruchtbarkeit, Gebiete, verbrannte Zellen samt Jahr des Brands, Dürre, Orte | Welt & Insel |
@@ -288,7 +288,7 @@ The Nahrung formula is defined as:
 | food_t | double | 0 bis 3 · V_t nach der Ernte; ein Fest-Segen kann es bis zur nächsten Ernte darüber heben | calculated | Vorrat; Startstämme 48, ein abgespaltener Stamm 0,5 · Teil, Fest-Segen + 0,6 · V_t |
 | prod | double | ≥ 0 | calculated | Ernte dieses Jahres |
 | k | int | ≥ 1 | calculated | Hungertote; höchstens etwa 0,31 · V_t, was das Volk nicht hergibt (Gehaltene), meldet Menschen als „Verlust nicht vollständig“ |
-| Hauptgrund | Aufzählung | Dürre, Brand, Krieg, Gedränge | calculated | wird nur berechnet und gemeldet, ändert kein Ergebnis; „Brand“ nennt die Ursache des jüngsten Brands im Gebiet |
+| Hauptgrund | Aufzählung | Dürre, Brand, Krieg, Gedränge | calculated | wird nur berechnet und gemeldet, ändert kein Ergebnis; „Brand“ nennt die Eingriffs-ID des jüngsten Brands im Gebiet (für Kultur & Erinnerung der Veranlasser) |
 
 **Output Range:** Ein Stamm, der seine Tragfähigkeit übersteigt, verliert pro Hungerjahr
 etwa 6 % plus ein Viertel des Fehlbetrags. Der Vorrat deckt höchstens 3 Jahre Verbrauch.
@@ -326,7 +326,7 @@ The Brand formula is defined as:
 |----------|------|-------|--------|-------------|
 | T_burn | int | 40 | data file | Frist verbrannter Erde (Prototyp 1) |
 | frist_c | int | 0–40 | calculated | Restfrist |
-| brand_jahr_c, brand_ursache_c | int | – | calculated | Jahr und Ereignis-ID des letzten Brands, bleiben für immer |
+| brand_jahr_c, brand_ursache_c | int | – | calculated | Jahr und Eingriffs-ID des letzten Brands, bleiben für immer |
 
 **Output Range:** Weil die Frist vor der Ernte sinkt, wirkt ein Brand auf genau 39
 Ernten (bei 1× rund 20 s). Ein Blitz verbrennt bis zu 9 Landzellen und kostet einen Stamm

@@ -478,7 +478,7 @@ gelten als „fest bis zur ersten Kalibrierungsmessung“ (AC-21). Abweichungen:
 | Simulationskern | hart | Jahrestakt O_year = 2, Zufallsstrom system_id 4, Aufträge, Ereignisse mit Ursache | ✓ `design/gdd/simulationskern.md` (Approved) |
 | Welt & Insel | hart | Startmitten, Gebiet, cap_t, food_t, Hunger, Platzsuche; Aufträge „Gebiet neu berechnen“, „Stamm entsteht mit Vorrat x“ | ✓ `design/gdd/welt-und-insel.md` (Approved) |
 | Menschen & Bevölkerung | hart | V_t; Aufträge Verlust, Wechsel, Stamm erloschen; liest den Nachfolger | ✓ `design/gdd/menschen-und-bevoelkerung.md` (Approved) |
-| Kultur & Erinnerung | hart | x_t und Gesellschaftsform (lesend); Aufträge Kultur anlegen, Achse verschieben, Achsen mischen | ✓ `design/gdd/kultur-und-erinnerung.md` (Draft) |
+| Kultur & Erinnerung | hart | x_t und Gesellschaftsform (lesend); Aufträge Kultur anlegen, Achse verschieben, Achsen mischen | ✓ `design/gdd/kultur-und-erinnerung.md` (Approved) |
 | Gotteskraft & Götterkräfte | weich | Auftrag „Groll“ für Eingriffe, die Nachbarn als Frevel sehen | ✗ noch keins (vorläufiger Vertrag) |
 
 **Wird gebraucht von:** Welt & Insel (Mitten, Krieg, Aussterben), Menschen & Bevölkerung

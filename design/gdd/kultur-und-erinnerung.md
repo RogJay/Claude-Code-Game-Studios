@@ -1,6 +1,6 @@
 # Kultur & Erinnerung
 
-> **Status**: In Review, Review-Runde 1 überarbeitet (Entscheidungen des Entwicklers vom 2026-10-26 eingearbeitet)
+> **Status**: Approved (vom Entwickler freigegeben am 2026-10-26 nach 2 Review-Runden)
 > **Author**: Claude, mit dem Entwickler
 > **Last Updated**: 2026-10-26
 > **Last Verified**: 2026-10-26
@@ -101,8 +101,9 @@ gegen Prototyp 1“.*
    + ΔD (beide geklemmt), Ursachenbuch-Eintrag der Eingriffs-ID **=** Δx, und eine neue
    Erinnerung mit Gewicht 1.
 8. **Kleine Eingriffe** derselben Art am selben Stamm innerhalb von T_merge = 10
-   Geschichtsjahren seit der letzten werden **zusammengefasst**: keine neue Erinnerung,
-   sondern die vorhandene bekommt wieder Gewicht 1, ihr Zähler steigt, und die Sofortwirkung
+   Geschichtsjahren seit der letzten werden **zusammengefasst**, solange deren Erinnerung
+   noch besteht (sonst entsteht eine neue): keine neue Erinnerung, sondern die vorhandene
+   bekommt wieder Gewicht 1, ihr Zähler steigt, und die Sofortwirkung
    halbiert sich mit jeder Wiederholung (Formel 3); sie wird zum Ursachenbuch-Eintrag der
    ersten Eingriffs-ID **addiert**. So kann ein gehäuftes Werfen weder die Erinnerung fluten
    noch die Achse beliebig schnell schieben (die endgültigen Werte legt das GDD Gotteshand &
@@ -127,8 +128,12 @@ gegen Prototyp 1“.*
     zeigt, Formel 4) und die drei größten Einträge. Ist die Ursache ein Eingriff, trägt das
     Ereignis dessen Eingriffs-ID, und die Chronik schreibt „weil du …“ mit dem gespeicherten
     Text, auch wenn die Erinnerung schon vergessen ist. Ist sie Krieg, Hunger, Dürre,
-    Eroberung oder Lust und stammt mindestens die Hälfte davon von einem Veranlasser, nennt
-    die Chronik ihn („nach dem Krieg, den du ausgelöst hast, als du …“).
+    Eroberung oder Lust und stammt mindestens die Hälfte davon von einem Veranlasser, trägt
+    das Ereignis dessen Eingriffs-ID als Veranlasser, und die Chronik nennt ihn („nach dem
+    Krieg, den du ausgelöst hast, als du …“). Den Text holt die Chronik über die
+    Eingriffs-ID (Simulationskern Regel 15), denn ein Veranlasser muss diesen Stamm nie
+    selbst getroffen haben. Veranlasser sind immer Eingriffs-IDs: Stämme liefert die
+    Ursache des Kriegs, Welt & Insel die Eingriffs-ID des Brands (Welt Regel 16).
 
 **Stammeshingabe**
 
@@ -538,7 +543,8 @@ auf einen alten Eingriff oder einen ausgelösten Krieg zurückführt, ist das Zi
 - **Normen** als Wort je Handlungsart (streng unter 0,4, gemäßigt bis 0,6, offen darüber) und
   die Tabus; nie als Rohzahl
 - **Meldungen** (über die Chronik): Kulturwandel mit Ursache (groß); Tabu entsteht, Tabu fällt,
-  Norm kippt (ein Wort wechselt) als kleine Meldungen
+  Norm kippt (ein Wort wechselt, erst wenn n die Grenze um 0,02 überschritten hat, damit es
+  nicht flackert) als kleine Meldungen
 
 > **📌 UX Flag — Kultur & Erinnerung**: This system has UI requirements. In Phase 4
 > (Pre-Production), run `/ux-design` to create a UX spec for each screen or HUD
