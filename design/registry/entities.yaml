@@ -470,6 +470,28 @@ constants:
     notes: "Kennung des Zufallsstroms von Stämme & Diplomatie (auch für die Platzsuche bei Abspaltungen); wird nie umnummeriert"
     added: 2026-10-26
     revised: ""
+  - name: norm_max_aenderung
+    status: active
+    source: design/gdd/kultur-und-erinnerung.md
+    referenced_by:
+      - design/gdd/kultur-und-erinnerung.md
+      - design/gdd/zustimmungsmodell.md
+    value: 0.02
+    unit: Offenheit pro Geschichtsjahr
+    notes: "Höchste Änderung einer Norm pro Geschichtsjahr; Tabus entstehen und fallen nur über die Normen (Kultur Regeln 15, 16)"
+    added: 2026-10-26
+    revised: ""
+  - name: kultur_system_id
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/kultur-und-erinnerung.md
+    value: 3
+    unit: system_id
+    notes: "Kennung des Zufallsstroms von Kultur & Erinnerung; wird nie umnummeriert"
+    added: 2026-10-26
+    revised: ""
   - name: aussterben_grenze
     status: active
     source: design/gdd/staemme-und-diplomatie.md

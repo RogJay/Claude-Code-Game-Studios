@@ -455,6 +455,9 @@ The Hingabe formula is defined as:
 
 `h_i = clamp(D_t + k_F * (F_i - 0.5) + O_i, 0, 1)`; jährlich `O_i = O_i * λ_h + Σ Ereignisse`, auf 0 gesetzt, sobald `|O_i| < 0,001`
 
+h_i wird beim Lesen berechnet; gespeichert wird nur O_i. Darum braucht Menschen D_t beim
+Erzeugen der Welt nicht (Kultur & Erinnerung wird danach erzeugt, Regel 19 dort).
+
 **Variables:**
 | Variable | Type | Range | Source | Description |
 |----------|------|-------|--------|-------------|

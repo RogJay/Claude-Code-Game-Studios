@@ -105,8 +105,8 @@ Grund sichtbar, damit der Spieler sieht, wie Kultur Lust formt (Pillar 2 und 3).
    Ritual kann Kontakt enthalten) ist eine **eigene Anfrage der Handlungsart, die er ist**:
    zwei Personen als Zärtlichkeit oder Sex zu zweit, drei oder mehr zugleich als Gruppe,
    jeweils mit deren Gewichten (dort ist W_F = 0), Schwelle und Strafe für
-   Öffentlichkeit, an dem Ort, an dem er stattfindet (öffentlich, wenn weitere
-   Teilnehmer zusehen). Das heißt „paarweise geprüft“: Jeder Kontakt besteht die Prüfung
+   Öffentlichkeit, am Ort **Fest** (Entscheidung des Entwicklers vom 2026-10-26, Kultur &
+   Erinnerung Regel 17). Das heißt „paarweise geprüft“: Jeder Kontakt besteht die Prüfung
    seiner eigenen Art, und Frömmigkeit ersetzt nie Begehren. Jede Person darf in einer Anfrage nur einmal
    vorkommen. Andernfalls lautet das Ergebnis „ungültige Eingabe“.
 
@@ -221,8 +221,9 @@ Grund sichtbar, damit der Spieler sieht, wie Kultur Lust formt (Pillar 2 und 3).
     - Eine Bindung bleibt für die Bereitschaft noch **T_trauer** bestehen, nachdem der
       Partner gestorben oder gefangen genommen ist. Ein Blitz auf den Partner oder seine
       Gefangennahme macht eine Ablehnung „treu gebunden“ also nie sofort zur Zustimmung.
-    - Normen ändern sich nur langsam und nie durch einen einzelnen Eingriff; nach einem
-      Stammeswechsel gilt Regel 4.
+    - Normen ändern sich nur langsam (höchstens 0,02 pro Geschichtsjahr) und nie durch
+      einen einzelnen Eingriff; Tabus entstehen und fallen nur über diese Normen (Kultur &
+      Erinnerung Regeln 15, 16); nach einem Stammeswechsel gilt Regel 4.
     - Hingabe, Eingriffe, Kräfte und Rang ändern keinen dieser Werte (Property-Test im
       GDD des Besitzers, siehe Dependencies).
     - Dieselbe Anfrage (gleiche Beteiligte, gleiche Handlungsart) stellen die Aufrufer
@@ -554,7 +555,7 @@ Ein Mensch mit Treue 0 bekommt keine Bindungsstrafe, das ist gewollt.
 | System | Art | Was gebraucht wird | GDD |
 |---|---|---|---|
 | Menschen & Bevölkerung | hart | Zustimmungsprofil (fester Inhalt) | ✓ `design/gdd/menschen-und-bevoelkerung.md` |
-| Kultur & Erinnerung | hart | Normen: Offenheit 0–1 und Tabu je Handlungsart und Ort | ✓ `design/gdd/kultur-und-erinnerung.md` (Draft, Regeln 13–16, Formel 6) |
+| Kultur & Erinnerung | hart | Normen: Offenheit 0–1 und Tabu je Handlungsart und Ort | ✓ `design/gdd/kultur-und-erinnerung.md` (Regeln 14–17, Formel 6) |
 | Begehren & Lust | hart, nur als Daten in der Anfrage | Begehren-Werte b_ij, Bindungen | ✗ noch keins |
 | Harem & Rituale | weich, nur als Daten in der Anfrage | Bindungen im Harem | ✗ noch keins |
 | Simulationskern | weich | Aufruf nur innerhalb eines Schritts; kein Zufall, kein Takt | ✓ `design/gdd/simulationskern.md` |
@@ -584,7 +585,8 @@ seinen Dependencies und führt die Tests):
   Schritt, Rückkehr nur über eine neue Beitrittsanfrage; jeder Kontakt im Ritual als
   eigene Anfrage seiner Handlungsart (Regel 7).
 - Kultur & Erinnerung: Normen ändern sich nur langsam, kein Eingriff setzt eine Norm
-  direkt (die Höchständerung pro Geschichtsjahr legt das GDD fest).
+  direkt (höchstens 0,02 pro Geschichtsjahr; Tabus nur über die Normen, Kultur &
+  Erinnerung Regeln 15, 16, AC-14).
 - Menschen & Bevölkerung: Freiheit hat nur „frei“ als Wert, der nicht sperrt; die
   Opferwahl zieht keine Beteiligten einer laufenden Handlung; Stamm und Schritt des
   letzten Stammeswechsels für die Normen (Regel 4).
@@ -715,12 +717,12 @@ die Defaults aus den Formeln 1 bis 3.
 
 | Frage | Wer klärt | Bis wann |
 |---|---|---|
-| Welche Normen (Offenheit, Tabu) hat eine Kultur je Handlungsart und Ort, und wie verändern sie sich? | GDD Kultur & Erinnerung | mit dem GDD |
+| Welche Normen (Offenheit, Tabu) hat eine Kultur je Handlungsart und Ort, und wie verändern sie sich? | beantwortet: Kultur & Erinnerung Regeln 14–17, Formel 6 | 2026-10-26 |
 | Wie entsteht der Begehren-Wert b_ij, und welche Vorlieben gibt es? Die Verteilung in Formel 5 ist bis dahin angenommen | GDD Begehren & Lust | mit dem GDD |
 | Darf die Gotteshand Beteiligte einer laufenden Szene überhaupt packen, oder sind sie dann nicht greifbar? Vorerst gilt: Packen ist erlaubt und beendet die Szene (Edge Cases) | GDD Gotteshand & Ragdoll | mit dem GDD |
 | Stimmen die geschätzten Anteile aus Formel 5 nach der Umsetzung? | Monte-Carlo-Test AC-20 | erste Umsetzung im MVP-0 |
 | Wie viele Beteiligte hat ein Ritual mit Kontakt, und was geschieht dabei? Vorerst 2 bis N_gruppe_max, paarweise geprüft | GDD Harem & Rituale | mit dem GDD |
-| Wie schnell dürfen sich Normen ändern (Höchständerung pro Geschichtsjahr), damit kein Eingriff Zustimmung im Moment erzwingt? | GDD Kultur & Erinnerung | mit dem GDD |
+| Wie schnell dürfen sich Normen ändern (Höchständerung pro Geschichtsjahr), damit kein Eingriff Zustimmung im Moment erzwingt? | beantwortet: Kultur & Erinnerung Regeln 14–17, Formel 6 | 2026-10-26 |
 | Passen die Vorschläge der Nachtarbeit: F_min 0,30, T_trauer 5 Lebensjahre, T_akkult 60 Geschichtsjahre, T_erschüttert 1 Lebensjahr? | Entwickler | nächste Sitzung |
 | Soll ein Blitz auf ein Mitglied die Offenheit seines Stamms senken, damit Auslese durch Töten („Keusche wegblitzen, Neue erschaffen“) nicht wirkt? | GDD Kultur & Erinnerung | mit dem GDD |
 | Zählt im Harem die Bindung an das Haremshaupt als k? Ohne Klärung kommt entweder der Status des Haupts durch die Hintertür, oder jeder Harem hebt sich selbst auf | GDD Harem & Rituale | mit dem GDD |

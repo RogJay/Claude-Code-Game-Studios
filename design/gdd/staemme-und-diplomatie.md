@@ -99,7 +99,9 @@ Abweichungen stehen unter „Kalibrierung gegen Prototyp 1“.*
    Die Verluste setzt dieses System als Aufträge „Verlust k“ an Menschen & Bevölkerung,
    zuerst für o, dann für t; Menschen wählt die Opfer (Menschen Regel 13). Die Angst vor
    den Verlusten verschiebt danach die Kulturachse beider Seiten zum Strengen (Aufträge
-   an Kultur & Erinnerung, zuerst t, dann o; ein Auftrag mit dem Wert 0 entfällt), und
+   an Kultur & Erinnerung „Achse verschieben (Wert, Krieg, Veranlasser)“, zuerst t, dann o;
+   Veranlasser ist die Ursache des Kriegs, falls er eine hat; ein Auftrag mit dem Wert 0
+   entfällt), und
    beide bekommen Rache-Groll.
 10. Ist ein Stamm nach dem Kampf zu klein (Formel 4), wird er **erobert**. In dieser
     Reihenfolge: j = die Hälfte seiner Köpfe (abgerundet) wechselt zum Sieger (Auftrag
@@ -213,7 +215,7 @@ Abweichungen stehen unter „Kalibrierung gegen Prototyp 1“.*
 | Simulationskern | Jahrestakt (O_year = 2, nach Menschen), Zufallsstrom system_id 4, Erzeugen nach Kultur & Erinnerung | Ereignisse: Krieg erklärt (Grund, Liste der Gründe, Ursache), Frieden, Eroberung, Abspaltung (mit Richtung), Untergang | Kern |
 | Welt & Insel | Startmitten und IDs 0 und 1, Gebiet, Zellenzahl, cap_t, food_t, „hungert in diesem Jahr“; Platzsuche (Welt Formel 2, mit dem Strom dieses Systems) | Mitten, Kriegszustand, Aussterben; Aufträge „Gebiet neu berechnen“, „Stamm entsteht mit Vorrat x“ | Welt & Insel (Gebiet), dieses System (Mitten, Aussterben) |
 | Menschen & Bevölkerung | V_t je Stamm (lesend, nach jedem Auftrag neu) | Aufträge „Verlust k“, „n Köpfe wechseln von A zu B“ (Abspaltung, Eroberung), „Stamm erloschen“; Nachfolger untergegangener Stämme (lesend) | Menschen (Opferwahl, Tod), dieses System (Zahlen, Nachfolger) |
-| Kultur & Erinnerung | Kulturachse x_t, Gesellschaftsform (lesend, Stand nach dem Lauf von Kultur in diesem Jahr) | Aufträge „Kultur anlegen (x, Hingabe)“, „Achse verschieben (Wert, Ursache Krieg)“, „Achsen mischen (x_S, V_S, j, x_L)“; Ereignisse für die Erinnerung | Kultur & Erinnerung (vorläufig, GDD fehlt) |
+| Kultur & Erinnerung | Kulturachse x_t, Gesellschaftsform (lesend, Stand nach dem Lauf von Kultur in diesem Jahr) | Aufträge „Kultur anlegen (x, Hingabe)“, „Achse verschieben (Wert, Krieg, Veranlasser)“, „Achsen mischen (x_S, V_S, j, x_L)“ | Kultur & Erinnerung |
 | Gotteskraft & Götterkräfte | Auftrag „Groll (von o gegen t, Wert, Eingriffs-ID)“ | Liste der Stämme mit Mitte und Achse, damit Gotteskraft festlegt, wer einen Eingriff als Frevel sieht | Gotteskraft (vorläufig, GDD fehlt) |
 | Zustimmungsmodell | – | Vertrag Regel 21 erfüllt (Regel 13 hier) | Zustimmungsmodell |
 | Chronik | – | Ereignisse mit Grund, Gründen und Ursache, Namen der Stämme, Textvorlagen (Formel 2) | Kern-Ereignisformat |
@@ -486,12 +488,13 @@ einen Eingriff als Frevel), Zustimmungsmodell (Vertrag Regel 21), Chronik, Welta
 Kamera, Speichern & Laden; später Ziel-Befehle und Sichtbarer Krieg (Vertical Slice).
 Welt & Insel, Menschen & Bevölkerung und Zustimmungsmodell nennen dieses System schon.
 
-**Verträge für GDDs, die noch fehlen:** Kultur & Erinnerung legt beim Auftrag „Kultur
+**Verträge mit anderen Systemen:** Kultur & Erinnerung (`design/gdd/kultur-und-erinnerung.md`) legt beim Auftrag „Kultur
 anlegen“ Achse, Hingabe und Temperament an (im Prototyp: Startstämme x = (u − 0,5) · 0,4
 und Hingabe 0,4; abgespaltene Stämme x_neu und die Hingabe des Elternstamms), führt die
 Verschiebung durch Kriegsangst im Ledger unter „Krieg“, rechnet „Achsen mischen“ mit den
-übergebenen Werten nach Formel 4 und erinnert sich an Kriege mit ihren Gründen, an
-Eroberungen und Abspaltungen. Gotteskraft legt fest, welcher Stamm einen Eingriff als
+übergebenen Werten nach Formel 4 und verbucht Krieg und Eroberung im Ursachenbuch, beim
+Krieg mit dem Eingriff als Veranlasser, wenn der Krieg eine Ursache hat (erinnert wird nur
+an Eingriffe). Gotteskraft (GDD fehlt noch) legt fest, welcher Stamm einen Eingriff als
 Frevel sieht (Prototyp 1: Blitz +0,35 bei x_o < 0,1, Fest-Segen +0,4 bei x_o < −0,1,
 jeweils gegen den begünstigten oder getroffenen Stamm).
 
