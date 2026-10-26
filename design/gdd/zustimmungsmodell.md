@@ -1,6 +1,6 @@
 # Zustimmungsmodell
 
-> **Status**: In Design
+> **Status**: Approved (vom Entwickler freigegeben am 2026-10-26 nach 2 Review-Runden)
 > **Author**: Entwickler + Claude
 > **Last Updated**: 2026-10-25
 > **Last Verified**: 2026-10-25

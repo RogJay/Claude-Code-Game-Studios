@@ -1,6 +1,6 @@
 # Stämme & Diplomatie
 
-> **Status**: In Review, Review-Runde 1 überarbeitet (Nachtarbeit 2026-10-26, ohne Freigabe des Entwicklers; jede Entscheidung steht in `production/nachtarbeit-2026-10-26.md`)
+> **Status**: Approved (vom Entwickler freigegeben am 2026-10-26 nach 2 Review-Runden)
 > **Author**: Claude (autonom, mit Erlaubnis des Entwicklers)
 > **Last Updated**: 2026-10-26
 > **Last Verified**: 2026-10-26
@@ -473,9 +473,9 @@ gelten als „fest bis zur ersten Kalibrierungsmessung“ (AC-21). Abweichungen:
 
 | System | Art | Was gebraucht wird | GDD |
 |---|---|---|---|
-| Simulationskern | hart | Jahrestakt O_year = 2, Zufallsstrom system_id 4, Aufträge, Ereignisse mit Ursache | ✓ `design/gdd/simulationskern.md` (In Review) |
-| Welt & Insel | hart | Startmitten, Gebiet, cap_t, food_t, Hunger, Platzsuche; Aufträge „Gebiet neu berechnen“, „Stamm entsteht mit Vorrat x“ | ✓ `design/gdd/welt-und-insel.md` (In Review) |
-| Menschen & Bevölkerung | hart | V_t; Aufträge Verlust, Wechsel, Stamm erloschen; liest den Nachfolger | ✓ `design/gdd/menschen-und-bevoelkerung.md` (In Review) |
+| Simulationskern | hart | Jahrestakt O_year = 2, Zufallsstrom system_id 4, Aufträge, Ereignisse mit Ursache | ✓ `design/gdd/simulationskern.md` (Approved) |
+| Welt & Insel | hart | Startmitten, Gebiet, cap_t, food_t, Hunger, Platzsuche; Aufträge „Gebiet neu berechnen“, „Stamm entsteht mit Vorrat x“ | ✓ `design/gdd/welt-und-insel.md` (Approved) |
+| Menschen & Bevölkerung | hart | V_t; Aufträge Verlust, Wechsel, Stamm erloschen; liest den Nachfolger | ✓ `design/gdd/menschen-und-bevoelkerung.md` (Approved) |
 | Kultur & Erinnerung | hart | x_t und Gesellschaftsform (lesend); Aufträge Kultur anlegen, Achse verschieben, Achsen mischen | ✓ `design/gdd/kultur-und-erinnerung.md` (Draft) |
 | Gotteskraft & Götterkräfte | weich | Auftrag „Groll“ für Eingriffe, die Nachbarn als Frevel sehen | ✗ noch keins (vorläufiger Vertrag) |
 

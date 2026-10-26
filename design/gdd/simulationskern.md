@@ -1,6 +1,6 @@
 # Simulationskern
 
-> **Status**: In Design
+> **Status**: Approved (vom Entwickler freigegeben am 2026-10-26 nach 2 Review-Runden)
 > **Author**: Entwickler + Claude
 > **Last Updated**: 2026-10-25
 > **Last Verified**: 2026-10-25
@@ -545,7 +545,7 @@ pro Bild die fälligen Schritte auslöst, sitzt in der Unity-Bildschleife.
 
 | System | Was es vom Kern braucht | GDD |
 |---|---|---|
-| Welt & Insel | Jahrestakt, Zufallsstrom, Ereignisse, Erzeugen als erstes System | ✓ `design/gdd/welt-und-insel.md` (In Review) |
+| Welt & Insel | Jahrestakt, Zufallsstrom, Ereignisse, Erzeugen als erstes System | ✓ `design/gdd/welt-und-insel.md` (Approved) |
 | Menschen & Bevölkerung | Personentakt, Umrechnung Lebensjahr ↔ Schritte, Zufallsstrom, Status „in Gottes Hand“, Aufträge | ✓ `design/gdd/menschen-und-bevoelkerung.md` |
 | Kultur & Erinnerung | Jahrestakt, Ereignisse mit Ursache-Kette, angewendete Eingriffe | ✓ `design/gdd/kultur-und-erinnerung.md` (Draft) |
 | Stämme & Diplomatie | Jahrestakt, Zufallsstrom, Ereignisse | ✓ `design/gdd/staemme-und-diplomatie.md` (Draft) |

@@ -77,11 +77,11 @@ GDD.
 
 | # | System Name | Category | Priority | Status | Design Doc | Depends On |
 |---|-------------|----------|----------|--------|------------|------------|
-| 1 | Simulationskern | Core | MVP | In Review | design/gdd/simulationskern.md | — |
-| 2 | Welt & Insel (inferred) | Core | MVP | In Review | design/gdd/welt-und-insel.md | Simulationskern |
-| 3 | Menschen & Bevölkerung | Core | MVP | In Review | design/gdd/menschen-und-bevoelkerung.md | Simulationskern, Welt & Insel, Kultur & Erinnerung (nur Stammeshingabe, lesend) |
-| 4 | Zustimmungsmodell | Gameplay | MVP | In Review | design/gdd/zustimmungsmodell.md | Menschen & Bevölkerung, Kultur & Erinnerung (Normen als Eingabe) |
-| 5 | Stämme & Diplomatie | Gameplay | MVP | In Review | design/gdd/staemme-und-diplomatie.md | Menschen & Bevölkerung, Welt & Insel |
+| 1 | Simulationskern | Core | MVP | Approved | design/gdd/simulationskern.md | — |
+| 2 | Welt & Insel (inferred) | Core | MVP | Approved | design/gdd/welt-und-insel.md | Simulationskern |
+| 3 | Menschen & Bevölkerung | Core | MVP | Approved | design/gdd/menschen-und-bevoelkerung.md | Simulationskern, Welt & Insel, Kultur & Erinnerung (nur Stammeshingabe, lesend) |
+| 4 | Zustimmungsmodell | Gameplay | MVP | Approved | design/gdd/zustimmungsmodell.md | Menschen & Bevölkerung, Kultur & Erinnerung (Normen als Eingabe) |
+| 5 | Stämme & Diplomatie | Gameplay | MVP | Approved | design/gdd/staemme-und-diplomatie.md | Menschen & Bevölkerung, Welt & Insel |
 | 6 | Kultur & Erinnerung | Gameplay | MVP | Designed | design/gdd/kultur-und-erinnerung.md | Stämme & Diplomatie, Menschen & Bevölkerung |
 | 7 | Begehren & Lust | Gameplay | MVP | Not Started | — | Zustimmungsmodell, Kultur & Erinnerung, Menschen & Bevölkerung, Körper & Animation |
 | 8 | Harem & Rituale | Gameplay | MVP | Not Started | — | Begehren & Lust, Zustimmungsmodell, Stämme & Diplomatie, Gotteskraft & Götterkräfte |
@@ -257,7 +257,7 @@ Effort estimates: S = 1 session, M = 2-3 sessions, L = 4+ sessions.
 | Total systems identified | 33 |
 | Design docs started | 6 |
 | Design docs reviewed | 5 |
-| Design docs approved | 0 |
+| Design docs approved | 5 |
 | MVP systems designed | 6/16 |
 | Vertical Slice systems designed | 0/9 |
 

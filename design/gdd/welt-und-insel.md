@@ -1,6 +1,6 @@
 # Welt & Insel
 
-> **Status**: In Review, Review-Runde 2 überarbeitet (Nachtarbeit 2026-10-25/26, ohne Freigabe des Entwicklers; jede Entscheidung steht in `production/nachtarbeit-2026-10-26.md`)
+> **Status**: Approved (vom Entwickler freigegeben am 2026-10-26 nach 2 Review-Runden)
 > **Author**: Claude (autonom, mit Erlaubnis des Entwicklers)
 > **Last Updated**: 2026-10-25
 > **Last Verified**: 2026-10-25

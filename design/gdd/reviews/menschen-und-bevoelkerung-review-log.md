@@ -62,3 +62,6 @@ Reviewed-Content-Hash: design/gdd/zustimmungsmodell.md 125b1bb366e693cfc0c981b56
 Reviewed-Content-Hash: design/gdd/game-concept.md 168cdc5ff8f56635a08ebbb674fe517b93ded4c6
 Reviewed-Content-Hash: prototypes/weltengott-concept/prototype.html e3c8aa99b445fc83ff5a9ce4fde8919dd9ab26eb
 Reviewed-Content-Hash: design/gdd/systems-index.md 62096626557e3ec51fec3ceb141c4996cbd1e715
+
+## Approval — 2026-10-26 — Status: Approved
+Approved by the developer after 2 review rounds (roadmap cap reached); all blocking findings of the last round were fixed. Open Questions in the GDD stay open and are not part of the approval.

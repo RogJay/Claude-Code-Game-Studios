@@ -194,6 +194,8 @@ nur committet.
 
 ## Entscheidungen ohne Freigabe
 
+**Vom Entwickler am 2026-10-26 morgens alle übernommen.** Kern, Welt & Insel, Menschen, Zustimmungsmodell und Stämme & Diplomatie sind damit **Approved**; die Normen in Kultur & Erinnerung klärt dessen Review.
+
 | # | GDD | Entscheidung | Warum | Zurücknehmen |
 |---|---|---|---|---|
 | 1 | Simulationskern | In der Pause sind nur neue Eingriffe des Spielers gesperrt; Endereignisse aus dem Abgleich der Ansicht werden eingereiht | Sonst bliebe ein Mensch mit verlorener Figur bis zum Fortsetzen ohne Meldung hängen | Regel 13 |

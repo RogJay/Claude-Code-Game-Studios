@@ -69,3 +69,6 @@ Reviewed-Content-Hash: .claude/skills/design-review/SKILL.md a63d8fba9b7142eeb43
 Reviewed-Content-Hash: design/gdd/welt-und-insel.md da2005a1567aca421bf623578a3cdab17d3e41f5
 Reviewed-Content-Hash: design/gdd/simulationskern.md 9c82d078d414a4ec566b8d2f9ca3182a416b594b
 Reviewed-Content-Hash: design/gdd/zustimmungsmodell.md 99cf8fc6ad97b7233bc2940a8ddfb09065b3cf3d
+
+## Approval — 2026-10-26 — Status: Approved
+Approved by the developer after 2 review rounds (roadmap cap reached); all blocking findings of the last round were fixed. Open Questions in the GDD stay open and are not part of the approval.

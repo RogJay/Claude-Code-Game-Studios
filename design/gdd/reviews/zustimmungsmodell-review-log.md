@@ -70,3 +70,6 @@ Reviewed-Content-Hash: design/gdd/menschen-und-bevoelkerung.md 98ca581754d417dc0
 Reviewed-Content-Hash: design/gdd/simulationskern.md 65360b9e6fece24faa12f2add83cc022dd39c773
 Reviewed-Content-Hash: design/gdd/game-concept.md 168cdc5ff8f56635a08ebbb674fe517b93ded4c6
 Reviewed-Content-Hash: design/gdd/systems-index.md 62096626557e3ec51fec3ceb141c4996cbd1e715
+
+## Approval — 2026-10-26 — Status: Approved
+Approved by the developer after 2 review rounds (roadmap cap reached); all blocking findings of the last round were fixed. Open Questions in the GDD stay open and are not part of the approval.

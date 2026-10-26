@@ -75,3 +75,6 @@ Reviewed-Content-Hash: design/registry/entities.yaml a86bb96a7ff5b0fa9264bd12862
 Reviewed-Content-Hash: .claude/skills/design-review/SKILL.md a63d8fba9b7142eeb43791f061e2e1533c429b43
 Reviewed-Content-Hash: design/gdd/simulationskern.md b63fb4dcce167d4bcaa019e46ad21d4991d8babe
 Reviewed-Content-Hash: prototypes/weltengott-concept/prototype.html e3c8aa99b445fc83ff5a9ce4fde8919dd9ab26eb
+
+## Approval — 2026-10-26 — Status: Approved
+Approved by the developer after 2 review rounds (roadmap cap reached); all blocking findings of the last round were fixed. Open Questions in the GDD stay open and are not part of the approval.

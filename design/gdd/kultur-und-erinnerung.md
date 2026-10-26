@@ -402,10 +402,10 @@ gelten als „fest bis zur ersten Kalibrierungsmessung“ (AC-17). Abweichungen:
 
 | System | Art | Was gebraucht wird | GDD |
 |---|---|---|---|
-| Simulationskern | hart | Jahrestakt O_year = 1, Zufallsstrom system_id 3, Erzeugen, Ereignisse mit Ursache | ✓ `design/gdd/simulationskern.md` (In Review) |
-| Welt & Insel | hart, nur lesend | Hunger, Hauptgrund, Dürre, food_t | ✓ `design/gdd/welt-und-insel.md` (In Review) |
-| Menschen & Bevölkerung | hart, nur lesend | V_t | ✓ `design/gdd/menschen-und-bevoelkerung.md` (In Review) |
-| Stämme & Diplomatie | hart | Kriegszustand (lesend); Aufträge Kultur anlegen, Achse verschieben, Achsen mischen | ✓ `design/gdd/staemme-und-diplomatie.md` (In Review) |
+| Simulationskern | hart | Jahrestakt O_year = 1, Zufallsstrom system_id 3, Erzeugen, Ereignisse mit Ursache | ✓ `design/gdd/simulationskern.md` (Approved) |
+| Welt & Insel | hart, nur lesend | Hunger, Hauptgrund, Dürre, food_t | ✓ `design/gdd/welt-und-insel.md` (Approved) |
+| Menschen & Bevölkerung | hart, nur lesend | V_t | ✓ `design/gdd/menschen-und-bevoelkerung.md` (Approved) |
+| Stämme & Diplomatie | hart | Kriegszustand (lesend); Aufträge Kultur anlegen, Achse verschieben, Achsen mischen | ✓ `design/gdd/staemme-und-diplomatie.md` (Approved) |
 | Gotteskraft & Götterkräfte, Gotteshand & Ragdoll | weich | Auftrag „Eingriff erfassen“ mit p, Δx, ΔD, Text | ✗ noch keins (Vertrag in Regel 6) |
 
 **Wird gebraucht von:** Menschen & Bevölkerung (D_t), Zustimmungsmodell (Normen, Tabus),
