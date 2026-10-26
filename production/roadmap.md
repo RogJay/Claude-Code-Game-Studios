@@ -1,6 +1,6 @@
 # Interne Roadmap: Allmacht
 
-*Stand: 2026-10-25 · Quelle: `design/gdd/game-concept.md` (Stufentabelle, MVP
+*Stand: 2026-10-26 · Quelle: `design/gdd/game-concept.md` (Stufentabelle, MVP
 Definition), Prototyp-Berichte in `prototypes/`*
 
 Das ist eine grobe Orientierung, **keine Schätzung**. Die Dauern stammen aus der
@@ -18,6 +18,7 @@ rechnet die Vollzeit-Werte einfach hoch. Echte Werte kommen aus den ersten Sprin
 |---|---|---|---|---|
 | **0. Konzept** ✓ | Prototyp 1 ✓ und 2 ✓, letztes `/design-review`, `/gate-check` | Tage | – | – |
 | **1. Systemplanung und Pre-Production** (jetzt) | `/map-systems` ✓, `/estimate` für MVP-0 ✓, GDDs pro System (Zustimmungs- und Lust-System früh), `/art-bible`, `/create-architecture` und die kritischen ADRs, MVP-0 neu schätzen | ca. 100–170 h | – | ca. 5–17 Wochen |
+| **1b. Erste spielbare Version** (neu, 2026-10-26) | Etappe 1 „Die Welt lebt“: Simulation aus den fertigen GDDs in Unity, einfache Ansicht, Zeitsteuerung, Ereignisliste (≈ 300 h). Etappe 2 „Eingreifen“: Zustimmung, Feste ohne Szenen, Blitz und Fest-Segen, Gotteshand, Grundkörper (≈ 260 h). Alles bleibt Grundlage für MVP-0. Details: `production/milestones/erste-spielbare-version.md` | **ca. 560 h** (Spanne 380–880 h), Teil von MVP-0 | – | **ca. 28–56 Wochen** (bei 15 h/Woche ca. 8,5 Monate) |
 | **2. MVP-0 „Gott-Spielzeug“** | Simulation mit abstraktem Krieg, Kulturwandel auf einer Achse (Lust-Sekte ↔ Gottesstaat) mit Erinnerung, Zustimmungsmodell als reine Funktion mit Tests, Begehren und Lust mit einfachen Szenen, Harem und Rituale, Grundkörper ohne Morphs, Gotteshand und Ragdoll, 4 Kräfte und passive Gnade, eine Zoomstufe, Speichern, Zeitsteuerung, Chronik | **ca. 1.100 h** (Spanne 650–1.900 h), ca. 6,5 Monate | Monat 6,5 (4–11) | **Monat 13–25** (8–44) |
 | **3. MVP-1** | Weitere Kräfte, zweite Zoomstufe, Morphs und Look B, volles System für Kulturwandel und Erinnerung | +2–3 Monate (noch nicht neu geschätzt) | – | – |
 | **4. Vertical Slice (v1)** | In dieser Reihenfolge: sichtbarer Krieg → Haut in Detailstufen → Besessen-Sein. 1–3 Stämme, 30–80 Menschen, 2–3 Zoomstufen | +6–10 Monate (noch nicht neu geschätzt) | – | – |
@@ -75,6 +76,10 @@ Festgelegt vom Entwickler am 2026-10-25 beim Gate-Check (Bericht in
   nächste GDD oder in die Stories.
 - Kleine Wegwerf-Tests in Unity nebenher sind erlaubt (unter `prototypes/`), damit es
   in der Designphase etwas zu spielen gibt.
+- Seit 2026-10-26 (Entscheidung des Entwicklers): Der Meilenstein „Erste spielbare
+  Version“ erlaubt echten Code für die Systeme mit fertigem GDD, sobald die Architektur
+  steht. Systeme ohne GDD (Gotteshand, Kräfte, Ansicht, Grundkörper) bekommen dafür
+  Kurzspezifikationen (`/quick-design`).
 - Reihenfolge der GDDs: siehe `design/gdd/systems-index.md` (Simulationskern,
   Menschen, dann sofort das Zustimmungsmodell; Begehren & Lust und Harem & Rituale
   direkt nach der Kultur).
@@ -86,10 +91,16 @@ Festgelegt vom Entwickler am 2026-10-25 beim Gate-Check (Bericht in
    ist jetzt Systems Design)
 3. ~~`/map-systems`~~ (33 Systeme, 16 im MVP, `design/gdd/systems-index.md`)
 4. ~~`/estimate` für MVP-0~~ (ca. 1.100 h, Verlässlichkeit niedrig, siehe „Schätzung MVP-0“)
-5. `/art-bible` (vor der Architektur, für URP oder HDRP; die GDDs brauchen sie noch nicht)
-6. `/design-system [system]` für jedes MVP-0-System, das Zustimmungs- und
-   Lust-System früh
-7. `/create-architecture`, dann die kritischen ADRs (Simulation ist die Autorität,
-   Zustimmungsmodell als reine Funktion, URP oder HDRP)
-8. Schätzung nach den ersten 2–3 Sprints mit echtem Tempo ersetzen
-9. `/sprint-plan new`
+5. ~~`/design-system` für die ersten sieben Systeme~~ (Simulationskern, Welt, Menschen,
+   Zustimmung, Stämme, Kultur freigegeben; Begehren & Lust im Review nach Runde 1)
+6. ~~Meilenstein „Erste spielbare Version“ anlegen und schätzen~~ (2026-10-26, ca. 560 h,
+   `production/milestones/erste-spielbare-version.md`)
+7. `/art-bible` (vor der Architektur, für URP oder HDRP; nicht in der Schätzung des
+   Meilensteins)
+8. `/create-architecture` für Etappe 1, dann die kritischen ADRs (Simulation ist die
+   Autorität, Zustimmungsmodell als reine Funktion, URP oder HDRP)
+9. `/test-setup`, dann `/sprint-plan new` für Etappe 1
+10. Schätzung nach den ersten 2–3 Sprints mit echtem Tempo ersetzen, Zieldatum setzen
+11. Die übrigen MVP-0-GDDs (Harem & Rituale, Gotteskraft, Körper & Animation,
+    Weltansicht, Gotteshand, Chronik, Speichern, Debug-Werkzeuge, HUD) nach dem
+    Meilenstein oder dort, wo eine Etappe sie braucht
