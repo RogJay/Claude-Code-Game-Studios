@@ -46,8 +46,11 @@ zeigen.
    wie Prototyp 1.
 2. Ein Stamm mit weniger als 3 Köpfen ist ausgestorben (wie Prototyp 1 und Welt & Insel
    Regel 8). Das Aussterben erklärt und meldet Stämme & Diplomatie, dieses System setzt
-   nur die Zahl. Bis das GDD Stämme & Diplomatie anderes festlegt, verschwinden die
-   letzten 1–2 Menschen wie im Prototyp (V_t = 0); offen in Welt & Insel, Open Questions.
+   nur die Zahl. Auf den Auftrag „Stamm erloschen“ verschwindet die Masse, und jeder
+   Einzelne des Stamms stirbt mit dem Ereignis „Tod“ (Ursache: der Untergang). Wer in
+   Gottes Hand ist oder an einer laufenden Handlung teilnimmt, stirbt nicht, sondern
+   gehört, sobald er frei ist, dem Nachfolger (Stämme & Diplomatie Regeln 17 und 18);
+   bis dahin zählt V_t nur diese.
 3. Die **Einzelnen** sind benannte Menschen, insgesamt zwischen 0 und N_max. Ziel ist
    N_target (Formulas). Jeder Einzelne gehört zu genau einem Stamm. Der Rest des Volks
    (V_t minus die Einzelnen des Stamms) ist die **Masse**: Sie hat keine Eigenschaften,
@@ -181,7 +184,9 @@ zeigen.
     fest, wie viele Köpfe wechseln. Die Einzelnen werden nach dem Verfahren des
     größten Rests im Verhältnis der neuen Volkszahlen verteilt (Edge Cases). Wer
     wechselt, wird mit dem Zufallsstrom dieses Systems gezogen; Einzelne „in Gottes
-    Hand“ werden dabei nie gezogen und bleiben in ihrem Stamm. Jeder Einzelne merkt sich
+    Hand“ werden dabei nie gezogen und bleiben in ihrem Stamm; geht ihr Stamm dabei unter
+    (Eroberung), gehören sie, sobald sie frei sind, dem Nachfolger (Stämme & Diplomatie
+    Regel 18). Jeder Einzelne merkt sich
     Stamm und Schritt seines letzten Wechsels (auch durch Gefangennahme); das
     Zustimmungsmodell nimmt danach eine Zeit lang die strengere Norm beider Kulturen.
 

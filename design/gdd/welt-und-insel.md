@@ -90,9 +90,10 @@ ein Stamm hungert, ohne eine Tabelle zu öffnen.
 
 10. Für eine Abspaltung sucht Stämme & Diplomatie den Platz der neuen Mitte mit der
     Platzsuche aus Formel 2 und seinem eigenen Zufallsstrom (system_id 4); Welt & Insel
-    liefert dafür Land und Fruchtbarkeit. Findet die Suche keinen Platz, liegt er auf der
-    Mitte eines anderen Stamms oder bekäme der neue Stamm keine Zelle, findet die
-    Abspaltung nicht statt. Der neue Stamm bekommt den Vorrat `0,5 · Teil`; der alte Stamm
+    liefert dafür Land und Fruchtbarkeit. Findet die Suche keinen Platz oder liegt er auf
+    der Mitte eines lebenden Stamms, findet die Abspaltung nicht statt (Stämme &
+    Diplomatie prüft das, bevor der Teil gewürfelt wird). Weil eine Mitte immer ihrem
+    Stamm gehört, bekommt der neue Stamm sonst immer mindestens seine Mitte. Der neue Stamm bekommt den Vorrat `0,5 · Teil`; der alte Stamm
     behält seinen ganzen Vorrat (Prototyp 1).
 
 **Tragfähigkeit und Nahrung**
@@ -367,8 +368,8 @@ spätere Änderung gemessen wird (Open Questions).
   gehört dem mit der kleineren Stammes-ID.
 - **If ein Stamm von Nachbarn eingekesselt wird**: Er behält mindestens seine Mitte;
   cap_t ist dann sehr klein, er hungert, bis er schrumpft, sich ausbreitet oder ausstirbt.
-- **If eine Abspaltung auf der Mitte eines anderen Stamms landen würde oder der neue
-  Stamm keine Zelle bekäme**: Die Abspaltung findet nicht statt (Regel 10), so entsteht
+- **If eine Abspaltung auf der Mitte eines lebenden Stamms landen würde**: Die
+  Abspaltung findet nicht statt (Regel 10), so entsteht
   nie ein Stamm ohne Gebiet und Menschen muss nie aus null Zellen würfeln.
 - **If ein Stamm im selben Jahr hungert und im Krieg ist**: Die Ernte ist um 15 %
   geringer, der Hunger kommt zum Kriegsverlust hinzu.

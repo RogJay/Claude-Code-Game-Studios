@@ -143,7 +143,7 @@ Nachgezogen: Kern und Menschen nennen Welt & Insel jetzt „In Review“ statt �
 
 ### 7. Stämme & Diplomatie, Entwurf
 
-Neu: `design/gdd/staemme-und-diplomatie.md` (Status **Designed**, Draft). Wie bei Welt &
+Neu: `design/gdd/staemme-und-diplomatie.md`. Wie bei Welt &
 Insel habe ich die Regeln aus Prototyp 1 übernommen: Groll aus sechs Gründen, der jedes
 Jahr verblasst; Kriegserklärung, Kampfverluste, Eroberung, Frieden mit 20 Jahren Frist;
 Abspaltung von Andersdenkenden; Aussterben unter 3 Köpfen; Aggression als Temperament.
@@ -153,6 +153,23 @@ selben Jahr ein zweites Mal „erobert“ werden; Kriege gegen tote Stämme blie
 Jahr stehen); die korrigiere ich und nenne sie als Abweichungen. Das Hauptproblem aus dem
 Prototyp (Krieg überdeckt den Kulturwandel, 4 zu 1) habe ich **nicht** angefasst: Das ist
 deine Entscheidung nach der ersten Messung, die Hebel stehen in den Open Questions.
+
+**Review Runde 1 (full: Systems Designer, Game Designer, QA Lead, Creative Director):
+NEEDS REVISION, 11 blockierende Punkte, alle behoben, ohne ein Ergebnis der Simulation zu
+ändern.** Der wichtigste Fund kam vom Game Designer: Wie im Prototyp hätte die Chronik einen
+Krieg, den dein Segen ausgelöst hat, oft mit „Glaube“ erklärt, weil jeder Segen nur ein
+kleiner Einzelgrund war. Jetzt zählen alle Eingriffe zusammen, und wenn dein Eingriff den
+Ausschlag gab, schreibt die Chronik „weil du …“. Dazu: eine Anzeige „Kriegsnähe“ mit dem
+Grund, warum (noch) kein Krieg ist, und „Wer grollt diesem Stamm“; ein gespeicherter
+Nachfolger für untergegangene Stämme, damit niemand in Gottes Hand einem toten Stamm gehört
+(Menschen Regel 2 und 20 angepasst); eine eindeutige Reihenfolge bei der Abspaltung (Welt
+Regel 10 angepasst); 22 Akzeptanzkriterien mit festen Zahlen und Testhilfen. Status
+**In Review**.
+
+**Was auf dich wartet (Open Questions):** Krieg überwiegt wie im Prototyp; Neid ohne Ventil
+(ein kleiner Nachbar darf einem großen gesegneten Stamm nicht den Krieg erklären); ob Groll
+aus Eingriffen langsamer verblassen soll; leere Kriege kleiner Stämme ohne Tote; eine
+Vorschau „Wer nimmt Anstoß?“ vor einem Eingriff (neue Funktion, deine Entscheidung).
 
 ## Entscheidungen ohne Freigabe
 
@@ -200,3 +217,9 @@ deine Entscheidung nach der ersten Messung, die Hebel stehen in den Open Questio
 | 40 | Stämme | Stammesnamen ab ID 14 mit römischer Ziffer (Ura II) | Im Prototyp gab es Doppelnamen; gleiche Lösung wie bei den Einzelnen | Regel 3 |
 | 41 | Stämme | Gleichstände (Grund, reichster Nachbar, Eroberung) nach fester Reihenfolge bzw. kleinerer ID | Bestimmt den Ablauf eindeutig; im Prototyp hing das an der Reihenfolge der Schleifen | Formeln 1, 2, 4 |
 | 42 | Registry | Neue Einträge `staemme_system_id` (4) und `aussterben_grenze` (3) | Werden von drei GDDs genutzt | Registry |
+| 43 | Stämme | Alle Eingriffe zählen bei der Frage nach dem Kriegsgrund zusammen; gab ein Eingriff den Ausschlag, ist er die Ursache | Pillar 2; ändert nur die Erklärung, nicht die Simulation | Regel 8, Formel 2 |
+| 44 | Stämme, Menschen | Untergegangene Stämme haben einen gespeicherten Nachfolger (Sieger oder nächste Mitte); Gehaltene und Beteiligte laufender Handlungen gehen an ihn über, die übrigen Einzelnen sterben mit Tod-Ereignis | Sonst gehörten Menschen einem toten Stamm oder verschwänden ohne Ereignis | Stämme Regeln 17–18, Menschen Regeln 2 und 20 |
+| 45 | Stämme | Kein eigener Schritt für Stämme unter 3 Köpfen vor dem Kampf (Vorschlag des Systems Designer abgelehnt, Entscheid des Creative Director) | Würde die Kalibrierung ändern; als offene Frage mit Kennzahlen | Open Questions |
+| 46 | Stämme, Welt | Abspaltung fällt aus, wenn der Platz auf der Mitte eines lebenden Stamms liegt, geprüft vor dem Würfeln des Teils; Gebiet wird bei jeder Änderung sofort neu berechnet | Sonst war der Vertrag nicht ausführbar; Ergebnis wie im Prototyp | Stämme Regeln 15, 19, Welt Regel 10 |
+| 47 | Stämme | Anzeige „Kriegsnähe“ mit Hindernis und „Wer grollt diesem Stamm“; keine neue Chronik-Zeile bei Stufenwechseln | Spannung vorher sichtbar, ohne die Chronik weiter mit Krieg zu füllen | UI Requirements |
+| 48 | Stämme | Sichere Bereiche eingeengt (Kriegsschwelle ab 0,5, Verblassen bis 0,975), Querbedingungen genannt | Mit 0,4 gäbe es an jeder engen Grenze Dauerkrieg | Tuning Knobs |
