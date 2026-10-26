@@ -686,6 +686,6 @@ Entwurf des `qa-lead` (2026-10-25), mit den eingearbeiteten Korrekturen. Testwur
 | Das Konzept nennt „30–50 Menschen“ im MVP. Jetzt sind es 30–50 Einzelne plus ein Volk von anfangs 96 Köpfen. Konzept anpassen? | Entwickler | nach diesem GDD |
 | Zeigt die Ansicht die fünf Eigenschaften als Zahl, als Wort oder gar nicht? | UX-Spec zur Ansicht eines Einzelnen | `/ux-design` in der Pre-Production |
 | Wie viele Erwachsene erschafft die Kraft, und in welchem Stamm? | GDD Gotteskraft & Götterkräfte | mit dem GDD |
-| Wer nimmt an einem Kampf teil („im Kampf“), und wann wird gefangen genommen? | GDD Stämme & Diplomatie | mit dem GDD |
+| Wer nimmt an einem Kampf teil („im Kampf“), und wann wird gefangen genommen? Im MVP-0 niemand: Krieg ist abstrakt (Stämme & Diplomatie Regel 13), Merkmal und Gefangenschaft bleiben ungenutzt | GDD Sichtbarer Krieg | Vertical Slice |
 | Wie wirkt die Stammeshingabe D_t, und wer verändert sie? (vorläufig: Kultur & Erinnerung) | GDD Kultur & Erinnerung | mit dem GDD |
 | Bleibt die Aussterberate mit den alternden Einzelnen wie in Prototyp 1 bei 0 %? | Debug- & Balancing-Werkzeuge | erste Messung im MVP-0 |

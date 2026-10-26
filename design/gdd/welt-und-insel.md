@@ -395,7 +395,7 @@ spätere Änderung gemessen wird (Open Questions).
 |---|---|---|---|
 | Simulationskern | hart | Jahrestakt O_year = 0, Zufallsstrom system_id 1, Erzeugen als erstes System, Aufträge | ✓ `design/gdd/simulationskern.md` |
 | Menschen & Bevölkerung | hart, nur lesend | V_t je Stamm | ✓ `design/gdd/menschen-und-bevoelkerung.md` |
-| Stämme & Diplomatie | hart, nur lesend | Mitten der Stämme, Kriegszustand, Aussterben | ✗ noch keins (vorläufiger Vertrag in diesem GDD) |
+| Stämme & Diplomatie | hart, nur lesend | Mitten der Stämme, Kriegszustand, Aussterben | ✓ `design/gdd/staemme-und-diplomatie.md` (Draft) |
 
 Menschen & Bevölkerung und Stämme & Diplomatie hängen ihrerseits von Welt & Insel ab.
 Der Kreis ist über die Reihenfolge im Schritt gelöst: Welt & Insel rechnet zuerst und
@@ -409,9 +409,10 @@ Götterkräfte (Brand, Fest-Segen), Begehren & Lust und Harem & Rituale (Orte),
 Simulationskern (nächste Landzelle), Weltansicht & Kamera, Chronik, Speichern & Laden. Ein
 GDD haben davon der Simulationskern und Menschen & Bevölkerung; beide nennen Welt & Insel.
 
-**Verträge für GDDs, die noch fehlen:** Stämme & Diplomatie erklärt das Aussterben unter
+**Verträge mit anderen Systemen:** Stämme & Diplomatie erklärt das Aussterben unter
 3 Köpfen, sucht Abspaltungsplätze mit Formel 2 und seinem eigenen Strom und erteilt die
-Aufträge „Gebiet neu berechnen“ und „Stamm entsteht mit Vorrat x“. Gotteskraft &
+Aufträge „Gebiet neu berechnen“ und „Stamm entsteht mit Vorrat x“ (übernommen in
+`design/gdd/staemme-und-diplomatie.md`, Regeln 15–17). Für GDDs, die noch fehlen: Gotteskraft &
 Götterkräfte erteilt „Brand“ und „Vorrat + 0,6 · V_t“. Die Weltansicht blendet eine Dürre
 weich ein und aus, damit eine Dürre von wenigen Sekunden lesbar bleibt, und zeigt alte
 Brandnarben verblasst, aber nie gelöscht.
@@ -477,8 +478,8 @@ eine Narbe, die man auch zwei Ären später noch sieht.
 
 ## Acceptance Criteria
 
-Testwurzel: `Assets/Tests/EditMode/WeltUndInsel/`. Stämme & Diplomatie fehlt noch; die
-Tests nutzen die Stubs `ITribeSource` (Mitten, Krieg, Aussterben) und `IPopulationSource`
+Testwurzel: `Assets/Tests/EditMode/WeltUndInsel/`. Damit Welt & Insel allein testbar ist,
+nutzen die Tests die Stubs `ITribeSource` (Mitten, Krieg, Aussterben) und `IPopulationSource`
 (V_t), beide mit Aufrufprotokoll.
 
 - **AC-01 Formel 1 [Logic/EditMode]** **GIVEN** world_seed 42, **WHEN** die Insel zweimal erzeugt wird, **THEN** sind Land, f_c und h_c aller 1.120 Zellen bitgleich, jede Landzelle hat 0,1 ≤ f_c ≤ 1, jede Randzelle (x = 0, x = 39, y = 0, y = 27) ist Wasser, alles Land gehört zur Hauptinsel, und der Strom steht danach an derselben Stelle wie ohne die Randregel.
@@ -508,7 +509,7 @@ Tests nutzen die Stubs `ITribeSource` (Mitten, Krieg, Aussterben) und `IPopulati
 | **Zweite Runde**: regionale, seltenere und längere Dürren (15–40 Jahre); Gebiet gewichtet nach Fruchtbarkeit und Brand; niedrigere Grenze der Gnade (etwa 0,95 · cap) oder eine stille „Knappheit“ unter 10 % Hungertoten gegen wiederkehrende kleine Hungersnöte; längere Wirkung verbrannter Erde | Entwickler, dann Messung | danach |
 | Aussterben: Prototyp 1, dieser Entwurf und Menschen & Bevölkerung Regel 2 sagen unter 3 Köpfen (angeglichen 2026-10-25). Offen: Was geschieht mit den letzten 1–2 Menschen (im Prototyp verschwinden sie, V = 0)? | GDD Stämme & Diplomatie, dann Menschen & Bevölkerung | mit dem GDD Stämme & Diplomatie |
 | Soll es im MVP-0 von Hand gebaute Inseln geben (gleiches Datenformat, aus einer Datei)? | Entwickler | vor dem Level-Design |
-| Darf die Mitte eines Stamms wandern (etwa weg von verbrannter Erde, hin zu fruchtbarem Land)? Dieser Entwurf liest sie nur | GDD Stämme & Diplomatie | mit dem GDD |
+| Darf die Mitte eines Stamms wandern (etwa weg von verbrannter Erde, hin zu fruchtbarem Land)? Dieser Entwurf liest sie nur; Stämme & Diplomatie hält sie vorerst fest wie im Prototyp | Entwickler | nach der Kalibrierung |
 | Ist Wasser tödlich (Ertrinken nach einem Wurf ins Meer)? Das wäre ein kostenloser Tötungsknopf; bis dahin setzt der Kern den Menschen an Land | GDD Gotteshand & Ragdoll, zusammen mit den Kosten | mit dem GDD |
 | Reicht ein Raster von 40 × 28 für die 3D-Ansicht, oder braucht sie ein feineres Gelände (dann nur Darstellung)? | GDD Weltansicht & Kamera | mit dem GDD |
 | Sollen später alle Welten anders aussehen (gedrehte Startachse, mehrere Inselformen)? Heute liegt jede Insel als Oval mit Stämmen links und rechts | Entwickler | nach der Kalibrierung |

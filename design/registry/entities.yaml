@@ -458,6 +458,30 @@ constants:
     notes: "Kennung des Zufallsstroms von Menschen & Bevölkerung; wird nie umnummeriert"
     added: 2026-10-25
     revised: ""
+  - name: staemme_system_id
+    status: active
+    source: design/gdd/simulationskern.md
+    referenced_by:
+      - design/gdd/simulationskern.md
+      - design/gdd/staemme-und-diplomatie.md
+      - design/gdd/welt-und-insel.md
+    value: 4
+    unit: system_id
+    notes: "Kennung des Zufallsstroms von Stämme & Diplomatie (auch für die Platzsuche bei Abspaltungen); wird nie umnummeriert"
+    added: 2026-10-26
+    revised: ""
+  - name: aussterben_grenze
+    status: active
+    source: design/gdd/staemme-und-diplomatie.md
+    referenced_by:
+      - design/gdd/staemme-und-diplomatie.md
+      - design/gdd/welt-und-insel.md
+      - design/gdd/menschen-und-bevoelkerung.md
+    value: 3
+    unit: Köpfe
+    notes: "Ein Stamm mit weniger als 3 Köpfen ist untergegangen (Prototyp 1); die letzten 1-2 verschwinden vorerst (V = 0)"
+    added: 2026-10-26
+    revised: ""
   - name: menschen_year_offset
     status: active
     source: design/gdd/simulationskern.md

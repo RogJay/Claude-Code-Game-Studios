@@ -141,6 +141,19 @@ Status jetzt **In Review** wie die anderen drei; „Approved“ entscheidest du.
 Widerspruch. Der einzige Widerspruch (Aussterben) war schon in Runde 2 von Welt behoben.
 Nachgezogen: Kern und Menschen nennen Welt & Insel jetzt „In Review“ statt „Entwurf“.
 
+### 7. Stämme & Diplomatie, Entwurf
+
+Neu: `design/gdd/staemme-und-diplomatie.md` (Status **Designed**, Draft). Wie bei Welt &
+Insel habe ich die Regeln aus Prototyp 1 übernommen: Groll aus sechs Gründen, der jedes
+Jahr verblasst; Kriegserklärung, Kampfverluste, Eroberung, Frieden mit 20 Jahren Frist;
+Abspaltung von Andersdenkenden; Aussterben unter 3 Köpfen; Aggression als Temperament.
+Krieg bleibt im MVP-0 abstrakt (nur Zahlen), ohne Gefangene. Beim Abgleich mit dem
+Prototyp habe ich zwei kleine Fehler im Prototyp gefunden (ein eroberter Stamm konnte im
+selben Jahr ein zweites Mal „erobert“ werden; Kriege gegen tote Stämme blieben manchmal ein
+Jahr stehen); die korrigiere ich und nenne sie als Abweichungen. Das Hauptproblem aus dem
+Prototyp (Krieg überdeckt den Kulturwandel, 4 zu 1) habe ich **nicht** angefasst: Das ist
+deine Entscheidung nach der ersten Messung, die Hebel stehen in den Open Questions.
+
 ## Entscheidungen ohne Freigabe
 
 | # | GDD | Entscheidung | Warum | Zurücknehmen |
@@ -180,3 +193,10 @@ Nachgezogen: Kern und Menschen nennen Welt & Insel jetzt „In Review“ statt �
 | 33 | Welt, Menschen | Aussterben unter 3 Köpfen jetzt auch in Menschen Regel 2; die letzten 1–2 Menschen verschwinden vorerst wie im Prototyp | Widerspruch zwischen zwei GDDs entfernt, Kalibrierung bleibt gültig; ihr Schicksal bleibt offen | Menschen Regel 2, Welt Regel 8 |
 | 34 | Welt & Insel | Fest-Segen: Vorrat + 0,6 · Volk nach dem Geschenk, Gotteskraft erteilt zuerst den Auftrag an Menschen | Reihenfolge wie im Prototyp | Regel 14 |
 | 35 | Welt & Insel | Zwei weitere Abweichungen vom Prototyp offen benannt (Abspaltung auf fremde Mitte fällt aus, Ersatz-Startplatz an Land) | Beide selten; sonst entstünde ein Stamm ohne Land | Kalibrierung |
+| 36 | Stämme | GDD Stämme & Diplomatie als Entwurf geschrieben, ganze Datei auf einmal (nicht Abschnitt für Abschnitt mit Freigabe) | Du schläfst; jede Regel stammt aus Prototyp 1 | ganzes GDD |
+| 37 | Stämme | Krieg im MVP-0 abstrakt: kein Merkmal „im Kampf“, keine Gefangenen | Das Systemverzeichnis legt „Sichtbarer Krieg“ in den Vertical Slice; Prototyp 1 hatte beides nicht | Regel 13 |
+| 38 | Stämme | Zwei Fehler des Prototyps korrigiert (Eroberung zweimal, Kriege gegen Tote) | Sonst zählt die Kalibrierung falsche Eroberungen; die Abweichung ist genannt | Kalibrierung 3 und 4 |
+| 39 | Stämme | Wer bei Eroberung oder Untergang in Gottes Hand ist, gehört beim Loslassen dem Sieger bzw. dem nächsten Stamm | Menschen Regel 20 zieht Gehaltene nie; ohne Regel gehörten sie einem toten Stamm | Regel 18, Open Questions |
+| 40 | Stämme | Stammesnamen ab ID 14 mit römischer Ziffer (Ura II) | Im Prototyp gab es Doppelnamen; gleiche Lösung wie bei den Einzelnen | Regel 3 |
+| 41 | Stämme | Gleichstände (Grund, reichster Nachbar, Eroberung) nach fester Reihenfolge bzw. kleinerer ID | Bestimmt den Ablauf eindeutig; im Prototyp hing das an der Reihenfolge der Schleifen | Formeln 1, 2, 4 |
+| 42 | Registry | Neue Einträge `staemme_system_id` (4) und `aussterben_grenze` (3) | Werden von drei GDDs genutzt | Registry |

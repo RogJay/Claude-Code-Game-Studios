@@ -265,7 +265,7 @@ entscheiden Begehren & Lust sowie Harem & Rituale. Die Prüfung greift an drei S
 | Simulationskern | Sperrmerkmale in Gottes Hand, lebt, erschüttert; Schrittnummer für den Stempel | Eintrag „Sperrenprüfung“ mit Takt 1 nach Gotteskraft (Handlungsregister); die Prüffunktion selbst hat keinen Zufall und keinen Takt | Kern (Reihenfolge), Zustimmungsmodell (Register) |
 | Chronik, HUD & Chronik-Ansicht | – | Gründe einer Ablehnung, die das aufrufende System als Ereignis meldet | aufrufendes System meldet, Chronik wählt aus |
 | Gotteskraft & Götterkräfte, Gotteshand & Ragdoll | **keine Eingabe** (Regel 5, 17) | – | – |
-| Stämme & Diplomatie | – | Vertrag (Regel 21): zieht niemanden aus einer laufenden Handlung in Kampf oder Gefangenschaft | Stämme & Diplomatie (vorläufig, GDD fehlt) |
+| Stämme & Diplomatie | – | Vertrag (Regel 21): zieht niemanden aus einer laufenden Handlung in Kampf oder Gefangenschaft | Stämme & Diplomatie (`design/gdd/staemme-und-diplomatie.md`, Draft: im MVP-0 zieht es niemanden, Regel 13) |
 | Weltansicht & Kamera | Sperrenprüfung und eingereihte Eingriffe lesend | Szene nur nach Regel 20, eigene Sperre vor jeder Gewalt-Darstellung, Kollisionsebene | Weltansicht |
 | Menschen & Bevölkerung (Opferwahl, Stammeswechsel) | – | Vertrag: Beteiligte einer laufenden Handlung werden bei Verlusten nicht gezogen; Stamm und Schritt des letzten Wechsels für Regel 4 | Menschen |
 
