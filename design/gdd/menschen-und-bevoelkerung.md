@@ -146,9 +146,8 @@ zeigen.
 
 **Hingabe**
 
-16. Jeder Stamm hat eine **Stammeshingabe** D_t (0–1). Sie gehört Kultur & Erinnerung
-    (vorläufiger Vertrag, das GDD fehlt noch). Die Gnade und die Rituale rechnen damit
-    wie in Prototyp 1.
+16. Jeder Stamm hat eine **Stammeshingabe** D_t (0,05–1). Sie gehört Kultur & Erinnerung
+    (Formel 1 dort). Die Gnade und die Rituale rechnen damit wie in Prototyp 1.
 17. Die persönliche **Hingabe** eines Einzelnen folgt der Stammeshingabe und seiner
     Frömmigkeit (Formulas). Eingriffe des Gottes, die ihn persönlich treffen (Segen,
     Wurf, Verletzung), verändern sie über Ereignisse. Die Höhe legen die GDDs der
@@ -259,7 +258,7 @@ Merkmale.
 |---|---|---|---|
 | Simulationskern | Personentakt, Jahrestakt, Zufallsstrom (system_id 2), Status „in Gottes Hand“, Umrechnung Lebensjahr; Aufträge: Hervortreten eines gepackten Statisten, Rückgabe aus Gottes Hand | Ereignisse: Hervortreten, Tod | Kern |
 | Welt & Insel | Zellen, Gebiet jedes Stamms, Nahrung und Tragfähigkeit pro Stamm, Startplätze; Auftrag „Verlust durch Hunger“ | Orte der Einzelnen, V_t | Welt & Insel (`design/gdd/welt-und-insel.md`, Approved) |
-| Kultur & Erinnerung | Stammeshingabe D_t | – | Kultur & Erinnerung (vorläufig) |
+| Kultur & Erinnerung | Stammeshingabe D_t | – | Kultur & Erinnerung (`design/gdd/kultur-und-erinnerung.md`, Formel 1) |
 | Stämme & Diplomatie | Aufträge (Regel 23): Verluste als Zahl, Abspaltung, Eroberung, Gefangennahme, Befreiung, Kampf-Merkmal | V_t, Einzelne pro Stamm | Stämme & Diplomatie gibt die Zahlen vor, Menschen wählt die Personen |
 | Zustimmungsmodell | – | Zustimmungsprofil (Regel 18) | Menschen (Profilinhalt ist eine Grenze und darf nicht erweitert werden) |
 | Begehren & Lust | Ziele (Fest), Vorlieben | Einzelne mit Eigenschaften, Geschlecht, Ort | Menschen |
@@ -697,5 +696,5 @@ Entwurf des `qa-lead` (2026-10-25), mit den eingearbeiteten Korrekturen. Testwur
 | Zeigt die Ansicht die fünf Eigenschaften als Zahl, als Wort oder gar nicht? | UX-Spec zur Ansicht eines Einzelnen | `/ux-design` in der Pre-Production |
 | Wie viele Erwachsene erschafft die Kraft, und in welchem Stamm? | GDD Gotteskraft & Götterkräfte | mit dem GDD |
 | Wer nimmt an einem Kampf teil („im Kampf“), und wann wird gefangen genommen? Im MVP-0 niemand: Krieg ist abstrakt (Stämme & Diplomatie Regel 13), Merkmal und Gefangenschaft bleiben ungenutzt | GDD Sichtbarer Krieg | Vertical Slice |
-| Wie wirkt die Stammeshingabe D_t, und wer verändert sie? (vorläufig: Kultur & Erinnerung) | GDD Kultur & Erinnerung | mit dem GDD |
+| Wie wirkt die Stammeshingabe D_t, und wer verändert sie? (vorläufig: Kultur & Erinnerung) | beantwortet: Kultur & Erinnerung Formel 1 | 2026-10-26 |
 | Bleibt die Aussterberate mit den alternden Einzelnen wie in Prototyp 1 bei 0 %? | Debug- & Balancing-Werkzeuge | erste Messung im MVP-0 |

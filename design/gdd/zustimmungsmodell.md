@@ -75,8 +75,7 @@ Grund sichtbar, damit der Spieler sieht, wie Kultur Lust formt (Pillar 2 und 3).
    - den **Ort**: privat, öffentlich, Fest, Ritual (der Ort „Ritual“ ist nur mit der
      Handlungsart Ritual gültig, sonst „ungültige Eingabe“)
    - die **Normen** der Kultur jedes Beteiligten für diese Handlungsart an diesem Ort:
-     ein Wert 0–1 (Offenheit) und ein Merkmal „Tabu“ (Kultur & Erinnerung, vorläufiger
-     Vertrag). Hat ein Beteiligter in den letzten T_akkult Geschichtsjahren den Stamm
+     ein Wert 0–1 (Offenheit) und ein Merkmal „Tabu“ (Kultur & Erinnerung, Regeln 14–17). Hat ein Beteiligter in den letzten T_akkult Geschichtsjahren den Stamm
      gewechselt (Eroberung, Abspaltung, Gefangenschaft), gilt die strengere Norm beider
      Kulturen, `n = min(n_Herkunft, n_neu)`, und ein Tabu einer der beiden sperrt. Ein
      Krieg macht so niemanden über Nacht offener
@@ -260,7 +259,7 @@ entscheiden Begehren & Lust sowie Harem & Rituale. Die Prüfung greift an drei S
 | System | Was hineingeht | Was herauskommt | Wer besitzt die Schnittstelle |
 |---|---|---|---|
 | Menschen & Bevölkerung | Zustimmungsprofile (fester Inhalt, siehe dort Regel 18) | – | Menschen |
-| Kultur & Erinnerung | Normen: Offenheit 0–1 und Tabu je Handlungsart und Ort | – | Kultur & Erinnerung (vorläufig, GDD fehlt) |
+| Kultur & Erinnerung | Normen: Offenheit 0–1 und Tabu je Handlungsart und Ort | – | Kultur & Erinnerung (`design/gdd/kultur-und-erinnerung.md`, Regel 17) |
 | Begehren & Lust | Anfrage per IDs (Zärtlichkeit, Sex zu zweit, Gruppe, Kontakt im Ritual); Begehren b_ij und Bindungen als Funktion | Ergebnis mit Gründen; Beginne / Beende im Handlungsregister | Zustimmungsmodell (Anfrage-Baustein, Ergebnis, Handlungsregister) |
 | Harem & Rituale | Anfrage per IDs (Harem beitreten, Teilnahme am Ritual); Bindungen im Harem | Ergebnis mit Gründen; Beginne / Beende im Handlungsregister | Zustimmungsmodell |
 | Simulationskern | Sperrmerkmale in Gottes Hand, lebt, erschüttert; Schrittnummer für den Stempel | Eintrag „Sperrenprüfung“ mit Takt 1 nach Gotteskraft (Handlungsregister); die Prüffunktion selbst hat keinen Zufall und keinen Takt | Kern (Reihenfolge), Zustimmungsmodell (Register) |

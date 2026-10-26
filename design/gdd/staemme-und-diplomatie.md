@@ -325,7 +325,7 @@ runden(0,5712) = 1. L_t += 1/60, L_o += 2/40; Achse t − 0,04/59, o − 0,08/38
 
 The Eroberung formula is defined as:
 
-nach dem Kampf: `o ist erobert ⇔ V_o < 6 ∨ V_o < 0,22 · V_t`, sonst `t ist erobert ⇔ V_t < 6 ∨ V_t < 0,22 · V_o` · `j = floor(0,5 · V_L)` wechseln zum Sieger S, `V_L − j` sterben · Achse `x_S ← (x_S · (V_S + j) + x_L · j) / max(1, V_S + 2j)` mit V_S vor dem Wechsel
+nach dem Kampf: `o ist erobert ⇔ V_o < 6 ∨ V_o < 0,22 · V_t`, sonst `t ist erobert ⇔ V_t < 6 ∨ V_t < 0,22 · V_o` · `j = floor(0,5 · V_L)` wechseln zum Sieger S, `V_L − j` sterben · Achse `x_S ← (x_S · (V_S + j) + x_L · j) / (V_S + 2j)` mit V_S vor dem Wechsel; bei `V_S + 2j = 0` bleibt x_S (Kultur & Erinnerung Formel 7)
 
 **Variables:**
 | Variable | Type | Range | Source | Description |
